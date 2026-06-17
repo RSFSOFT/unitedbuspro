@@ -1,5 +1,16 @@
 const serverless = require('serverless-http');
-const app = require('../../server'); // Imports Express app exported from server.js
+const app = require('../../server');
 
-// Netlify serverless function entrypoint wrapping Express app
-exports.handler = serverless(app);
+const handler = serverless(app);
+
+exports.handler = async (event, context) => {
+    try {
+        return await handler(event, context);
+    } catch (err) {
+        return {
+            statusCode: 500,
+            headers: { 'Content-Type': 'text/plain' },
+            body: `Serverless Function Execution Error:\n${err.stack}`
+        };
+    }
+};
