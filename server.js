@@ -41,29 +41,31 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 // Create Mock WebP Assets if not present to avoid 404 errors during testing
 const fs = require('fs');
-const imageDir = path.join(__dirname, 'public', 'images');
-if (!fs.existsSync(imageDir)) {
-    fs.mkdirSync(imageDir, { recursive: true });
-}
-const mockImages = [
-    'hero-home.webp', 'hero-about.webp', 'hero-contact.webp', 'hero-thank-you.webp', 
-    'fleet-coach.webp', 'fleet-minibus.webp', 'fleet-standard-minibus.webp', 'fleet-sprinter.webp', 'fleet-school-bus.webp',
-    'blog-guide.webp', 'blog-corporate.webp', 'logo.png', 'hero-bg.webp', 'cta-bg.webp'
-];
-mockImages.forEach(img => {
-    const imgPath = path.join(imageDir, img);
-    if (!fs.existsSync(imgPath)) {
-        if (img.endsWith('.png')) {
-            // Write a tiny transparent png
-            const transparentPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
-            fs.writeFileSync(imgPath, transparentPng);
-        } else {
-            // Write a tiny webp
-            const transparentWebp = Buffer.from('UklGRiQAAABXRUJQVlA4TBAAAAAvAAAAAEYQkQAAPwAAAAAA', 'base64');
-            fs.writeFileSync(imgPath, transparentWebp);
-        }
+if (!process.env.NETLIFY) {
+    const imageDir = path.join(__dirname, 'public', 'images');
+    if (!fs.existsSync(imageDir)) {
+        fs.mkdirSync(imageDir, { recursive: true });
     }
-});
+    const mockImages = [
+        'hero-home.webp', 'hero-about.webp', 'hero-contact.webp', 'hero-thank-you.webp', 
+        'fleet-coach.webp', 'fleet-minibus.webp', 'fleet-standard-minibus.webp', 'fleet-sprinter.webp', 'fleet-school-bus.webp',
+        'blog-guide.webp', 'blog-corporate.webp', 'logo.png', 'hero-bg.webp', 'cta-bg.webp'
+    ];
+    mockImages.forEach(img => {
+        const imgPath = path.join(imageDir, img);
+        if (!fs.existsSync(imgPath)) {
+            if (img.endsWith('.png')) {
+                // Write a tiny transparent png
+                const transparentPng = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=', 'base64');
+                fs.writeFileSync(imgPath, transparentPng);
+            } else {
+                // Write a tiny webp
+                const transparentWebp = Buffer.from('UklGRiQAAABXRUJQVlA4TBAAAAAvAAAAAEYQkQAAPwAAAAAA', 'base64');
+                fs.writeFileSync(imgPath, transparentWebp);
+            }
+        }
+    });
+}
 
 // Middleware: Expose global contact info, services, fleet, locations, and settings to all templates
 app.use((req, res, next) => {
