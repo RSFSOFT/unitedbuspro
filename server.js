@@ -41,7 +41,7 @@ app.use(express.static(path.join(__dirname, 'public'), {
 
 // Create Mock WebP Assets if not present to avoid 404 errors during testing
 const fs = require('fs');
-if (!process.env.NETLIFY) {
+if (!process.env.NETLIFY && !process.env.LAMBDA_TASK_ROOT) {
     const imageDir = path.join(__dirname, 'public', 'images');
     if (!fs.existsSync(imageDir)) {
         fs.mkdirSync(imageDir, { recursive: true });
