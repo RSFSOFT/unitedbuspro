@@ -41,6 +41,8 @@
 html {
     scroll-behavior: smooth;
     font-size: 16px;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 body {
@@ -49,6 +51,7 @@ body {
     color: var(--text-main);
     line-height: 1.6;
     overflow-x: hidden;
+    width: 100%;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1241,6 +1244,7 @@ footer {
         transform: none !important;
         width: 100% !important;
         max-width: 100% !important;
+        min-width: 0 !important;
         box-shadow: none !important;
         border: none !important;
         background-color: rgba(255, 255, 255, 0.03) !important;
@@ -1272,11 +1276,17 @@ footer {
         padding-top: 20px;
         margin-top: 15px;
     }
+    .section-padding {
+        padding: 50px 15px;
+    }
 }
 
 @media (max-width: 480px) {
     .trip-type-grid {
         grid-template-columns: 1fr !important;
+    }
+    .fleet-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -1323,6 +1333,26 @@ footer {
     transform: translateY(-8px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
     border-color: var(--accent-gold) !important;
+}
+
+/* Responsive Grid Utility Classes */
+.responsive-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+}
+.responsive-grid-1-2 {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+}
+@media (max-width: 1024px) {
+    .responsive-grid-2 {
+        grid-template-columns: 1fr;
+    }
+    .responsive-grid-1-2 {
+        grid-template-columns: 1fr;
+    }
 }
 
 
