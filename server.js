@@ -4,6 +4,7 @@ const compression = require('compression');
 const path = require('path');
 const nodemailer = require('nodemailer');
 const db = require('./database');
+require('ejs'); // Force esbuild to bundle EJS for serverless environments
 
 const app = express();
 const PORT = process.env.PORT || 3000;
