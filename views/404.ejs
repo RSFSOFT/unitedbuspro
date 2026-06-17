@@ -1,0 +1,20 @@
+<%- include('partials/header') %>
+
+<!-- 404 CONTENT -->
+<section class="section-padding" style="background-color: var(--bg-main); min-height: 70vh; display: flex; align-items: center; text-align: center;">
+    <div class="container" style="max-width: 600px;">
+        <div class="admin-card" style="padding: 50px 40px; border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);">
+            <div style="font-size: 5rem; color: var(--accent-gold); margin-bottom: 20px; font-weight: 800; font-family: var(--font-heading);">
+                404
+            </div>
+            <h1 style="font-size: 2.2rem; margin-bottom: 15px;">Page Not Found</h1>
+            <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.6; margin-bottom: 35px;">The URL page you are attempting to access does not exist on this server. It may have been moved or deleted.</p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <a href="/" class="btn-primary" style="padding: 12px 30px;">Return to Home</a>
+                <a href="/fleet" class="btn-secondary" style="border-color: var(--primary-light); color: var(--primary-dark); padding: 12px 30px;">View Our Fleet</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

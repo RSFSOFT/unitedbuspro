@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Content | United Bus Pro CMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body style="background-color: var(--bg-main);">
+
+    <div class="admin-container" style="max-width: 900px;">
+        <!-- HEADER -->
+        <div class="admin-header">
+            <a href="/admin/dashboard" style="display: flex; align-items: center; gap: 8px; color: #ffffff;">
+                <i class="fa fa-arrow-left"></i> <span>Return to Dashboard</span>
+            </a>
+            <div class="admin-nav">
+                <span style="color: var(--text-light); font-weight: 600;"><i class="fa fa-user-circle"></i> <%= user.username %></span>
+            </div>
+        </div>
+
+        <!-- NOTIFICATION -->
+        <% if (success) { %>
+            <div style="background-color: #def7ec; color: #03543f; padding: 15px; border-radius: var(--radius-sm); font-weight: 600; margin-bottom: 25px;">
+                <i class="fa fa-check-circle" style="margin-right: 5px;"></i> Content successfully updated!
+            </div>
+        <% } %>
+
+        <!-- EDITOR CARD -->
+        <div class="admin-card">
+            <h2 style="font-size: 1.8rem; margin-bottom: 20px; border-bottom: 2px solid var(--bg-main); padding-bottom: 10px;">Edit <%= type.toUpperCase() %>: <%= slug.toUpperCase() %></h2>
+            
+            <form action="<%= actionUrl %>" method="post">
+                <!-- Page Name / Service Name / City / State Name -->
+                <% if (type === 'service' || type === 'fleet' || type === 'city' || type === 'state') { %>
+                    <div class="form-group">
+                        <label class="form-label" for="name">Display Name</label>
+                        <input type="text" id="name" name="name" class="form-field" value="<%= item.name %>" required>
+                    </div>
+                <% } %>
+
+                <!-- Title & Meta tags -->
+                <div class="form-group">
+                    <label class="form-label" for="title">Meta Page Title (SEO)</label>
+                    <input type="text" id="title" name="title" class="form-field" value="<%= item.title %>" required>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="meta_description">Meta Description (SEO)</label>
+                    <textarea id="meta_description" name="meta_description" class="form-field" rows="3" required><%= item.meta_description %></textarea>
+                </div>
+
+                <!-- Page H1 / City / State H1 Title -->
+                <% if (type === 'page' || type === 'city' || type === 'state') { %>
+                    <div class="form-group">
+                        <label class="form-label" for="header_h1">Header H1 Title</label>
+                        <input type="text" id="header_h1" name="header_h1" class="form-field" value="<%= item.header_h1 %>" required>
+                    </div>
+                <% } %>
+
+                <!-- City details (Airport code & Popular Destinations) -->
+                <% if (type === 'city') { %>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="airport_code">Airport Codes served</label>
+                            <input type="text" id="airport_code" name="airport_code" class="form-field" value="<%= item.airport_code %>" placeholder="e.g. DFW, DAL" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="popular_destinations">Popular Destinations served (comma-separated)</label>
+                            <input type="text" id="popular_destinations" name="popular_destinations" class="form-field" value="<%= item.popular_destinations %>" placeholder="e.g. AT&T Stadium, Sundance Square" required>
+                        </div>
+                    </div>
+                <% } %>
+
+                <!-- State details (Popular Destinations) -->
+                <% if (type === 'state') { %>
+                    <div class="form-group">
+                        <label class="form-label" for="popular_destinations">Popular Destinations served (comma-separated)</label>
+                        <input type="text" id="popular_destinations" name="popular_destinations" class="form-field" value="<%= item.popular_destinations %>" placeholder="e.g. Disneyland, Yosemite" required>
+                    </div>
+                <% } %>
+
+                <!-- Capacity, Bags & Price (For Service or Fleet) -->
+                <% if (type === 'service' || type === 'fleet') { %>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label" for="capacity">Passenger Capacity</label>
+                            <input type="text" id="capacity" name="capacity" class="form-field" value="<%= item.capacity %>" placeholder="e.g. 56 Passengers" required>
+                        </div>
+                        <% if (type === 'fleet') { %>
+                            <div class="form-group">
+                                <label class="form-label" for="bags">Luggage Capacity</label>
+                                <input type="text" id="bags" name="bags" class="form-field" value="<%= item.bags %>" placeholder="e.g. 56 Bags" required>
+                            </div>
+                        <% } %>
+                        <div class="form-group">
+                            <label class="form-label" for="price">Starting Rate</label>
+                            <input type="text" id="price" name="price" class="form-field" value="<%= item.price %>" placeholder="e.g. $150/hr" required>
+                        </div>
+                    </div>
+                <% } %>
+
+                <!-- Main Body Content -->
+                <div class="form-group">
+                    <label class="form-label" for="body_content">Page Description / Main Copy</label>
+                    <textarea id="body_content" name="body_content" class="form-field" rows="8" required><%= item.body_content %></textarea>
+                </div>
+
+                <!-- Custom Inclusions / Amenities Bullet points -->
+                <% if (type === 'service' || type === 'fleet') { %>
+                    <div class="form-group" style="margin-top: 25px;">
+                        <label class="form-label" style="font-weight: 700;">Included Inclusions / Amenities (One per line)</label>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">Specify passenger comfort inclusions like Wi-Fi, luggage bay options, reclining seats, or certified chauffeur licensing.</p>
+                        <textarea id="details" name="details" class="form-field" rows="6" placeholder="Reclining seats&#10;On-board restroom&#10;Complimentary Wi-Fi" required><%= item.details ? item.details.join('\n') : '' %></textarea>
+                    </div>
+                <% } %>
+
+                <button type="submit" class="btn-form">Save Changes <i class="fa fa-save" style="margin-left: 5px;"></i></button>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

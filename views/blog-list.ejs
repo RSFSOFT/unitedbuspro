@@ -1,0 +1,41 @@
+<%- include('partials/header') %>
+
+<!-- BLOG LIST HERO -->
+<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/blog-guide.webp?v=4'); background-size: cover; background-position: center; color: #ffffff; text-align: center; padding: 80px 30px 60px;">
+    <div class="container" style="max-width: 800px;">
+        <div class="breadcrumbs" style="justify-content: center; margin-bottom: 20px;">
+            <a href="/"><i class="fa fa-home"></i> Home</a>
+            <span class="separator">/</span>
+            <span style="color: rgba(255,255,255,0.7);">Company</span>
+            <span class="separator">/</span>
+            <span class="current">Travel Blog</span>
+        </div>
+        <h1 style="color: #ffffff; font-size: 2.8rem; margin-bottom: 20px;">Travel Guides & Bus Charter Blog</h1>
+        <p style="color: var(--text-light); opacity: 0.85; font-size: 1.1rem;">Get professional travel planning tips, charter bus renting checklists, and corporate transit design guidelines directly from our dispatchers.</p>
+    </div>
+</section>
+
+<!-- BLOG LIST GRID -->
+<section class="section-padding">
+    <div class="container">
+        <div class="fleet-grid">
+            <% blogs.forEach(b => { %>
+                <div class="fleet-card">
+                    <div class="fleet-img-box">
+                        <img src="<%= b.image %>?v=4" class="fleet-img" alt="<%= b.title %>">
+                        <span class="fleet-price-badge" style="background-color: var(--accent-gold);"><%= b.category %></span>
+                    </div>
+                    <div class="fleet-info">
+                        <span style="font-size: 0.8rem; font-weight: 700; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 8px;"><%= b.publish_date %></span>
+                        <h3 style="font-size: 1.35rem; margin-bottom: 12px; height: 50px; overflow: hidden; line-height: 1.3;"><%= b.title %></h3>
+                        <p style="margin-bottom: 25px; height: 70px; overflow: hidden;"><%= b.content.substring(0, 120) %>...</p>
+                        
+                        <a href="/blog/<%= b.slug %>" class="btn-primary" style="display: block; text-align: center; font-size: 0.9rem;">Read Guide</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

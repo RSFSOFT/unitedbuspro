@@ -1,0 +1,82 @@
+<%- include('partials/header') %>
+
+<!-- FLEET HERO -->
+<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-bg.webp?v=4'); background-size: cover; background-position: center; color: #ffffff; text-align: center; padding: 100px 30px 80px;">
+    <div class="container" style="max-width: 800px;">
+        <div class="breadcrumbs" style="justify-content: center;">
+            <a href="/"><i class="fa fa-home"></i> Home</a>
+            <span class="separator">/</span>
+            <span class="current">Our Fleet</span>
+        </div>
+        <h1 style="color: #ffffff; font-size: 3rem; margin-bottom: 20px;">Our Premium Charter Fleet</h1>
+        <p style="color: var(--text-light); opacity: 0.85; font-size: 1.15rem;">We provide modern, meticulously maintained vehicles to accommodate any group size, itinerary length, or travel budget. Fully DOT certified and safety inspected.</p>
+    </div>
+</section>
+
+<!-- FLEET GRID -->
+<section class="section-padding">
+    <div class="container">
+        <div class="fleet-grid">
+            <% fleetList.forEach(f => { %>
+                <div class="fleet-card">
+                    <div class="fleet-img-box">
+                        <img src="<%= f.image %>?v=4" class="fleet-img" alt="<%= f.name %>">
+                        <span class="fleet-price-badge">Starting from <%= f.starting_rate %></span>
+                    </div>
+                    <div class="fleet-info">
+                        <h3 style="font-size: 1.5rem; margin-bottom: 12px;"><%= f.name %></h3>
+                        
+                        <div class="fleet-meta" style="margin-bottom: 15px;">
+                            <span><i class="fa fa-users"></i> <%= f.capacity %></span>
+                            <span><i class="fa fa-suitcase"></i> <%= f.bags %></span>
+                        </div>
+                        
+                        <p style="margin-bottom: 20px;"><%= f.description %></p>
+                        
+                        <h4 style="font-size: 0.9rem; text-transform: uppercase; color: var(--primary-light); margin-bottom: 10px; font-weight: 700;">Included Amenities:</h4>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px;">
+                            <% f.parsedAmenities.forEach(amenity => { %>
+                                <span style="background-color: var(--bg-main); color: var(--text-muted); font-size: 0.75rem; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.05);">
+                                    <i class="fa fa-check" style="color: var(--accent-gold); margin-right: 4px;"></i> <%= amenity %>
+                                </span>
+                            <% }) %>
+                        </div>
+                        
+                        <div style="display: flex; gap: 10px;">
+                            <a href="/fleet/<%= f.slug %>" class="btn-secondary" style="flex: 1; text-align: center; font-size: 0.9rem; padding: 10px 0;">Vehicle Specs</a>
+                            <a href="/reservation?vehicle=<%= f.slug %>" class="btn-primary" style="flex: 1.2; text-align: center; font-size: 0.9rem; padding: 10px 0;">Reserve Now</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST SIGNALS -->
+<section class="section-padding" style="background-color: var(--bg-main); border-top: 1px solid rgba(0,0,0,0.05);">
+    <div class="container" style="max-width: 1000px; text-align: center;">
+        <h2 style="font-size: 2rem; margin-bottom: 40px;">Why Book Our Fleet?</h2>
+        <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <div class="service-card" style="box-shadow: none; background: transparent;">
+                <div class="service-icon"><i class="fa fa-shield-virus"></i></div>
+                <h3>Deep Sanitation</h3>
+                <p>Vehicles undergo complete electrostatic disinfection before and after every trip coordinate.</p>
+            </div>
+            
+            <div class="service-card" style="box-shadow: none; background: transparent;">
+                <div class="service-icon"><i class="fa fa-wrench"></i></div>
+                <h3>Rigorous Maintenance</h3>
+                <p>Preventative engineering schedules conducted by factory-certified mechanics daily.</p>
+            </div>
+            
+            <div class="service-card" style="box-shadow: none; background: transparent;">
+                <div class="service-icon"><i class="fa fa-map-marked-alt"></i></div>
+                <h3>Real-Time Tracking</h3>
+                <p>All vehicles carry GPS tracking logs, letting client dispatchers monitor transit routes live.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

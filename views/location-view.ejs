@@ -1,0 +1,379 @@
+<%- include('partials/header') %>
+
+<!-- LOCAL HERO SECTION & QUOTE CALCULATOR -->
+<%
+  const cityImages = {
+      'dallas': 'https://images.unsplash.com/photo-1549046644-7f241d2a11da?auto=format&fit=crop&w=1200&q=80',
+      'fort worth': 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=1200&q=80',
+      'arlington': 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1200&q=80',
+      'plano': 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=1200&q=80',
+      'frisco': 'https://images.unsplash.com/photo-1616401784845-180882ba9ba8?auto=format&fit=crop&w=1200&q=80',
+      'new york city': 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?auto=format&fit=crop&w=1200&q=80',
+      'houston': 'https://images.unsplash.com/photo-1530089711124-9ca31fb9e863?auto=format&fit=crop&w=1200&q=80',
+      'chicago': 'https://images.unsplash.com/photo-1494522858153-a38050e2759e?auto=format&fit=crop&w=1200&q=80',
+      'washington dc': 'https://images.unsplash.com/photo-1501446529957-6226bd447c46?auto=format&fit=crop&w=1200&q=80',
+      'los angeles': 'https://images.unsplash.com/photo-1507608869274-d3177c8bb4c7?auto=format&fit=crop&w=1200&q=80',
+      'albany': 'https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&w=1200&q=80',
+      'albuquerque': 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&w=1200&q=80',
+      'alexandria': 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?auto=format&fit=crop&w=1200&q=80',
+      'anaheim': 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1200&q=80',
+      'ann arbor': 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1200&q=80',
+      'atlanta': 'https://images.unsplash.com/photo-1575917649705-5b59afe1ec7f?auto=format&fit=crop&w=1200&q=80',
+      'augusta': 'https://images.unsplash.com/photo-1532187863486-abf9d39d66e8?auto=format&fit=crop&w=1200&q=80',
+      'austin': 'https://images.unsplash.com/photo-1531259683007-016a7b628fc3?auto=format&fit=crop&w=1200&q=80',
+      'bakersfield': 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1200&q=80',
+      'baltimore': 'https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&fit=crop&w=1200&q=80',
+      'baton rouge': 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80',
+      'berkeley': 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80',
+      'birmingham': 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=80',
+      'boston': 'https://images.unsplash.com/photo-1490644659564-94119d8544d6?auto=format&fit=crop&w=1200&q=80'
+  };
+
+  const cityName = (location.cityName || '').toLowerCase().trim();
+  const slug = (location.slug || '').toLowerCase().trim();
+  
+  let heroBg = '/images/hero-locations.webp'; // Fallback
+  
+  if (cityImages[cityName]) {
+      heroBg = cityImages[cityName];
+  } else if (slug && cityImages[slug]) {
+      heroBg = cityImages[slug];
+  } else {
+      // Fallback state logic
+      const stateName = (location.stateName || '').toLowerCase();
+      if (stateName.includes('texas')) {
+          heroBg = 'https://images.unsplash.com/photo-1494253109108-2e30c049369b?auto=format&fit=crop&w=1200&q=80';
+      } else if (stateName.includes('california')) {
+          heroBg = 'https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?auto=format&fit=crop&w=1200&q=80';
+      } else if (stateName.includes('new york')) {
+          heroBg = 'https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&w=1200&q=80';
+      } else if (stateName.includes('dc') || stateName.includes('district') || stateName.includes('maryland')) {
+          heroBg = 'https://images.unsplash.com/photo-1557456170-0cf4f4d0d362?auto=format&fit=crop&w=1200&q=80';
+      } else if (stateName.includes('florida')) {
+          heroBg = 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=1200&q=80';
+      }
+  }
+%>
+<section class="hero-section" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.85) 100%), url('<%= heroBg %>?v=4');">
+    <div class="hero-grid">
+        <div class="hero-content">
+            <div class="breadcrumbs">
+                <a href="/"><i class="fa fa-home"></i> Home</a>
+                <span class="separator">/</span>
+                <span style="color: rgba(255,255,255,0.7);">Locations</span>
+                <span class="separator">/</span>
+                <span class="current"><%= location.cityName %></span>
+            </div>
+            <h1 style="font-size: 3rem;"><%= location.header_h1 %></h1>
+            <p><%= location.body_content %></p>
+            
+            <div style="margin-top: 30px; display: flex; flex-direction: column; gap: 15px;">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background-color: rgba(217, 119, 6, 0.15); color: var(--accent-gold-light); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;"><i class="fa fa-plane"></i></span>
+                    <div>
+                        <strong style="display: block; font-size: 0.9rem; color: #ffffff;">Airports Served:</strong>
+                        <span style="font-size: 0.85rem; color: var(--text-light); opacity: 0.8;"><%= location.airport_code %></span>
+                    </div>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <span style="background-color: rgba(217, 119, 6, 0.15); color: var(--accent-gold-light); width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.95rem;"><i class="fa fa-landmark"></i></span>
+                    <div>
+                        <strong style="display: block; font-size: 0.9rem; color: #ffffff;">Popular Destinations We Serve:</strong>
+                        <span style="font-size: 0.85rem; color: var(--text-light); opacity: 0.8;"><%= location.popular_destinations %></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quote Form (Matches Homepage exactly to reuse main.js logic) -->
+        <div class="quote-card">
+            <div class="quote-progress-bar">
+                <span class="progress-step active" id="progStep1">1</span>
+                <span class="progress-step" id="progStep2">2</span>
+                <span class="progress-step" id="progStep3">3</span>
+                <span class="progress-step" id="progStep4">4</span>
+            </div>
+
+            <div class="quote-card-layout">
+                <div class="quote-card-main">
+                    <form id="quoteCalculatorForm">
+                        <!-- STEP 1: TRIP TYPE -->
+                        <div class="quote-form-step active" id="step1">
+                            <h3 style="margin-bottom: 5px;">Instant Estimate for <%= location.name %></h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">What kind of trip is this?</p>
+                            
+                            <div class="trip-type-grid">
+                                <div class="trip-type-card active" data-type="one-way">
+                                    <i class="fa fa-arrow-right"></i>
+                                    <span>One Way</span>
+                                </div>
+                                <div class="trip-type-card" data-type="round-trip">
+                                    <i class="fa fa-sync-alt"></i>
+                                    <span>Round Trip</span>
+                                </div>
+                                <div class="trip-type-card" data-type="large-event">
+                                    <i class="fa fa-calendar-check"></i>
+                                    <span>Large Event</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="trip_type" name="trip_type" value="one-way">
+                            
+                            <div class="quote-controls" style="margin-top: 25px;">
+                                <button type="button" class="btn-primary" id="btnNext1" style="width: 100%;">Next Step <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: ITINERARY -->
+                        <div class="quote-form-step" id="step2">
+                            <h3 style="margin-bottom: 5px;">Where are you headed?</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Add your trip itinerary below.</p>
+                            
+                            <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Itinerary</h5>
+                            
+                            <!-- Pickup Item -->
+                            <div class="itinerary-item">
+                                <div class="itinerary-item-badge">1</div>
+                                <div class="itinerary-item-content">
+                                    <div class="itinerary-item-title">Pickup</div>
+                                    <div class="form-group">
+                                        <input type="text" id="pickup_address" class="form-input" placeholder="Address, hotel, or airport code" value="<%= location.name %>" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Date</label>
+                                            <input type="date" id="pickup_date" class="form-input" required>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Time</label>
+                                            <input type="time" id="pickup_time" class="form-input" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stop Item (Round Trip Only) -->
+                            <div class="itinerary-item" id="stopItemBlock" style="display: none;">
+                                <div class="itinerary-item-badge">2</div>
+                                <div class="itinerary-item-content">
+                                    <div class="itinerary-item-title">
+                                        Stop 
+                                        <span class="whats-this-link" id="whatsThisStop">What's this?</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="stop_address" class="form-input" placeholder="Address, hotel, or airport code">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Date</label>
+                                            <input type="date" id="stop_date" class="form-input">
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Time</label>
+                                            <input type="time" id="stop_time" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dropoff Item -->
+                            <div class="itinerary-item">
+                                <div class="itinerary-item-badge" id="dropoffBadge">2</div>
+                                <div class="itinerary-item-content">
+                                    <div class="itinerary-item-title" id="dropoffTitle">Dropoff</div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <input type="text" id="dropoff_address" class="form-input" placeholder="Address, hotel, or airport code" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Trip Details Block (Large Event Only) -->
+                            <div id="tripDetailsBlock" style="display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                                <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Trip Details</h5>
+                                
+                                <div class="form-group">
+                                    <label style="font-size: 0.75rem; margin-bottom: 4px;">Give your trip a name</label>
+                                    <input type="text" id="trip_name" class="form-input" placeholder="e.g. Sterling to Camp Springs Shuttle">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label style="font-size: 0.75rem; margin-bottom: 4px;">Select an event type</label>
+                                    <select id="event_type" class="form-input">
+                                        <option value="">Choose event type...</option>
+                                        <option value="Corporate Event">Corporate Event</option>
+                                        <option value="Wedding">Wedding</option>
+                                        <option value="Sporting Event">Sporting Event</option>
+                                        <option value="School Event">School Event</option>
+                                        <option value="Private Gathering">Private Gathering</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.75rem; margin-bottom: 8px; display: block;">Special Requirements - Optional</label>
+                                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
+                                            <input type="checkbox" id="req_accessible" style="width: 16px; height: 16px; accent-color: var(--accent-gold);"> Accessible vehicle
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
+                                            <input type="checkbox" id="req_ada" style="width: 16px; height: 16px; accent-color: var(--accent-gold);"> ADA standards compliant
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quote-controls" style="margin-top: 25px;">
+                                <button type="button" class="btn-secondary" id="btnBack2">Go back</button>
+                                <button type="button" class="btn-primary" id="btnNext2">Next Step <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3: CONTACT & DETAILS -->
+                        <div class="quote-form-step" id="step3">
+                            <h3 style="margin-bottom: 5px;">Who is coordinating?</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Enter passenger count and contact information.</p>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="passengers"><i class="fa fa-users"></i> Passenger Count</label>
+                                    <input type="number" id="passengers" name="passengers" class="form-input" min="1" max="100" placeholder="e.g. 30" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="service_type"><i class="fa fa-bus"></i> Service Category</label>
+                                    <select id="service_type" name="service_type" class="form-input" required>
+                                        <option value="">Select Service</option>
+                                        <option value="Charter Bus Rental">Charter Bus Rental</option>
+                                        <option value="Airport Shuttle Service">Airport Shuttle Service</option>
+                                        <option value="Minibus Hires">Minibus Hires</option>
+                                        <option value="Wedding Guest Shuttles">Wedding Guest Shuttles</option>
+                                        <option value="School Field Trips">School Field Trips</option>
+                                        <option value="Corporate Shuttle Service">Corporate Shuttle Service</option>
+                                        <option value="Employee Shuttles">Employee Shuttles</option>
+                                        <option value="Campus Shuttles">Campus Shuttles</option>
+                                        <option value="Large Events & Conventions">Large Events & Conventions</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="name"><i class="fa fa-user"></i> Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Your Name" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone"><i class="fa fa-phone"></i> Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="Phone Number" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email"><i class="fa fa-envelope"></i> Email Address</label>
+                                    <input type="email" id="email" name="email" class="form-input" placeholder="email@domain.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="quote-controls">
+                                <button type="button" class="btn-secondary" id="btnBack3"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn-primary" id="btnNext3">Calculate Quote <i class="fa fa-calculator"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 4: ESTIMATED QUOTE DISPLAY & SUBMIT -->
+                        <div class="quote-form-step" id="step4">
+                            <h3 style="margin-bottom: 5px;">Your Instant Estimate</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Review estimate and reserve vehicle logistics.</p>
+                            
+                            <div class="quote-result-box">
+                                <p id="recommendedVehicle">Recommended Vehicle: Charter Bus</p>
+                                <div class="quote-result-price" id="quoteEstPrice">$0.00</div>
+                                <p style="font-size: 0.8rem; color: var(--text-light); opacity: 0.8;">Estimated rate. Includes driver, fuel, tolls. Excludes airport parking.</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message"><i class="fa fa-comment-alt"></i> Special Instructions / Itinerary Details</label>
+                                <textarea id="message" name="message" class="form-input" rows="3" placeholder="Flight details, specific routing requests, or special passenger accommodations..."></textarea>
+                            </div>
+                            
+                            <div class="quote-controls">
+                                <button type="button" class="btn-secondary" id="btnBack4"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="submit" class="btn-primary" id="btnSubmit">Reserve Booking <i class="fa fa-check-circle"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Persistent Sidebar (Interactive map and Dynamic Trip Overview details) -->
+                <div class="quote-card-sidebar">
+                    <div id="calculatorMap" style="height: 180px; border-radius: var(--radius-md); border: 1.5px solid rgba(255,255,255,0.15); margin-bottom: 20px; background-color: rgba(0,0,0,0.2); overflow: hidden; position: relative; z-index: 1;"></div>
+                    
+                    <div class="help-box">
+                        <h4><i class="fa fa-map-marker-alt"></i> Trip Overview</h4>
+                        <div id="liveOverviewDetails" style="font-size: 0.82rem; color: var(--text-light); line-height: 1.5; display: flex; flex-direction: column; gap: 8px;">
+                            <div><strong>Trip Type:</strong> <span id="overviewTripType">One Way</span></div>
+                            <div id="overviewPickupBlock"><strong>Pickup:</strong> <span id="overviewPickup">-</span></div>
+                            <div id="overviewStopBlock" style="display: none;"><strong>Stop:</strong> <span id="overviewStop">-</span></div>
+                            <div id="overviewDropoffBlock"><strong>Dropoff:</strong> <span id="overviewDropoff">-</span></div>
+                            <div id="overviewPassengersBlock"><strong>Passengers:</strong> <span id="overviewPassengers">-</span></div>
+                            <div id="overviewRecommendationBlock" style="display: none; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
+                                <strong>Recommendation:</strong>
+                                <div id="overviewRecommendation" style="color: var(--accent-gold-light); font-weight: 700; margin-top: 2px;">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-box" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                        <h4><i class="fa fa-info-circle"></i> Need Help?</h4>
+                        <p id="tripTypeHelpText" style="font-size: 0.8rem; line-height: 1.4; opacity: 0.85; margin: 0;">A one way trip is pretty self-explanatory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</section>
+
+<!-- LOCAL FLEET RECOMMENDATIONS -->
+<section class="section-padding">
+    <div class="container">
+        <div class="section-header">
+            <h2>Recommended Fleet for <%= location.name %> Group Travel</h2>
+            <p>Select the ideal vehicle for your itinerary. We offer flexible capacity options with transparent hourly pricing.</p>
+        </div>
+        
+        <div class="fleet-grid">
+            <% fleet.forEach(f => { %>
+                <div class="fleet-card">
+                    <div class="fleet-img-box">
+                        <img src="<%= f.image %>?v=4" class="fleet-img" alt="<%= f.name %> serving <%= location.name %>">
+                        <span class="fleet-price-badge">From <%= f.starting_rate %></span>
+                    </div>
+                    <div class="fleet-info">
+                        <h3><%= f.name %></h3>
+                        <div class="fleet-meta">
+                            <span><i class="fa fa-users"></i> <%= f.capacity %></span>
+                            <span><i class="fa fa-suitcase"></i> <%= f.bags %></span>
+                        </div>
+                        <p><%= f.description %></p>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <a href="/fleet/<%= f.slug %>" class="btn-secondary" style="flex: 1; text-align: center; font-size: 0.85rem; padding: 10px 0;">Specs</a>
+                            <a href="/reservation?vehicle=<%= f.slug %>" class="btn-primary" style="flex: 1.5; text-align: center; font-size: 0.85rem; padding: 10px 0;">Book for <%= location.name %></a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- LOCAL TESTIMONIAL & TRUST -->
+<section class="section-padding" style="background-color: var(--primary-dark); color: #ffffff;">
+    <div class="container" style="max-width: 900px; text-align: center;">
+        <span style="font-size: 2rem; color: var(--accent-gold);"><i class="fa fa-quote-left"></i></span>
+        <p style="font-size: 1.3rem; font-style: italic; line-height: 1.7; margin-bottom: 25px; color: var(--text-light);">
+            "United Bus Pro made our corporate conference shuttles in <%= location.name %> completely stress-free. Coordinating transport for 80 attendees between hotels and the venue was seamless. Highly recommended!"
+        </p>
+        <h4 style="color: #ffffff; font-size: 1.1rem; margin-bottom: 5px;">Dallas Logistics Group</h4>
+        <span style="color: var(--accent-gold); font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Corporate Client</span>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

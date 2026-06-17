@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMS Dashboard | United Bus Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- Chart.js for premium analytics graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body style="background-color: var(--bg-main);">
+
+    <div class="admin-container">
+        <!-- DASHBOARD HEADER -->
+        <div class="admin-header">
+            <a href="/" style="display: flex; align-items: center; gap: 8px;">
+                <span class="logo-text" style="font-size: 1.4rem;">United<span>BusPro</span></span>
+            </a>
+            <div class="admin-nav">
+                <span style="color: var(--text-light); font-weight: 600; align-self: center;"><i class="fa fa-user-circle"></i> <%= user.username %></span>
+                <a href="/admin/logout" class="admin-nav-btn" style="background-color: #9b1c1c;"><i class="fa fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+
+        <!-- NOTIFICATIONS -->
+        <% if (success) { %>
+            <div style="background-color: #def7ec; color: #03543f; padding: 15px; border-radius: var(--radius-sm); font-weight: 600; margin-bottom: 25px;">
+                <i class="fa fa-check-circle" style="margin-right: 5px;"></i> <%= success.replace(/_/g, ' ') %>
+            </div>
+        <% } %>
+        <% if (err) { %>
+            <div style="background-color: #fde8e8; color: #9b1c1c; padding: 15px; border-radius: var(--radius-sm); font-weight: 600; margin-bottom: 25px;">
+                <i class="fa fa-exclamation-circle" style="margin-right: 5px;"></i> <%= err.replace(/_/g, ' ') %>
+            </div>
+        <% } %>
+
+        <!-- METRIC CARDS -->
+        <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 30px; gap: 20px;">
+            <div class="service-card" style="padding: 20px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Total Inquiries</span>
+                    <h2 style="font-size: 2.2rem; margin-top: 5px;"><%= inquiries.length %></h2>
+                </div>
+                <span style="background-color: var(--accent-gold-light); color: var(--accent-gold); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;"><i class="fa fa-envelope-open"></i></span>
+            </div>
+            
+            <div class="service-card" style="padding: 20px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Unread Leads</span>
+                    <h2 style="font-size: 2.2rem; margin-top: 5px; color: var(--accent-gold);"><%= inquiries.filter(i => i.status === 'unread').length %></h2>
+                </div>
+                <span style="background-color: #fef3c7; color: var(--accent-gold); width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;"><i class="fa fa-bell"></i></span>
+            </div>
+
+            <div class="service-card" style="padding: 20px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Fleet Vehicles</span>
+                    <h2 style="font-size: 2.2rem; margin-top: 5px;"><%= fleet.length %></h2>
+                </div>
+                <span style="background-color: #e1f5fe; color: #0288d1; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;"><i class="fa fa-bus"></i></span>
+            </div>
+
+            <div class="service-card" style="padding: 20px; text-align: left; display: flex; align-items: center; justify-content: space-between;">
+                <div>
+                    <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700;">Active Services</span>
+                    <h2 style="font-size: 2.2rem; margin-top: 5px;"><%= services.length %></h2>
+                </div>
+                <span style="background-color: #def7ec; color: #03543f; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;"><i class="fa fa-cogs"></i></span>
+            </div>
+        </div>
+
+        <!-- MAIN DASHBOARD CONTENT -->
+        <div class="admin-grid">
+            <div>
+                <!-- BOOKING LEADS CARD -->
+                <div class="admin-card">
+                    <h3>Group Travel Leads</h3>
+                    <div style="overflow-x: auto;">
+                        <table class="inquiries-table">
+                            <thead>
+                                <tr>
+                                    <th>Client Details</th>
+                                    <th>Itinerary Details</th>
+                                    <th>Service Class</th>
+                                    <th>Date</th>
+                                    <th>Assignment</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(inquiries.length === 0) { %>
+                                    <tr>
+                                        <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 30px 0;">No inquiries logged in database yet.</td>
+                                    </tr>
+                                <% } %>
+                                <% inquiries.forEach(inq => { %>
+                                    <tr class="<%= inq.status %>">
+                                        <td>
+                                            <strong><%= inq.name %></strong><br>
+                                            <span style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa fa-phone"></i> <%= inq.phone %></span><br>
+                                            <span style="font-size: 0.8rem; color: var(--text-muted);"><i class="fa fa-envelope"></i> <%= inq.email %></span>
+                                            <% if (inq.plan) { %>
+                                                <br><span style="font-size: 0.75rem; background-color: var(--accent-gold-light); color: var(--accent-gold); padding: 2px 6px; border-radius: var(--radius-sm); font-weight: 700; display: inline-block; margin-top: 4px;"><i class="fa fa-gem"></i> <%= inq.plan %></span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <span style="font-size: 0.85rem;"><strong>Pickup:</strong> <%= inq.pickup_loc %></span><br>
+                                            <span style="font-size: 0.85rem;"><strong>Dest:</strong> <%= inq.dropoff_loc %></span><br>
+                                            <span style="font-size: 0.85rem;"><strong>Pax:</strong> <%= inq.passengers %></span>
+                                        </td>
+                                        <td><span class="badge" style="background-color: var(--bg-main); color: var(--primary-dark); border: 1px solid rgba(0,0,0,0.05); font-size: 0.75rem;"><%= inq.service_type || 'General' %></span></td>
+                                        <td><span style="font-size: 0.8rem;"><%= new Date(inq.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'}) %></span></td>
+                                        <td>
+                                            <% if (inq.assigned_driver || inq.assigned_team) { %>
+                                                <span style="font-size: 0.8rem; display: block; color: var(--text-main); font-weight: 600; margin-bottom: 2px;"><i class="fa fa-id-card" style="color: var(--accent-gold); margin-right: 3px;"></i> <%= inq.assigned_driver %></span>
+                                                <span style="font-size: 0.8rem; display: block; color: var(--text-muted);"><i class="fa fa-users-cog" style="margin-right: 3px;"></i> <%= inq.assigned_team %></span>
+                                            <% } else { %>
+                                                <form action="/admin/inquiry/assign/<%= inq.id %>" method="POST" style="display: flex; flex-direction: column; gap: 4px; min-width: 140px;">
+                                                    <select name="driver_name" style="font-size: 0.75rem; padding: 4px; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.15);" required>
+                                                        <option value="">Driver...</option>
+                                                        <% drivers.forEach(d => { %>
+                                                            <option value="<%= d.name %>"><%= d.name %> (<%= d.license %>)</option>
+                                                        <% }) %>
+                                                    </select>
+                                                    <select name="team_name" style="font-size: 0.75rem; padding: 4px; border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.15);" required>
+                                                        <option value="">Team...</option>
+                                                        <% teams.forEach(t => { %>
+                                                            <option value="<%= t.name %>"><%= t.name %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                    <button type="submit" class="btn-primary" style="font-size: 0.72rem; padding: 3px; border-radius: var(--radius-sm); line-height: 1; flex: none;">Assign Dispatch</button>
+                                                </form>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <% if (inq.status === 'assigned') { %>
+                                                <span class="badge" style="background-color: #e1f5fe; color: #0288d1; font-weight: 700;"><%= inq.status %></span>
+                                            <% } else { %>
+                                                <span class="badge badge-<%= inq.status %>"><%= inq.status %></span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <% if (inq.status === 'unread') { %>
+                                                <a href="/admin/inquiry/read/<%= inq.id %>" class="action-link" style="color: #03543f; margin-right: 10px;"><i class="fa fa-eye"></i> Read</a>
+                                            <% } %>
+                                            <a href="/admin/inquiry/delete/<%= inq.id %>" class="action-link" style="color: #9b1c1c;" onclick="return confirm('Delete booking lead permanently?')"><i class="fa fa-trash"></i> Delete</a>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ANALYTICS CHART -->
+                <div class="admin-card">
+                    <h3>Quote Inquiries (Last 7 Days)</h3>
+                    <% if (isDemoData) { %>
+                        <p style="color: var(--accent-gold); font-size: 0.8rem; font-weight: 700; margin-bottom: 10px;"><i class="fa fa-info-circle"></i> Graph displaying seeded demo metrics (No inquiries registered yet)</p>
+                    <% } %>
+                    <div style="height: 300px; position: relative;">
+                        <canvas id="leadsChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- PAGE/CONTENT MANAGEMENT -->
+                <div class="admin-card">
+                    <h3>Website Page Content Editor</h3>
+                    <table class="inquiries-table">
+                        <thead>
+                            <tr>
+                                <th>Page / Service / Vehicle</th>
+                                <th>Category / Type</th>
+                                <th>Link Slug</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Standard Pages -->
+                            <% pages.forEach(p => { %>
+                                <tr>
+                                    <td><strong><%= p.slug.toUpperCase() %> Page</strong></td>
+                                    <td>Standard Copy</td>
+                                    <td><code>/<%= p.slug %></code></td>
+                                    <td><a href="/admin/page/edit/<%= p.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit Content</a></td>
+                                </tr>
+                            <% }) %>
+                            
+                            <!-- Services -->
+                            <% services.forEach(s => { %>
+                                <tr>
+                                    <td><strong><%= s.name %></strong></td>
+                                    <td>Service Detail</td>
+                                    <td><code>/services/<%= s.slug %></code></td>
+                                    <td><a href="/admin/service/edit/<%= s.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit Copy</a></td>
+                                </tr>
+                            <% }) %>
+
+                            <!-- Fleet -->
+                            <% fleet.forEach(f => { %>
+                                <tr>
+                                    <td><strong><%= f.name %></strong></td>
+                                    <td>Fleet Vehicle</td>
+                                    <td><code>/fleet/<%= f.slug %></code></td>
+                                    <td><a href="/admin/fleet/edit/<%= f.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit Spec</a></td>
+                                </tr>
+                            <% }) %>
+
+                            <!-- Cities -->
+                            <% cities.forEach(c => { %>
+                                <tr>
+                                    <td><strong><%= c.name %></strong></td>
+                                    <td>City Landing Page</td>
+                                    <td><code>/locations/<%= c.slug %></code></td>
+                                    <td><a href="/admin/city/edit/<%= c.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit Landing Page</a></td>
+                                </tr>
+                            <% }) %>
+
+                            <!-- States -->
+                            <% states.forEach(s => { %>
+                                <tr>
+                                    <td><strong><%= s.name %> (<%= s.code %>)</strong></td>
+                                    <td>State Landing Page</td>
+                                    <td><code>/locations/states/<%= s.slug %></code></td>
+                                    <td><a href="/admin/state/edit/<%= s.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit Landing Page</a></td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- REGISTERED CUSTOMERS -->
+                <div class="admin-card">
+                    <h3>Registered Customers & Commuter Packages</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Review customer profiles, active packages, and account credentials logged in the database.</p>
+                    <div style="overflow-x: auto; max-height: 400px; overflow-y: auto;">
+                        <table class="inquiries-table">
+                            <thead>
+                                <tr>
+                                    <th>Customer ID</th>
+                                    <th>Email / Account</th>
+                                    <th>Commuter Plan Package</th>
+                                    <th>Signed Up On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(customerUsers.length === 0) { %>
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: var(--text-muted); padding: 20px 0;">No customer accounts registered.</td>
+                                    </tr>
+                                <% } %>
+                                <% customerUsers.forEach(cu => { %>
+                                    <tr>
+                                        <td><strong>#<%= cu.id %></strong></td>
+                                        <td><span style="font-weight: 600;"><%= cu.username %></span></td>
+                                        <td><span class="badge" style="background-color: var(--accent-gold-light); color: var(--accent-gold); font-weight: 700;"><i class="fa fa-gem"></i> <%= cu.plan %></span></td>
+                                        <td><span style="font-size: 0.85rem;"><%= cu.created_at ? new Date(cu.created_at).toLocaleDateString('en-US', {month: 'short', day: 'numeric', year: 'numeric'}) : 'Pre-seeded' %></span></td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDEBAR: SETTINGS & ADD BLOG -->
+            <div>
+                <!-- GENERAL SYSTEM SETTINGS -->
+                <div class="admin-card">
+                    <h3>System Settings</h3>
+                    <form action="/admin/settings/edit" method="post">
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="phone">Base Phone Number</label>
+                            <input type="text" id="phone" name="phone" class="form-field" value="<%= settings.phone %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="email">Base Email Address</label>
+                            <input type="email" id="email" name="email" class="form-field" value="<%= settings.email %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="address">Corporate Address</label>
+                            <input type="text" id="address" name="address" class="form-field" value="<%= settings.address %>" required>
+                        </div>
+                        
+                        <h4 style="font-size: 0.9rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; margin-top: 20px; margin-bottom: 15px;">SMTP Email Notifications Configuration</h4>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="smtp_host">SMTP Host Server</label>
+                            <input type="text" id="smtp_host" name="smtp_host" class="form-field" value="<%= settings.smtp_host %>" placeholder="e.g. mail.domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="smtp_port">SMTP Port</label>
+                            <input type="number" id="smtp_port" name="smtp_port" class="form-field" value="<%= settings.smtp_port %>" placeholder="e.g. 465 or 587">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="smtp_user">SMTP Username</label>
+                            <input type="text" id="smtp_user" name="smtp_user" class="form-field" value="<%= settings.smtp_user %>" placeholder="e.g. email@domain.com">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="smtp_pass">SMTP Password</label>
+                            <input type="password" id="smtp_pass" name="smtp_pass" class="form-field" value="<%= settings.smtp_pass %>" placeholder="Enter password">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="smtp_from">SMTP Sender E-mail</label>
+                            <input type="text" id="smtp_from" name="smtp_from" class="form-field" value="<%= settings.smtp_from %>" placeholder="e.g. United Bus Pro &lt;noreply@unitedbuspro.com&gt;">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="smtp_to">Notification Recipient Address</label>
+                            <input type="email" id="smtp_to" name="smtp_to" class="form-field" value="<%= settings.smtp_to %>" placeholder="e.g. bookings@domain.com">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary" style="display: block; width: 100%; margin-top: 15px;">Update Settings</button>
+                    </form>
+                </div>
+
+                <!-- ADD NEW TRAVEL BLOG GUIDE -->
+                <div class="admin-card">
+                    <h3>Publish Travel Blog</h3>
+                    <form action="/admin/blog/add" method="post">
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="blog_title">Article Title</label>
+                            <input type="text" id="blog_title" name="title" class="form-field" placeholder="e.g. How to Plan Prom Travel" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="blog_category">Category</label>
+                            <input type="text" id="blog_category" name="category" class="form-field" placeholder="e.g. Guides" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="blog_tags">Tags</label>
+                            <input type="text" id="blog_tags" name="tags" class="form-field" placeholder="comma-separated tags" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="blog_content">Article Content</label>
+                            <textarea id="blog_content" name="content" class="form-field" rows="6" placeholder="Write guide details..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn-primary" style="display: block; width: 100%;">Publish Article <i class="fa fa-paper-plane" style="margin-left: 5px;"></i></button>
+                    </form>
+                    
+                    <h4 style="font-size: 0.95rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; margin-top: 25px; margin-bottom: 10px; font-weight: 700;">Existing Blogs</h4>
+                    <ul class="footer-links">
+                        <% blogs.forEach(b => { %>
+                            <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.03); padding-bottom: 6px; margin-bottom: 6px;">
+                                <span style="font-size: 0.85rem; font-weight: 600; width: 70%; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--primary-dark);"><%= b.title %></span>
+                                <form action="/admin/blog/delete/<%= b.slug %>" method="post" style="display: inline;" onsubmit="return confirm('Delete this blog post?')">
+                                    <button type="submit" style="background: none; border: none; color: #9b1c1c; cursor: pointer; font-size: 0.85rem; font-weight: 700;"><i class="fa fa-trash"></i> Delete</button>
+                                </form>
+                            </li>
+                        <% }) %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart rendering logic -->
+    <script>
+        const ctx = document.getElementById('leadsChart').getContext('2d');
+        const leadsChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: <%- JSON.stringify(dayLabels) %>,
+                datasets: [{
+                    label: 'Quote Inquiries',
+                    data: <%- JSON.stringify(visualCounts) %>,
+                    borderColor: '#d97706',
+                    backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: '#d97706',
+                    pointHoverRadius: 7
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <meta name="description" content="<%= meta_description %>">
+    <link rel="canonical" href="<%= canonicalUrl %>">
+    
+    <!-- Google Fonts & Font Awesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="/css/style.css?v=3">
+    
+    <!-- Leaflet.js Map Library -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <% if (typeof schema_json !== 'undefined' && schema_json) { %>
+    <!-- Dynamic Structured SEO Schema -->
+    <script type="application/ld+json">
+        <%- JSON.stringify(schema_json) %>
+    </script>
+    <% } %>
+</head>
+<body>
+
+    <!-- STICKY NAVBAR -->
+    <header>
+        <div class="header-container">
+            <a href="/" class="logo-link">
+                <span class="logo-text">United<span>BusPro</span></span>
+            </a>
+            
+            <nav>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="/" class="nav-link">Home</a></li>
+                    
+                    <!-- SERVICES MEGA MENU -->
+                    <li class="nav-item-dropdown">
+                        <a href="/reservation" class="nav-link">Solutions <i class="fa fa-chevron-down" style="font-size: 0.75rem; margin-left: 2px;"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-grid">
+                                <div class="mega-menu-col">
+                                    <h4><i class="fa fa-bus" style="color: var(--accent-gold); margin-right: 8px;"></i> Bus Charters</h4>
+                                    <ul>
+                                        <% services.filter(s => s.category === 'Bus Charters').forEach(s => { %>
+                                            <li><a href="/services/<%= s.slug %>"><%= s.name %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-col">
+                                    <h4><i class="fa fa-shuttle-van" style="color: var(--accent-gold); margin-right: 8px;"></i> Shuttles</h4>
+                                    <ul>
+                                        <% services.filter(s => s.category === 'Continuous Shuttles').forEach(s => { %>
+                                            <li><a href="/services/<%= s.slug %>"><%= s.name %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-col">
+                                    <h4><i class="fa fa-star" style="color: var(--accent-gold); margin-right: 8px;"></i> Large Events & Enterprise</h4>
+                                    <ul>
+                                        <% services.filter(s => s.category === 'Large Events').forEach(s => { %>
+                                            <li><a href="/services/<%= s.slug %>"><%= s.name %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- LOCATIONS MEGA MENU -->
+                    <li class="nav-item-dropdown">
+                        <a href="/reservation" class="nav-link">Locations <i class="fa fa-chevron-down" style="font-size: 0.75rem; margin-left: 2px;"></i></a>
+                        <div class="mega-menu">
+                            <div class="mega-menu-grid">
+                                <div class="mega-menu-col">
+                                    <h4><i class="fa fa-map-marked-alt" style="color: var(--accent-gold); margin-right: 8px;"></i> States We Serve</h4>
+                                    <ul>
+                                        <% states.forEach(s => { %>
+                                            <li><a href="/locations/states/<%= s.slug %>"><%= s.name %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-col">
+                                    <% 
+                                      const sortedCities = [...cities].sort((a, b) => a.cityName.localeCompare(b.cityName));
+                                      const halfCities = Math.ceil(sortedCities.length / 2);
+                                      const citiesCol1 = sortedCities.slice(0, halfCities);
+                                      const citiesCol2 = sortedCities.slice(halfCities);
+                                    %>
+                                    <h4><i class="fa fa-city" style="color: var(--accent-gold); margin-right: 8px;"></i> Cities (A - F)</h4>
+                                    <ul>
+                                        <% citiesCol1.forEach(c => { %>
+                                            <li><a href="/locations/<%= c.slug %>"><%= c.cityName %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                                <div class="mega-menu-col">
+                                    <h4><i class="fa fa-map-pin" style="color: var(--accent-gold); margin-right: 8px;"></i> Cities (G - W)</h4>
+                                    <ul>
+                                        <% citiesCol2.forEach(c => { %>
+                                            <li><a href="/locations/<%= c.slug %>"><%= c.cityName %></a></li>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li><a href="/fleet" class="nav-link">Our Fleet</a></li>
+                    
+                    <!-- COMPANY DROPDOWN -->
+                    <li class="nav-item-dropdown">
+                        <a href="/about" class="nav-link">Company <i class="fa fa-chevron-down" style="font-size: 0.75rem; margin-left: 2px;"></i></a>
+                        <div class="dropdown-menu company-dropdown">
+                            <ul style="padding: 10px 0; list-style: none;">
+                                <li><a href="/about" class="dropdown-item-link"><i class="fa fa-info-circle" style="color: var(--accent-gold); margin-right: 8px; width: 16px;"></i> About Us</a></li>
+                                <li><a href="/blog" class="dropdown-item-link"><i class="fa fa-newspaper" style="color: var(--accent-gold); margin-right: 8px; width: 16px;"></i> Travel Blog</a></li>
+                                <li><a href="/careers" class="dropdown-item-link"><i class="fa fa-briefcase" style="color: var(--accent-gold); margin-right: 8px; width: 16px;"></i> Careers</a></li>
+                                <li><a href="/reviews" class="dropdown-item-link"><i class="fa fa-star" style="color: var(--accent-gold); margin-right: 8px; width: 16px;"></i> Reviews</a></li>
+                                <li><a href="/sustainability" class="dropdown-item-link"><i class="fa fa-leaf" style="color: var(--accent-gold); margin-right: 8px; width: 16px;"></i> Sustainability</a></li>
+                                <li><a href="/contact" class="dropdown-item-link"><i class="fa fa-envelope" style="color: var(--accent-gold); margin-right: 8px; width: 16px;"></i> Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li><a href="/customer/portal" class="nav-link"><i class="fa fa-user-lock" style="color: var(--accent-gold); margin-right: 4px;"></i> Client Portal</a></li>
+                    <li><a href="/reservation" class="nav-btn"><i class="fa fa-calendar-check"></i> Book Online</a></li>
+                </ul>
+            </nav>
+            
+            <button class="hamburger" id="hamburgerBtn" aria-label="Toggle Navigation">
+                <i class="fa fa-bars"></i>
+            </button>
+        </div>
+    </header>

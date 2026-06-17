@@ -1,0 +1,416 @@
+<%- include('partials/header') %>
+
+<!-- HERO BANNER -->
+<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-portal.webp?v=4'); background-size: cover; background-position: center; color: #ffffff; text-align: center; padding: 80px 30px 60px;">
+    <div class="container">
+        <div class="breadcrumbs" style="justify-content: center; margin-bottom: 20px;">
+            <a href="/"><i class="fa fa-home"></i> Home</a>
+            <span class="separator">/</span>
+            <span class="current">Client Portal</span>
+        </div>
+        <% if (customer) { %>
+            <h1 style="color: #ffffff; font-size: 2.5rem; margin-bottom: 10px;">Corporate Client Portal</h1>
+            <p style="color: var(--accent-gold-light); font-size: 1.15rem; font-weight: 700;"><i class="fa fa-gem"></i> Active Plan: <%= customer.plan %></p>
+        <% } else { %>
+            <h1 style="color: #ffffff; font-size: 2.5rem; margin-bottom: 10px;">Client Portal & Plans</h1>
+            <p style="color: var(--text-light); opacity: 0.9; font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Sign up for a commuter shuttle plan or log in to manage your active group bookings and driver assignments.</p>
+        <% } %>
+    </div>
+</section>
+
+<!-- PORTAL CONTENT -->
+<section class="section-padding" style="background-color: var(--bg-main);">
+    <div class="container" style="max-width: 1200px;">
+        <% if (customer) { %>
+            <!-- LOGGED IN DASHBOARD -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 2px solid rgba(0,0,0,0.05); padding-bottom: 15px;">
+                <div>
+                    <h2 style="font-size: 1.8rem;"><i class="fa fa-user-circle" style="color: var(--accent-gold); margin-right: 8px;"></i> Welcome, <%= customer.username %></h2>
+                    <p style="color: var(--text-muted); font-size: 0.95rem;">Manage your active group logistics, shuttle loops, and driver schedules.</p>
+                </div>
+                <a href="/customer/logout" class="btn-secondary" style="border-color: #9b1c1c; color: #9b1c1c; padding: 8px 16px;"><i class="fa fa-sign-out-alt"></i> Log Out</a>
+            </div>
+
+            <div class="admin-grid" style="grid-template-columns: 2fr 1.2fr; gap: 40px; display: grid;">
+                <!-- TRIP LOGS -->
+                <div class="admin-card" style="padding: 25px; border-radius: var(--radius-md); box-shadow: var(--shadow-md);">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 10px;"><i class="fa fa-route" style="color: var(--accent-gold); margin-right: 8px;"></i> Your Scheduled Booking Logs</h3>
+                    
+                    <div style="overflow-x: auto;">
+                        <table class="inquiries-table">
+                            <thead>
+                                <tr>
+                                    <th>Trip Date</th>
+                                    <th>Routing Details</th>
+                                    <th>Service</th>
+                                    <th>Chauffeur & Dispatch</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if (inquiries.length === 0) { %>
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                            <i class="fa fa-bus" style="font-size: 2.5rem; color: rgba(0,0,0,0.08); display: block; margin-bottom: 10px;"></i>
+                                            No active bookings logged under this email address. Ready to travel? Use the form to book!
+                                        </td>
+                                    </tr>
+                                <% } %>
+                                <% inquiries.forEach(inq => { %>
+                                    <tr>
+                                        <td>
+                                            <strong style="font-size: 0.9rem;"><%= inq.trip_date %></strong>
+                                        </td>
+                                        <td style="font-size: 0.85rem;">
+                                            <span style="color: var(--text-muted);">From:</span> <%= inq.pickup_loc %><br>
+                                            <span style="color: var(--text-muted);">To:</span> <%= inq.dropoff_loc %><br>
+                                            <span style="color: var(--text-muted);">Pax:</span> <%= inq.passengers %>
+                                        </td>
+                                        <td>
+                                            <span class="badge" style="background-color: var(--primary-dark); color: #ffffff; font-size: 0.75rem;"><%= inq.service_type || 'General Charter' %></span>
+                                        </td>
+                                        <td style="font-size: 0.85rem;">
+                                            <% if (inq.assigned_driver || inq.assigned_team) { %>
+                                                <div style="font-weight: 600; color: var(--primary-dark);"><i class="fa fa-id-card" style="color: var(--accent-gold); margin-right: 5px;"></i> <%= inq.assigned_driver %></div>
+                                                <div style="color: var(--text-muted); font-size: 0.8rem;"><i class="fa fa-users-cog" style="margin-right: 5px;"></i> <%= inq.assigned_team %></div>
+                                            <% } else { %>
+                                                <span style="color: var(--text-muted); font-style: italic;"><i class="fa fa-clock"></i> Pending Staff Assign</span>
+                                            <% } %>
+                                        </td>
+                                        <td>
+                                            <% if (inq.status === 'assigned') { %>
+                                                <span class="badge" style="background-color: #def7ec; color: #03543f; font-weight: 700;"><i class="fa fa-check-circle"></i> Assigned</span>
+                                            <% } else { %>
+                                                <span class="badge badge-<%= inq.status %>"><%= inq.status %></span>
+                                            <% } %>
+                                        </td>
+                                    </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- QUICK BOOKING PORTLET -->
+                <div class="admin-card" style="padding: 25px; border-radius: var(--radius-md); box-shadow: var(--shadow-md); height: fit-content;">
+                    <h3 style="font-size: 1.3rem; margin-bottom: 20px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 10px;"><i class="fa fa-calendar-plus" style="color: var(--accent-gold); margin-right: 8px;"></i> Book a Trip Instantly</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Use our quick scheduler to submit a new transportation requirement directly under your plan.</p>
+                    
+                    <form id="portalQuickBookForm">
+                        <input type="hidden" id="quick_email" value="<%= customer.username %>">
+                        <input type="hidden" id="quick_name" value="Corporate Account (<%= customer.plan %>)">
+                        
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label class="form-label" style="color: var(--primary-dark); font-size: 0.75rem;" for="quick_service">Service Type</label>
+                            <select id="quick_service" class="form-field" style="padding: 10px;" required>
+                                <option value="Corporate Shuttle Service">Corporate Shuttle Service</option>
+                                <option value="Charter Bus Rental">Charter Bus Rental</option>
+                                <option value="Minibus Hires">Minibus Hires</option>
+                                <option value="Employee Shuttles">Employee Shuttles</option>
+                                <option value="Campus Shuttles">Campus Shuttles</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label class="form-label" style="color: var(--primary-dark); font-size: 0.75rem;" for="quick_pickup">Pickup Location</label>
+                            <input type="text" id="quick_pickup" class="form-field" style="padding: 10px;" placeholder="Address, venue, or hotel" required>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 15px;">
+                            <label class="form-label" style="color: var(--primary-dark); font-size: 0.75rem;" for="quick_dropoff">Dropoff Location</label>
+                            <input type="text" id="quick_dropoff" class="form-field" style="padding: 10px;" placeholder="Destination address" required>
+                        </div>
+
+                        <div class="form-row" style="gap: 15px; margin-bottom: 15px;">
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="color: var(--primary-dark); font-size: 0.75rem;" for="quick_date">Travel Date</label>
+                                <input type="date" id="quick_date" class="form-field" style="padding: 10px;" required>
+                            </div>
+                            <div class="form-group" style="margin-bottom: 0;">
+                                <label class="form-label" style="color: var(--primary-dark); font-size: 0.75rem;" for="quick_pax">Passenger Count</label>
+                                <input type="number" id="quick_pax" class="form-field" style="padding: 10px;" min="1" placeholder="e.g. 25" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom: 20px;">
+                            <label class="form-label" style="color: var(--primary-dark); font-size: 0.75rem;" for="quick_phone">Coordinator Phone</label>
+                            <input type="tel" id="quick_phone" class="form-field" style="padding: 10px;" placeholder="e.g. (214) 555-0199" required>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="display: block; width: 100%; text-align: center;"><i class="fa fa-paper-plane"></i> Submit Reservation</button>
+                    </form>
+                </div>
+            </div>
+
+        <% } else { %>
+            <!-- LOG-IN / SIGN-UP VIEW -->
+            <div class="admin-grid" style="grid-template-columns: 1fr 1fr; gap: 50px; display: grid;">
+                
+                <!-- SIGN IN PANEL -->
+                <div class="admin-card" style="padding: 35px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; border-bottom: 2px solid var(--accent-gold); padding-bottom: 10px;"><i class="fa fa-sign-in-alt" style="color: var(--accent-gold); margin-right: 8px;"></i> Sign In</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Welcome back! Sign in to view your coordinates, check drivers, and track shuttles.</p>
+                    
+                    <div id="loginAlertBox" style="display: none; padding: 12px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; text-align: center;"></div>
+                    
+                    <form id="customerLoginForm">
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="login_user">Username / Email Address</label>
+                            <input type="email" id="login_user" class="form-field" placeholder="e.g. name@domain.com" required>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 25px;">
+                            <label class="form-label" style="color: var(--primary-dark);" for="login_pass">Password</label>
+                            <input type="password" id="login_pass" class="form-field" placeholder="••••••••" required>
+                        </div>
+                        <button type="submit" class="btn-primary" style="display: block; width: 100%; text-align: center; padding: 12px;">Sign In to Account <i class="fa fa-arrow-right"></i></button>
+                    </form>
+                    
+                    <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
+                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Simulation Testing Quick-Logins</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Use any of the 100 simulated customer accounts seeded in the database. For example:</p>
+                        <code style="display: block; font-size: 0.8rem; margin: 10px 0; background-color: var(--accent-gold-light); color: var(--accent-gold-hover); padding: 8px; border-radius: var(--radius-sm); font-weight: 700;">
+                            Email: john.smith45@gmail.com<br>
+                            Password: passCustomer1
+                        </code>
+                    </div>
+                </div>
+
+                <!-- SIGN UP / PACKAGE PANEL -->
+                <div class="admin-card" style="padding: 35px; border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; border-bottom: 2px solid var(--accent-gold); padding-bottom: 10px;"><i class="fa fa-user-plus" style="color: var(--accent-gold); margin-right: 8px;"></i> Select Plan & Register</h3>
+                    <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px;">Get started today. Register for a free account to manage your logs, scheduled trips, and operations.</p>
+                    
+                    <div id="signupAlertBox" style="display: none; padding: 12px; border-radius: var(--radius-sm); font-size: 0.9rem; font-weight: 600; margin-bottom: 20px; text-align: center;"></div>
+                    
+                    <form id="customerSignupForm">
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="signup_user">Email Address</label>
+                            <input type="email" id="signup_user" class="form-field" placeholder="e.g. office@yourcompany.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" style="color: var(--primary-dark);" for="signup_pass">Create Password</label>
+                            <input type="password" id="signup_pass" class="form-field" placeholder="At least 6 characters" required>
+                        </div>
+                        <input type="hidden" id="signup_plan" value="Starter Plan">
+                        <button type="submit" class="btn-primary" style="display: block; width: 100%; text-align: center; padding: 12px; background-color: var(--primary-dark); color: #ffffff;">Sign Up <i class="fa fa-check-circle"></i></button>
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- PRICING SECTION -->
+            <div style="margin-top: 60px;">
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <h2 style="font-size: 2.2rem; font-family: 'Outfit', sans-serif; color: var(--primary-dark); margin-bottom: 10px;">Free Forever Service</h2>
+                    <p style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">Our system is completely free for everyone. Enjoy full operations management at zero cost.</p>
+                </div>
+                
+                <div style="max-width: 450px; margin: 0 auto;">
+                    
+                    <!-- STARTER PLAN -->
+                    <div class="pricing-card" style="background: #ffffff; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); padding: 40px 30px; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid var(--accent-gold); position: relative; transition: all 0.3s ease;">
+                        <div>
+                            <h3 style="font-size: 1.6rem; font-family: 'Outfit', sans-serif; color: var(--primary-dark); margin-bottom: 10px;">Starter Plan</h3>
+                            <div style="display: flex; align-items: baseline; margin-bottom: 5px;">
+                                <span style="font-size: 2.5rem; font-weight: 800; color: var(--primary-dark);">Free</span>
+                            </div>
+                            <p style="color: var(--accent-gold-hover); font-weight: 600; font-size: 0.95rem; margin-bottom: 25px;">Forever, for all users</p>
+                            
+                            <hr style="border: 0; border-top: 1px solid rgba(0,0,0,0.08); margin-bottom: 25px;">
+                            
+                            <ul style="list-style: none; padding: 0; margin: 0 0 30px 0;">
+                                <li style="margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center;">
+                                    <i class="fa fa-check-circle" style="color: var(--accent-gold); margin-right: 10px; font-size: 1.1rem;"></i> Unlimited invoices
+                                </li>
+                                <li style="margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center;">
+                                    <i class="fa fa-check-circle" style="color: var(--accent-gold); margin-right: 10px; font-size: 1.1rem;"></i> Unlimited customers
+                                </li>
+                                <li style="margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center;">
+                                    <i class="fa fa-check-circle" style="color: var(--accent-gold); margin-right: 10px; font-size: 1.1rem;"></i> Instant PDF download
+                                </li>
+                                <li style="margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center;">
+                                    <i class="fa fa-check-circle" style="color: var(--accent-gold); margin-right: 10px; font-size: 1.1rem;"></i> Multi-company support
+                                </li>
+                                <li style="margin-bottom: 12px; font-size: 0.95rem; color: var(--text-muted); display: flex; align-items: center;">
+                                    <i class="fa fa-check-circle" style="color: var(--accent-gold); margin-right: 10px; font-size: 1.1rem;"></i> Payment links
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <a href="#" onclick="selectPlan('Starter Plan'); return false;" class="btn-primary" style="display: block; text-align: center; width: 100%; text-decoration: none; padding: 12px; font-weight: 700; border-radius: var(--radius-sm); transition: all 0.3s ease;">Get Started Free <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                    
+                </div>
+            </div>
+        <% } %>
+    </div>
+</section>
+
+<!-- JS Scripting for portal AJAX -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Customer Login Handler
+    const loginForm = document.getElementById('customerLoginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('login_user').value.trim();
+            const password = document.getElementById('login_pass').value;
+            const alertBox = document.getElementById('loginAlertBox');
+            
+            alertBox.style.display = 'none';
+            
+            fetch('/api/customer/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alertBox.style.backgroundColor = '#def7ec';
+                    alertBox.style.color = '#03543f';
+                    alertBox.innerText = 'Login successful! Redirecting...';
+                    alertBox.style.display = 'block';
+                    setTimeout(() => {
+                        window.location.href = '/customer/portal';
+                    }, 800);
+                } else {
+                    alertBox.style.backgroundColor = '#fde8e8';
+                    alertBox.style.color = '#9b1c1c';
+                    alertBox.innerText = 'Error: ' + data.message;
+                    alertBox.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alertBox.style.backgroundColor = '#fde8e8';
+                alertBox.style.color = '#9b1c1c';
+                alertBox.innerText = 'Network connection failed.';
+                alertBox.style.display = 'block';
+            });
+        });
+    }
+
+    // Customer Signup Handler
+    const signupForm = document.getElementById('customerSignupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('signup_user').value.trim();
+            const password = document.getElementById('signup_pass').value;
+            const plan = document.getElementById('signup_plan').value;
+            const alertBox = document.getElementById('signupAlertBox');
+            
+            alertBox.style.display = 'none';
+            
+            fetch('/api/customer/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password, plan })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alertBox.style.backgroundColor = '#def7ec';
+                    alertBox.style.color = '#03543f';
+                    alertBox.innerText = 'Signup successful! Signing you in...';
+                    alertBox.style.display = 'block';
+                    
+                    // Auto login after signup
+                    fetch('/api/customer/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, password })
+                    })
+                    .then(() => {
+                        setTimeout(() => {
+                            window.location.href = '/customer/portal';
+                        }, 800);
+                    });
+                } else {
+                    alertBox.style.backgroundColor = '#fde8e8';
+                    alertBox.style.color = '#9b1c1c';
+                    alertBox.innerText = 'Error: ' + data.message;
+                    alertBox.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alertBox.style.backgroundColor = '#fde8e8';
+                alertBox.style.color = '#9b1c1c';
+                alertBox.innerText = 'Network connection failed.';
+                alertBox.style.display = 'block';
+            });
+        });
+    }
+
+    // Portal Quick Booking Form Handler
+    const quickBookForm = document.getElementById('portalQuickBookForm');
+    if (quickBookForm) {
+        quickBookForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const payload = {
+                name: document.getElementById('quick_name').value,
+                phone: document.getElementById('quick_phone').value,
+                email: document.getElementById('quick_email').value,
+                service_type: document.getElementById('quick_service').value,
+                pickup_loc: document.getElementById('quick_pickup').value,
+                dropoff_loc: document.getElementById('quick_dropoff').value,
+                trip_date: document.getElementById('quick_date').value,
+                passengers: document.getElementById('quick_pax').value,
+                message: '[Submitted from Client Portal]'
+            };
+
+            const submitBtn = quickBookForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Booking... <i class="fa fa-spinner fa-spin"></i>';
+
+            fetch('/api/book', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Booking created successfully!');
+                    window.location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> Submit Reservation';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Connection failure.');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa fa-paper-plane"></i> Submit Reservation';
+            });
+        });
+    }
+});
+
+function selectPlan(planValue) {
+    const planSelect = document.getElementById('signup_plan');
+    if (planSelect) {
+        planSelect.value = planValue;
+        planSelect.dispatchEvent(new Event('change'));
+        // Smooth scroll to the registration card/form
+        const signupCard = planSelect.closest('.admin-card');
+        if (signupCard) {
+            signupCard.scrollIntoView({ behavior: 'smooth' });
+            // Flash effect to draw attention
+            signupCard.style.transition = 'all 0.5s ease';
+            signupCard.style.boxShadow = '0 0 25px var(--accent-gold)';
+            setTimeout(() => {
+                signupCard.style.boxShadow = 'var(--shadow-lg)';
+            }, 1000);
+        }
+    }
+}
+</script>
+
+<%- include('partials/footer') %>

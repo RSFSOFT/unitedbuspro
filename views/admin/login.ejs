@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | United Bus Pro CMS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="admin-login-body">
+
+    <div class="admin-login-card">
+        <h2>United<span>BusPro</span> CMS</h2>
+        
+        <% if (error) { %>
+            <div style="background-color: #fde8e8; color: #9b1c1c; padding: 12px; border-radius: var(--radius-sm); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600;">
+                <i class="fa fa-exclamation-circle" style="margin-right: 5px;"></i> <%= error %>
+            </div>
+        <% } %>
+
+        <form action="/admin/login" method="post">
+            <div class="form-group">
+                <label for="username"><i class="fa fa-user"></i> Username</label>
+                <input type="text" id="username" name="username" class="form-input" placeholder="Enter username" required>
+            </div>
+            <div class="form-group" style="margin-bottom: 30px;">
+                <label for="password"><i class="fa fa-lock"></i> Password</label>
+                <input type="password" id="password" name="password" class="form-input" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn-primary" style="display: block; width: 100%; padding: 12px 0; font-size: 1.05rem;">Access Dashboard <i class="fa fa-sign-in-alt" style="margin-left: 5px;"></i></button>
+        </form>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,87 @@
+<%- include('partials/header') %>
+
+<!-- RESERVATION TITLE -->
+<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-contact.webp?v=4'); background-size: cover; background-position: center; color: #ffffff; text-align: center; padding: 80px 30px 60px;">
+    <div class="container">
+        <div class="breadcrumbs" style="justify-content: center; margin-bottom: 20px;">
+            <a href="/"><i class="fa fa-home"></i> Home</a>
+            <span class="separator">/</span>
+            <span class="current">Book Online</span>
+        </div>
+        <h1 style="color: #ffffff; font-size: 2.5rem;">Group Reservation Desk</h1>
+    </div>
+</section>
+
+<!-- RESERVATION FORM -->
+<section class="section-padding" style="background-color: var(--bg-main);">
+    <div class="container">
+        <div class="reservation-container">
+            <h2>Request Group Quote</h2>
+            <p>Complete the form below. Our transportation coordinators analyze schedules and send customized estimates in under 2 hours.</p>
+            
+            <div id="formStatusBox" style="display: none; padding: 15px; border-radius: var(--radius-md); margin-bottom: 25px; text-align: center; font-weight: 600;"></div>
+
+            <form id="reservationBookingForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="name"><i class="fa fa-user" style="color: var(--accent-gold); margin-right: 5px;"></i> Full Name *</label>
+                        <input type="text" id="name" name="name" class="form-field" placeholder="Contact Person" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="service_type"><i class="fa fa-bus" style="color: var(--accent-gold); margin-right: 5px;"></i> Service Category *</label>
+                        <select id="service_type" name="service_type" class="form-field" required>
+                            <option value="">Select Service</option>
+                            <option value="Charter Bus Rental">Charter Bus Rental</option>
+                            <option value="Corporate Shuttle Service">Corporate Shuttle Service</option>
+                            <option value="Minibus Hires">Minibus Hires</option>
+                            <option value="Wedding Guest Shuttles">Wedding Guest Shuttles</option>
+                            <option value="School Field Trips">School Field Trips</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="phone"><i class="fa fa-phone" style="color: var(--accent-gold); margin-right: 5px;"></i> Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" class="form-field" placeholder="e.g. (214) 771-6238" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="email"><i class="fa fa-envelope" style="color: var(--accent-gold); margin-right: 5px;"></i> Email Address *</label>
+                        <input type="email" id="email" name="email" class="form-field" placeholder="e.g. contact@domain.com" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="pickup_loc"><i class="fa fa-map-pin" style="color: var(--accent-gold); margin-right: 5px;"></i> Pickup Address *</label>
+                        <input type="text" id="pickup_loc" name="pickup_loc" class="form-field" placeholder="Street Address, City, or Airport" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="dropoff_loc"><i class="fa fa-location-arrow" style="color: var(--accent-gold); margin-right: 5px;"></i> Drop-off Address / Destination *</label>
+                        <input type="text" id="dropoff_loc" name="dropoff_loc" class="form-field" placeholder="Street Address, Venue, or City" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="trip_date"><i class="fa fa-calendar-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Date of Travel *</label>
+                        <input type="date" id="trip_date" name="trip_date" class="form-field" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="passengers"><i class="fa fa-users" style="color: var(--accent-gold); margin-right: 5px;"></i> Passenger Count *</label>
+                        <input type="number" id="passengers" name="passengers" class="form-field" min="1" max="200" placeholder="e.g. 50" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="message"><i class="fa fa-comment-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> Itinerary / Special Requirements</label>
+                    <textarea id="message" name="message" class="form-field" rows="5" placeholder="Specify any flight codes, scheduled stops, or logistics guidelines..."></textarea>
+                </div>
+
+                <button type="submit" class="btn-form">Submit Reservation Request <i class="fa fa-paper-plane" style="margin-left: 5px;"></i></button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

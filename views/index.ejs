@@ -1,0 +1,485 @@
+<%- include('partials/header') %>
+
+<!-- HERO SECTION & QUOTE CALCULATOR -->
+<section class="hero-section" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-home.webp?v=4'); background-size: cover; background-position: center;">
+    <div class="hero-grid">
+        <div class="hero-content">
+            <h1>Reliable <span>Group Travel</span> Made Simple</h1>
+            <p>DFW's premium self-service charter bus and shuttle portal. Compare vehicle classes, calculate instant estimates, and reserve passenger logistics in under 60 seconds.</p>
+            <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
+                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-shield-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> DOT Certified</span>
+                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-user-check" style="color: var(--accent-gold); margin-right: 5px;"></i> Insured Chauffeurs</span>
+                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-clock" style="color: var(--accent-gold); margin-right: 5px;"></i> 24/7 Dispatch Desk</span>
+            </div>
+        </div>
+
+        <div class="quote-card">
+            <div class="quote-progress-bar">
+                <span class="progress-step active" id="progStep1">1</span>
+                <span class="progress-step" id="progStep2">2</span>
+                <span class="progress-step" id="progStep3">3</span>
+                <span class="progress-step" id="progStep4">4</span>
+            </div>
+
+            <div class="quote-card-layout">
+                <div class="quote-card-main">
+                    <form id="quoteCalculatorForm">
+                        <!-- STEP 1: TRIP TYPE -->
+                        <div class="quote-form-step active" id="step1">
+                            <h3 style="margin-bottom: 5px;">Let's get you a quote</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">What kind of trip is this?</p>
+                            
+                            <div class="trip-type-grid">
+                                <div class="trip-type-card active" data-type="one-way">
+                                    <i class="fa fa-arrow-right"></i>
+                                    <span>One Way</span>
+                                </div>
+                                <div class="trip-type-card" data-type="round-trip">
+                                    <i class="fa fa-sync-alt"></i>
+                                    <span>Round Trip</span>
+                                </div>
+                                <div class="trip-type-card" data-type="large-event">
+                                    <i class="fa fa-calendar-check"></i>
+                                    <span>Large Event</span>
+                                </div>
+                            </div>
+                            <input type="hidden" id="trip_type" name="trip_type" value="one-way">
+                            
+                            <div class="quote-controls" style="margin-top: 25px;">
+                                <button type="button" class="btn-primary" id="btnNext1" style="width: 100%;">Next Step <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 2: ITINERARY -->
+                        <div class="quote-form-step" id="step2">
+                            <h3 style="margin-bottom: 5px;">Where are you headed?</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Add your trip itinerary below.</p>
+                            
+                            <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Itinerary</h5>
+                            
+                            <!-- Pickup Item -->
+                            <div class="itinerary-item">
+                                <div class="itinerary-item-badge">1</div>
+                                <div class="itinerary-item-content">
+                                    <div class="itinerary-item-title">Pickup</div>
+                                    <div class="form-group">
+                                        <input type="text" id="pickup_address" class="form-input" placeholder="Address, hotel, or airport code" required>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Date</label>
+                                            <input type="date" id="pickup_date" class="form-input" required>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Time</label>
+                                            <input type="time" id="pickup_time" class="form-input" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Stop Item (Round Trip Only) -->
+                            <div class="itinerary-item" id="stopItemBlock" style="display: none;">
+                                <div class="itinerary-item-badge">2</div>
+                                <div class="itinerary-item-content">
+                                    <div class="itinerary-item-title">
+                                        Stop 
+                                        <span class="whats-this-link" id="whatsThisStop">What's this?</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" id="stop_address" class="form-input" placeholder="Address, hotel, or airport code">
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Date</label>
+                                            <input type="date" id="stop_date" class="form-input">
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 0;">
+                                            <label style="font-size: 0.75rem; margin-bottom: 4px;">Time</label>
+                                            <input type="time" id="stop_time" class="form-input">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dropoff Item -->
+                            <div class="itinerary-item">
+                                <div class="itinerary-item-badge" id="dropoffBadge">2</div>
+                                <div class="itinerary-item-content">
+                                    <div class="itinerary-item-title" id="dropoffTitle">Dropoff</div>
+                                    <div class="form-group" style="margin-bottom: 0;">
+                                        <input type="text" id="dropoff_address" class="form-input" placeholder="Address, hotel, or airport code" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Trip Details Block (Large Event Only) -->
+                            <div id="tripDetailsBlock" style="display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                                <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Trip Details</h5>
+                                
+                                <div class="form-group">
+                                    <label style="font-size: 0.75rem; margin-bottom: 4px;">Give your trip a name</label>
+                                    <input type="text" id="trip_name" class="form-input" placeholder="e.g. Sterling to Camp Springs Shuttle">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label style="font-size: 0.75rem; margin-bottom: 4px;">Select an event type</label>
+                                    <select id="event_type" class="form-input">
+                                        <option value="">Choose event type...</option>
+                                        <option value="Corporate Event">Corporate Event</option>
+                                        <option value="Wedding">Wedding</option>
+                                        <option value="Sporting Event">Sporting Event</option>
+                                        <option value="School Event">School Event</option>
+                                        <option value="Private Gathering">Private Gathering</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label style="font-size: 0.75rem; margin-bottom: 8px; display: block;">Special Requirements - Optional</label>
+                                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
+                                            <input type="checkbox" id="req_accessible" style="width: 16px; height: 16px; accent-color: var(--accent-gold);"> Accessible vehicle
+                                        </label>
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
+                                            <input type="checkbox" id="req_ada" style="width: 16px; height: 16px; accent-color: var(--accent-gold);"> ADA standards compliant
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="quote-controls" style="margin-top: 25px;">
+                                <button type="button" class="btn-secondary" id="btnBack2">Go back</button>
+                                <button type="button" class="btn-primary" id="btnNext2">Next Step <i class="fa fa-arrow-right"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 3: CONTACT & DETAILS -->
+                        <div class="quote-form-step" id="step3">
+                            <h3 style="margin-bottom: 5px;">Who is coordinating?</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Enter passenger count and contact information.</p>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="passengers"><i class="fa fa-users"></i> Passenger Count</label>
+                                    <input type="number" id="passengers" name="passengers" class="form-input" min="1" max="100" placeholder="e.g. 30" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="service_type"><i class="fa fa-bus"></i> Service Category</label>
+                                    <select id="service_type" name="service_type" class="form-input" required>
+                                        <option value="">Select Service</option>
+                                        <option value="Charter Bus Rental">Charter Bus Rental</option>
+                                        <option value="Airport Shuttle Service">Airport Shuttle Service</option>
+                                        <option value="Minibus Hires">Minibus Hires</option>
+                                        <option value="Wedding Guest Shuttles">Wedding Guest Shuttles</option>
+                                        <option value="School Field Trips">School Field Trips</option>
+                                        <option value="Corporate Shuttle Service">Corporate Shuttle Service</option>
+                                        <option value="Employee Shuttles">Employee Shuttles</option>
+                                        <option value="Campus Shuttles">Campus Shuttles</option>
+                                        <option value="Large Events & Conventions">Large Events & Conventions</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="name"><i class="fa fa-user"></i> Full Name</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Your Name" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="phone"><i class="fa fa-phone"></i> Phone Number</label>
+                                    <input type="tel" id="phone" name="phone" class="form-input" placeholder="e.g. (214) 771-6238" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email"><i class="fa fa-envelope"></i> Email Address</label>
+                                    <input type="email" id="email" name="email" class="form-input" placeholder="e.g. name@domain.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="quote-controls">
+                                <button type="button" class="btn-secondary" id="btnBack3"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="button" class="btn-primary" id="btnNext3">Calculate Quote <i class="fa fa-calculator"></i></button>
+                            </div>
+                        </div>
+
+                        <!-- STEP 4: ESTIMATED QUOTE DISPLAY & SUBMIT -->
+                        <div class="quote-form-step" id="step4">
+                            <h3 style="margin-bottom: 5px;">Your Instant Estimate</h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Review estimate and reserve vehicle logistics.</p>
+                            
+                            <div class="quote-result-box">
+                                <p id="recommendedVehicle">Recommended Vehicle: Charter Bus</p>
+                                <div class="quote-result-price" id="quoteEstPrice">$0.00</div>
+                                <p style="font-size: 0.8rem; color: var(--text-light); opacity: 0.8;">Estimated rate. Includes driver, fuel, tolls. Excludes parking and gratuity.</p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message"><i class="fa fa-comment-alt"></i> Special Instructions / Itinerary Details</label>
+                                <textarea id="message" name="message" class="form-input" rows="3" placeholder="Flight details, specific routing requests, or special passenger accommodations..."></textarea>
+                            </div>
+                            
+                            <div class="quote-controls">
+                                <button type="button" class="btn-secondary" id="btnBack4"><i class="fa fa-arrow-left"></i> Back</button>
+                                <button type="submit" class="btn-primary" id="btnSubmit">Reserve Booking <i class="fa fa-check-circle"></i></button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Persistent Sidebar (Interactive map and Dynamic Trip Overview details) -->
+                <div class="quote-card-sidebar">
+                    <div id="calculatorMap" style="height: 180px; border-radius: var(--radius-md); border: 1.5px solid rgba(255,255,255,0.15); margin-bottom: 20px; background-color: rgba(0,0,0,0.2); overflow: hidden; position: relative; z-index: 1;"></div>
+                    
+                    <div class="help-box">
+                        <h4><i class="fa fa-map-marker-alt"></i> Trip Overview</h4>
+                        <div id="liveOverviewDetails" style="font-size: 0.82rem; color: var(--text-light); line-height: 1.5; display: flex; flex-direction: column; gap: 8px;">
+                            <div><strong>Trip Type:</strong> <span id="overviewTripType">One Way</span></div>
+                            <div id="overviewPickupBlock"><strong>Pickup:</strong> <span id="overviewPickup">-</span></div>
+                            <div id="overviewStopBlock" style="display: none;"><strong>Stop:</strong> <span id="overviewStop">-</span></div>
+                            <div id="overviewDropoffBlock"><strong>Dropoff:</strong> <span id="overviewDropoff">-</span></div>
+                            <div id="overviewPassengersBlock"><strong>Passengers:</strong> <span id="overviewPassengers">-</span></div>
+                            <div id="overviewRecommendationBlock" style="display: none; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
+                                <strong>Recommendation:</strong>
+                                <div id="overviewRecommendation" style="color: var(--accent-gold-light); font-weight: 700; margin-top: 2px;">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="help-box" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                        <h4><i class="fa fa-info-circle"></i> Need Help?</h4>
+                        <p id="tripTypeHelpText" style="font-size: 0.8rem; line-height: 1.4; opacity: 0.85; margin: 0;">A one way trip is pretty self-explanatory.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- STATS/TRUST BAR -->
+<section class="trust-bar">
+    <div class="stats-grid">
+        <div class="stat-item">
+            <h4>12+</h4>
+            <p>Years in DFW Area</p>
+        </div>
+        <div class="stat-item">
+            <h4>500+</h4>
+            <p>Vetted Charter Vehicles</p>
+        </div>
+        <div class="stat-item">
+            <h4>10M+</h4>
+            <p>Safe Miles Driven</p>
+        </div>
+        <div class="stat-item">
+            <h4>99%</h4>
+            <p>On-Time Dispatch Rate</p>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICES SECTION -->
+<section class="section-padding">
+    <div class="container">
+        <div class="section-header">
+            <h2>Group Transportation Services</h2>
+            <p>Providing seamless logistics and modern coach rentals for every passenger requirement.</p>
+        </div>
+        
+        <div class="services-grid">
+            <% services.forEach(s => { %>
+                <%
+                  const imageMap = {
+                      'airport-charter-bus-rentals': '/images/service-airport.webp',
+                      'camps': '/images/service-school.webp',
+                      'corporate-events': '/images/service-corporate.webp',
+                      'k12-schools': '/images/service-school.webp',
+                      'nonprofits': '/images/service-community.webp',
+                      'religious-groups': '/images/service-community.webp',
+                      'sports-teams': '/images/service-sports.webp',
+                      'travel-agents': '/images/service-corporate.webp',
+                      'university-bus-rentals': '/images/service-school.webp',
+                      'airport-shuttles': '/images/service-airport.webp',
+                      'campus-shuttles': '/images/service-school.webp',
+                      'construction-shuttles': '/images/service-emergency.webp',
+                      'employee-shuttles': '/images/service-corporate.webp',
+                      'hospitals--healthcare': '/images/service-emergency.webp',
+                      'k12-districts': '/images/service-school.webp',
+                      'wedding-shuttles': '/images/service-wedding.webp',
+                      'emergency-response': '/images/service-emergency.webp',
+                      'government--military': '/images/service-corporate.webp',
+                      'large-events': '/images/service-corporate.webp',
+                      'private-events': '/images/service-wedding.webp',
+                      'trade-shows--conferences': '/images/service-corporate.webp',
+                      'workforce-contingency': '/images/service-emergency.webp'
+                  };
+                  
+                  const sSlug = (s.slug || '').toLowerCase().trim();
+                  let serviceBg = '/images/hero-bg.webp'; // Fallback
+                  if (imageMap[sSlug]) {
+                      serviceBg = imageMap[sSlug];
+                  }
+                %>
+                <div class="service-card" style="display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-md); background-color: var(--primary-light); border: 1px solid rgba(255,255,255,0.05); height: 100%; padding: 0;">
+                    <div style="height: 160px; overflow: hidden; position: relative;">
+                        <img src="<%= serviceBg %>?v=4" style="width: 100%; height: 100%; object-fit: cover;" alt="<%= s.name %>">
+                        <div style="position: absolute; top: 15px; left: 15px; background-color: var(--accent-gold); color: var(--primary-dark); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                            <% if(s.slug.includes('charter')) { %>
+                                <i class="fa fa-bus-alt"></i>
+                            <% } else if(s.slug.includes('corporate') || s.slug.includes('employee') || s.slug.includes('workforce')) { %>
+                                <i class="fa fa-briefcase"></i>
+                            <% } else if(s.slug.includes('minibus')) { %>
+                                <i class="fa fa-shuttle-van"></i>
+                            <% } else if(s.slug.includes('wedding')) { %>
+                                <i class="fa fa-heart"></i>
+                            <% } else { %>
+                                <i class="fa fa-graduation-cap"></i>
+                            <% } %>
+                        </div>
+                    </div>
+                    <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+                        <div>
+                            <h3 style="font-size: 1.2rem; margin-bottom: 10px; color: #ffffff; text-align: left; font-family: var(--font-display);"><%= s.name %></h3>
+                            <p style="font-size: 0.9rem; color: var(--text-light); opacity: 0.85; line-height: 1.5; margin-bottom: 15px; text-align: left;"><%= s.description %></p>
+                        </div>
+                        <a href="/services/<%= s.slug %>" class="action-link" style="font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">Learn More <i class="fa fa-chevron-right" style="font-size: 0.75rem;"></i></a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<!-- FLEET SECTION -->
+<section class="section-padding" style="background-color: var(--bg-main);">
+    <div class="container">
+        <div class="section-header">
+            <h2>Our Charter Fleet</h2>
+            <p>View seating capacities and rates for our clean, DOT-compliant fleet of motorcoaches and minibuses.</p>
+        </div>
+        
+        <div class="fleet-grid">
+            <% fleet.slice(0, 3).forEach(f => { %>
+                <div class="fleet-card">
+                    <div class="fleet-img-box">
+                        <img src="<%= f.image %>?v=4" class="fleet-img" alt="<%= f.name %>">
+                        <span class="fleet-price-badge">Rates from <%= f.starting_rate %></span>
+                    </div>
+                    <div class="fleet-info">
+                        <h3><%= f.name %></h3>
+                        <div class="fleet-meta">
+                            <span><i class="fa fa-users"></i> <%= f.capacity %></span>
+                            <span><i class="fa fa-briefcase"></i> <%= f.bags %></span>
+                        </div>
+                        <p><%= f.description %></p>
+                        <a href="/fleet/<%= f.slug %>" class="btn-primary" style="display: block; text-align: center; font-size: 0.9rem;">View Vehicle Specs</a>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="/fleet" class="btn-secondary" style="border-color: var(--primary-light); color: var(--primary-dark);">Browse Entire Fleet (<%= fleet.length %> Vehicles)</a>
+        </div>
+    </div>
+</section>
+
+<!-- SOCIAL PROOF TESTIMONIALS -->
+<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.92) 0%, rgba(31, 41, 55, 0.92) 100%), url('/images/cta-bg.webp?v=4'); background-size: cover; background-position: center; color: #ffffff;">
+    <div class="container">
+        <div class="section-header" style="margin-bottom: 50px;">
+            <h2 style="color: #ffffff;">Highly Rated Group Transport</h2>
+            <p style="color: var(--text-light); opacity: 0.8;">Trusted by Fortune 500 companies, wedding planners, and local DFW organizations.</p>
+        </div>
+        
+        <div class="services-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+            <div class="quote-card" style="background-color: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);">
+                <div style="color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem;">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
+                <p style="font-style: italic; font-size: 0.95rem; margin-bottom: 20px;">"We rented a 56-passenger coach for our corporate retreat. The driver was 15 minutes early, extremely professional, and the bus was clean and quiet. Outperformed every other company we used in the past."</p>
+                <h4 style="color: #ffffff; font-size: 1rem;">Sarah M.</h4>
+                <p style="font-size: 0.8rem; color: var(--accent-gold-light);">Corporate Event Coordinator</p>
+            </div>
+            
+            <div class="quote-card" style="background-color: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);">
+                <div style="color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem;">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
+                <p style="font-style: italic; font-size: 0.95rem; margin-bottom: 20px;">"Managing 150 wedding guests was stressing me out, but their customer desk scheduled 3 shuttle buses that handled hotel routes seamlessly. Will use United Bus Pro again!"</p>
+                <h4 style="color: #ffffff; font-size: 1rem;">Jason K.</h4>
+                <p style="font-size: 0.8rem; color: var(--accent-gold-light);">Groom</p>
+            </div>
+            
+            <div class="quote-card" style="background-color: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1);">
+                <div style="color: var(--accent-gold); margin-bottom: 15px; font-size: 1.2rem;">
+                    <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
+                </div>
+                <p style="font-style: italic; font-size: 0.95rem; margin-bottom: 20px;">"Our school district uses their school bus rentals regularly. Background-checked drivers and GPS vehicle tracking make them our preferred district transport choice."</p>
+                <h4 style="color: #ffffff; font-size: 1rem;">Principal Henderson</h4>
+                <p style="font-size: 0.8rem; color: var(--accent-gold-light);">DFW Academy</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- NATIONWIDE SERVICES AREA -->
+<section class="section-padding" style="background-color: var(--bg-main); border-top: 1px solid rgba(0,0,0,0.05); padding-bottom: 0;">
+    <div class="container">
+        <div class="section-header">
+            <h2>Nationwide Service Coverage</h2>
+            <p>Providing premium group charter bus rentals and continuous shuttle networks across major cities and states.</p>
+        </div>
+
+        <div class="footer-grid" style="grid-template-columns: 1fr 2fr; gap: 40px; margin-top: 40px; display: grid;">
+            <!-- States Column -->
+            <div class="admin-card" style="padding: 25px; border-radius: var(--radius-md); margin-bottom: 0;">
+                <h3 style="font-size: 1.25rem; margin-bottom: 20px; border-bottom: 2px solid var(--bg-main); padding-bottom: 10px;"><i class="fa fa-map-marked-alt" style="color: var(--accent-gold); margin-right: 8px;"></i> States We Serve</h3>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 12px;">
+                    <% states.forEach(s => { %>
+                        <a href="/locations/states/<%= s.slug %>" class="action-link" style="font-size: 0.95rem; font-weight: 600;"><i class="fa fa-chevron-right" style="font-size: 0.75rem; margin-right: 5px; color: var(--accent-gold);"></i> <%= s.name %></a>
+                    <% }) %>
+                </div>
+            </div>
+
+            <!-- Cities Column -->
+            <div class="admin-card" style="padding: 25px; border-radius: var(--radius-md); margin-bottom: 0;">
+                <h3 style="font-size: 1.25rem; margin-bottom: 20px; border-bottom: 2px solid var(--bg-main); padding-bottom: 10px;"><i class="fa fa-city" style="color: var(--accent-gold); margin-right: 8px;"></i> Popular Cities We Serve</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; max-height: 350px; overflow-y: auto; padding-right: 10px;">
+                    <% cities.forEach(c => { %>
+                        <a href="/locations/<%= c.slug %>" class="action-link" style="font-size: 0.95rem; font-weight: 500; display: inline-flex; align-items: center; gap: 5px;"><i class="fa fa-map-pin" style="font-size: 0.75rem; color: var(--accent-gold);"></i> <%= c.cityName %></a>
+                    <% }) %>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ SECTION -->
+<section class="section-padding">
+    <div class="container" style="max-width: 800px;">
+        <div class="section-header">
+            <h2>Frequently Asked Questions</h2>
+            <p>Everything you need to know about booking with United Bus Pro.</p>
+        </div>
+        
+        <div style="margin-top: 30px;">
+            <div class="admin-card" style="padding: 20px; border-radius: var(--radius-md); margin-bottom: 15px;">
+                <h4 style="margin-bottom: 10px; font-size: 1.15rem;"><i class="fa fa-question-circle" style="color: var(--accent-gold); margin-right: 5px;"></i> What is included in my charter quote?</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">All quotes include the base rental fee, a background-checked commercial chauffeur, local fuel, and toll road coordinates. Parking fees and driver tipping are excluded.</p>
+            </div>
+            
+            <div class="admin-card" style="padding: 20px; border-radius: var(--radius-md); margin-bottom: 15px;">
+                <h4 style="margin-bottom: 10px; font-size: 1.15rem;"><i class="fa fa-question-circle" style="color: var(--accent-gold); margin-right: 5px;"></i> How early should we book a charter bus?</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">We recommend booking 3 to 6 months in advance, especially during peak travel seasons (April to June) and major regional sports events.</p>
+            </div>
+            
+            <div class="admin-card" style="padding: 20px; border-radius: var(--radius-md); margin-bottom: 15px;">
+                <h4 style="margin-bottom: 10px; font-size: 1.15rem;"><i class="fa fa-question-circle" style="color: var(--accent-gold); margin-right: 5px;"></i> Can we adjust our itinerary after booking?</h4>
+                <p style="color: var(--text-muted); font-size: 0.95rem;">Yes! You can update routes, scheduled stops, or passenger counts up to 48 hours before dispatch by calling our 24/7 reservation desk.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<%- include('partials/footer') %>

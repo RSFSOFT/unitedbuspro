@@ -1,0 +1,76 @@
+    <!-- FOOTER SECTION -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col">
+                <span class="logo-text" style="font-size: 1.8rem;">United<span>BusPro</span></span>
+                <p style="margin-top: 15px;">Setting the standard in charter coach rentals, corporate group shuttles, and event logistics across Texas and nationwide.</p>
+                <p style="font-size: 0.8rem; opacity: 0.6;">© 2026 United Bus Pro. All Rights Reserved. Fully Licensed, Bonded, and Insured.</p>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Services</h4>
+                <ul class="footer-links">
+                    <li><a href="/services/charter-bus-rental">Charter Bus Rentals</a></li>
+                    <li><a href="/services/corporate-shuttle-service">Corporate Shuttles</a></li>
+                    <li><a href="/services/minibus-hires">Minibus Hire</a></li>
+                    <li><a href="/services/wedding-guest-shuttles">Wedding Guest Shuttles</a></li>
+                    <li><a href="/services/school-field-trips">School Field Trips</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Company Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/about">About Our Company</a></li>
+                    <li><a href="/fleet">Our Fleet Showcase</a></li>
+                    <li><a href="/blog">Travel Blog Guides</a></li>
+                    <li><a href="/privacy-policy">Privacy Policies</a></li>
+                    <li><a href="/terms-conditions">Terms & Conditions</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Locations We Serve</h4>
+                <ul class="footer-links">
+                    <% if (typeof cities !== 'undefined' && cities) { %>
+                        <% cities.slice(0, 5).forEach(c => { %>
+                            <li><a href="/locations/<%= c.slug %>"><%= c.cityName %> Charter Bus</a></li>
+                        <% }) %>
+                    <% } %>
+                </ul>
+            </div>
+            
+            <div class="footer-col">
+                <h4>Contact Us</h4>
+                <p><i class="fa fa-phone" style="color: var(--accent-gold); margin-right: 8px;"></i> <%= settings.phone || '+1 (800) 495-8017' %></p>
+                <p><i class="fa fa-envelope" style="color: var(--accent-gold); margin-right: 8px;"></i> <%= settings.email || 'reservations@unitedbuspro.com' %></p>
+                <p><i class="fa fa-map-marker-alt" style="color: var(--accent-gold); margin-right: 8px;"></i> <%= settings.address || 'Dallas, Texas' %></p>
+                <p style="font-size: 0.8rem; color: var(--accent-gold-light);"><i class="fa fa-clock" style="margin-right: 5px;"></i> Dispatch available 24/7/365</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>United Bus Pro is a registered commercial carrier. All operations are conducted in strict compliance with USDOT regulations.</p>
+            <div style="display: flex; gap: 15px; font-size: 1.5rem; color: rgba(255,255,255,0.4);">
+                <i class="fab fa-cc-visa"></i>
+                <i class="fab fa-cc-mastercard"></i>
+                <i class="fab fa-cc-amex"></i>
+                <i class="fab fa-cc-discover"></i>
+            </div>
+        </div>
+    </footer>
+
+    <!-- STICKY MOBILE CTA BAR -->
+    <div class="mobile-sticky-bar">
+        <a href="tel:<%= (settings.phone || '+18004958017').replace(/[^0-9+]/g, '') %>" class="sticky-btn-left">
+            <i class="fa fa-phone" style="margin-right: 8px;"></i> Call to Book
+        </a>
+        <a href="/reservation" class="sticky-btn-right">
+            <i class="fa fa-envelope" style="margin-right: 8px;"></i> Get a Quote
+        </a>
+    </div>
+
+    <!-- Client-side JavaScript -->
+    <script src="/js/main.js?v=3"></script>
+</body>
+</html>
