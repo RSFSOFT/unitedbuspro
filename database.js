@@ -165,7 +165,7 @@ function seedData(db) {
                 capacity: '14 Passengers',
                 bags: '14 Bags',
                 amenities: JSON.stringify(['Leather Seating', 'Wi-Fi', 'USB Outlets', 'Premium Sound']),
-                image: '/images/fleet-sprinter.webp',
+                image: '/images/fleet_sprinter.png',
                 description: 'Luxury passenger van perfect for airport transfers, business teams, and boutique tours.',
                 starting_rate: '$85/hr'
             },
@@ -176,7 +176,7 @@ function seedData(db) {
                 capacity: '24 Passengers',
                 bags: '20 Bags',
                 amenities: JSON.stringify(['Climate Control', 'High-Back Seats', 'Bluetooth Audio', 'PA System', 'Rear Storage']),
-                image: '/images/fleet-standard-minibus.webp',
+                image: '/images/fleet_minibus_24.png',
                 description: 'Premium Grech minibus offering comfort and reliability for corporate events, shuttle routes, and DC private tours.',
                 starting_rate: '$100/hr'
             },
@@ -187,7 +187,7 @@ function seedData(db) {
                 capacity: '28 Passengers',
                 bags: '25 Bags',
                 amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'PA System', 'Rear Storage']),
-                image: '/images/fleet-minibus.webp',
+                image: '/images/fleet_minibus_28.png',
                 description: 'Mid-sized executive minibus equipped with comfortable seating and connectivity features for group transport.',
                 starting_rate: '$110/hr'
             },
