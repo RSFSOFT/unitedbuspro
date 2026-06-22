@@ -179,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const mapContainer = document.getElementById('calculatorMap');
         if (mapContainer && typeof L !== 'undefined') {
-            let initialCenter = [32.7767, -96.7970]; // Default Dallas
+            let initialCenter = [38.8512, -77.0402]; // Default DCA Airport
             let initialZoom = 11;
 
             const initialPickup = document.getElementById('pickup_address')?.value || '';

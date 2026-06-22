@@ -111,10 +111,10 @@ Sitemap: ${host}/sitemap.xml
 app.get('/llm.txt', (req, res) => {
     res.type('text/plain');
     res.send(`Title: United Bus Pro
-Description: Premium charter bus rentals, corporate shuttles, minibus hires, and group ground transportation services across Dallas-Fort Worth, Texas, and nationwide.
+Description: Premium charter bus rentals, corporate shuttles, minibus hires, and group ground transportation services across Washington, DC, and nationwide.
 Owner: United Bus Pro Operations Team
 Established: 2014
-Contact Phone: +1 (800) 495-8017
+Contact Phone: (202) 991-1203
 Services: Charter Bus Rental, Corporate Shuttle Service, Minibus Hires, Wedding Guest Shuttles, School Field Trips, Event Transportation.
 `);
 });
@@ -215,13 +215,13 @@ app.get('/', (req, res) => {
                 "@id": "https://unitedbuspro.com/#organization",
                 "name": "United Bus Pro",
                 "url": "https://unitedbuspro.com/",
-                "telephone": res.locals.settings.phone || "+1 (800) 495-8017",
+                "telephone": res.locals.settings.phone || "(202) 991-1203",
                 "email": res.locals.settings.email || "reservations@unitedbuspro.com",
                 "priceRange": "$$$",
                 "address": {
                     "@type": "PostalAddress",
-                    "addressLocality": "Dallas",
-                    "addressRegion": "TX",
+                    "addressLocality": "Washington",
+                    "addressRegion": "DC",
                     "addressCountry": "US"
                 },
                 "aggregateRating": {
@@ -235,7 +235,7 @@ app.get('/', (req, res) => {
                 "@id": "https://unitedbuspro.com/#website",
                 "url": "https://unitedbuspro.com/",
                 "name": "United Bus Pro",
-                "description": "Premium Charter Bus & Shuttle Service in Dallas-Fort Worth, Texas.",
+                "description": "Premium Charter Bus & Shuttle Service in Washington, DC.",
                 "publisher": {
                     "@id": "https://unitedbuspro.com/#organization"
                 }
@@ -297,7 +297,7 @@ app.get('/fleet/:slug', (req, res) => {
 // Reservation Page
 app.get('/reservation', (req, res) => {
     res.render('reservation', {
-        title: 'Book Group Transportation Dallas | Online Reservation Desk',
+        title: 'Book Group Transportation Washington, DC | Online Reservation Desk',
         meta_description: 'Request a charter bus, corporate shuttle, or private event bus rental online. Our coordinators provide custom quotes in under 2 hours.',
         schema_json: {
             "@context": "https://schema.org",
@@ -343,7 +343,7 @@ app.get('/contact', (req, res) => {
             description: page.body_content,
             price: 'Instant Quotations',
             parsedDetails: [
-                'Call +1 (800) 495-8017 for urgent dispatch and reservation adjustments',
+                'Call (202) 991-1203 for urgent dispatch and reservation adjustments',
                 'Online booking requests processed with instant SQLite database backup',
                 'Highly scalable options for major sports events, conventions, and festivals',
                 'Flat-rate group quotes with absolutely zero hidden surcharges'
@@ -366,7 +366,7 @@ app.get('/careers', (req, res) => {
             price: 'Competitive Compensation',
             parsedDetails: [
                 'Full-time commercial drivers (Class A/B CDL required)',
-                'Logistics and dispatch specialists (Dallas operations)',
+                'Logistics and dispatch specialists (Washington operations)',
                 'Premium healthcare benefits and 401(k) retirement options',
                 'Modern, safety-vetted charter buses and minibuses',
                 'Continual training schedules and advancement pathways'
@@ -620,7 +620,7 @@ app.post('/api/book', (req, res) => {
                 <li><strong>Date of Service:</strong> ${trip_date}</li>
                 <li><strong>Passengers:</strong> ${passengers}</li>
             </ul>
-            <p>If you have any questions or require immediate support, please contact our dispatch team at +1 (800) 495-8017.</p>
+            <p>If you have any questions or require immediate support, please contact our dispatch team at (202) 991-1203.</p>
         `;
 
         try {

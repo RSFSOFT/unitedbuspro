@@ -12,7 +12,7 @@ if (process.env.NETLIFY || process.env.LAMBDA_TASK_ROOT) {
             if (fs.existsSync(DB_PATH)) {
                 fs.copyFileSync(DB_PATH, tempDbPath);
             } else {
-                const initialDb = { users: [], pages: [], services: [], fleet: [], blogs: [], inquiries: [], cities: [], states: [], settings: { phone: "+1 (800) 495-8017", email: "reservations@unitedbuspro.com", address: "Dallas, Texas", smtp_host: "", smtp_port: "", smtp_user: "", smtp_pass: "", smtp_from: "", smtp_to: "reservations@unitedbuspro.com" } };
+                 const initialDb = { users: [], pages: [], services: [], fleet: [], blogs: [], inquiries: [], cities: [], states: [], settings: { phone: "(202) 991-1203", email: "reservations@unitedbuspro.com", address: "Washington, DC", smtp_host: "", smtp_port: "", smtp_user: "", smtp_pass: "", smtp_from: "", smtp_to: "reservations@unitedbuspro.com" } };
                 fs.writeFileSync(tempDbPath, JSON.stringify(initialDb, null, 2));
             }
         } catch (copyErr) {
@@ -38,9 +38,9 @@ const initialDb = {
     cities: [],
     states: [],
     settings: {
-        phone: "+1 (800) 495-8017",
+        phone: "(202) 991-1203",
         email: "reservations@unitedbuspro.com",
-        address: "Dallas, Texas",
+        address: "Washington, DC",
         smtp_host: "",
         smtp_port: "",
         smtp_user: "",
@@ -68,17 +68,17 @@ function seedData(db) {
         db.pages = [
             {
                 slug: 'home',
-                title: 'United Bus Pro | Premium Charter Bus & Shuttle Service Dallas-Fort Worth',
-                meta_description: 'Book premium charter bus rentals, corporate shuttles, minibus hires, and group transportation across Dallas-Fort Worth, Texas. Instant online quotes.',
+                title: 'United Bus Pro | Premium Charter Bus & Shuttle Service Washington, DC',
+                meta_description: 'Book premium charter bus rentals, corporate shuttles, minibus hires, and group transportation across Washington, DC, and nationwide. Instant online quotes.',
                 header_h1: 'Reliable Group Transportation & Charter Bus Services',
-                body_content: 'Welcome to United Bus Pro, the leading provider of premium charter bus rentals, executive shuttle logistics, and minibus charter services in the Dallas-Fort Worth metroplex and nationwide. For over 12 years, we have delivered secure, reliable, and comfortable group transport for corporate events, conventions, wedding parties, sports leagues, and school trips. With a modern fleet ranging from 14-passenger luxury Sprinter vans to 56-passenger full-sized coach buses, we ensure your group arrives together and on schedule. Our vetted, professional drivers and 24/7 dispatch operations guarantee a seamless experience. Try our instant online quote builder today to see transparent group travel rates.'
+                body_content: 'Welcome to United Bus Pro, the leading provider of premium charter bus rentals, executive shuttle logistics, and minibus charter services in the Washington, DC metro area and nationwide. For over 12 years, we have delivered secure, reliable, and comfortable group transport for corporate events, conventions, wedding parties, sports leagues, and school trips. With a modern fleet ranging from 14-passenger luxury Sprinter vans to 50-passenger full-sized coach buses, we ensure your group arrives together and on schedule. Our vetted, professional drivers and 24/7 dispatch operations guarantee a seamless experience. Try our instant online quote builder today to see transparent group travel rates.'
             },
             {
                 slug: 'about',
                 title: 'About Us | United Bus Pro | Premium Group Transportation',
-                meta_description: 'Learn about United Bus Pro. Over 12 years of delivering safe, reliable, and luxury group transport services across Texas.',
+                meta_description: 'Learn about United Bus Pro. Over 12 years of delivering safe, reliable, and luxury group transport services across Washington, DC and nationwide.',
                 header_h1: 'Setting the Standard in Group Travel',
-                body_content: 'United Bus Pro was founded with a clear mission: to provide the highest standard of safety, comfort, and reliability in group ground transportation. Based in Dallas, Texas, we have grown into a premier fleet provider servicing corporate clients, event planners, schools, and private groups nationwide. Our commitment to safety is absolute. Every coach and minibus in our network undergoes rigorous preventative maintenance, and our background-checked, commercially licensed chauffeurs are trained in defensive driving and customer service. Whether you require a short shuttle for a corporate meeting, wedding guest logistics, or a multi-day cross-country tour, United Bus Pro delivers outstanding logistics management.'
+                body_content: 'United Bus Pro was founded with a clear mission: to provide the highest standard of safety, comfort, and reliability in group ground transportation. Based in Washington, DC, we have grown into a premier fleet provider servicing corporate clients, event planners, schools, and private groups nationwide. Our commitment to safety is absolute. Every coach and minibus in our network undergoes rigorous preventative maintenance, and our background-checked, commercially licensed chauffeurs are trained in defensive driving and customer service. Whether you require a short shuttle for a corporate meeting, wedding guest logistics, or a multi-day cross-country tour, United Bus Pro delivers outstanding logistics management.'
             },
             {
                 slug: 'contact',
@@ -98,7 +98,7 @@ function seedData(db) {
     }
 
     // 3. Seed Services (Auto-upgraded to 22 services)
-    if (db.services.length < 10) {
+    if (db.services.length === 0) {
         const rawServices = [
             // Category: Bus Charters
             { name: 'Airport Charter Bus Rentals', category: 'Bus Charters', desc: 'Seamless group transfers to and from major airports with ample luggage space and flight tracking.' },
@@ -126,7 +126,12 @@ function seedData(db) {
             { name: 'Large Events', category: 'Large Events', desc: 'Comprehensive traffic management and multi-bus fleet networks for music festivals, conventions, and rallies.' },
             { name: 'Private Events', category: 'Large Events', desc: 'Charter packages for family reunions, birthdays, concert events, and custom itineraries.' },
             { name: 'Trade Shows & Conferences', category: 'Large Events', desc: 'High-volume shuttle programs to manage convention center and hotel routing cycles.' },
-            { name: 'Workforce Contingency', category: 'Large Events', desc: 'Standby transit and workforce commuter solutions to ensure operational stability during public transit outages.' }
+            { name: 'Workforce Contingency', category: 'Large Events', desc: 'Standby transit and workforce commuter solutions to ensure operational stability during public transit outages.' },
+
+            // Category: DC Private Tours
+            { name: 'DC Monuments Private Tour', category: 'DC Private Tours', desc: 'Bespoke guided coach and minibus tours of DC\'s iconic monuments, including the Lincoln Memorial, Washington Monument, and US Capitol.' },
+            { name: 'Mount Vernon Historical Tour', category: 'DC Private Tours', desc: 'Premium private transportation to George Washington\'s Mount Vernon estate with customized schedules.' },
+            { name: 'Smithsonian Museum Tour', category: 'DC Private Tours', desc: 'Shuttle logistics and private group charters for visiting the Smithsonian museums along the National Mall.' }
         ];
 
         db.services = rawServices.map((s, i) => {
@@ -136,9 +141,9 @@ function seedData(db) {
                 name: s.name,
                 slug: slug,
                 category: s.category,
-                capacity: s.category === 'Continuous Shuttles' ? '14-35 Passengers' : 'Up to 56 Passengers',
+                capacity: s.category === 'Continuous Shuttles' ? '14-35 Passengers' : (s.category === 'DC Private Tours' ? '14-50 Passengers' : 'Up to 56 Passengers'),
                 description: s.desc,
-                price: s.category === 'Continuous Shuttles' ? 'From $110/hr' : 'From $135/hr',
+                price: s.category === 'Continuous Shuttles' ? 'From $110/hr' : (s.category === 'DC Private Tours' ? 'From $120/hr' : 'From $135/hr'),
                 details: JSON.stringify([
                     'Rigorous pre-trip vehicle diagnostics and mechanical checkouts',
                     'Background-checked, commercially licensed chauffeurs',
@@ -155,58 +160,124 @@ function seedData(db) {
         db.fleet = [
             {
                 id: 1,
-                name: 'Full-Sized Charter Bus',
-                slug: 'full-sized-charter-bus',
-                capacity: '56 Passengers',
-                bags: '56 Bags',
-                amenities: JSON.stringify(['Restroom', 'Wi-Fi', 'Power Outlets', 'PA System', 'Luggage Bay', 'Reclining Seats']),
-                image: '/images/fleet-coach.webp',
-                description: 'The ultimate coach bus for long-distance group excursions, athletic team transport, and massive conventions.',
-                starting_rate: '$150/hr'
+                name: '14 Passenger Bus',
+                slug: '14-passenger-bus',
+                capacity: '14 Passengers',
+                bags: '14 Bags',
+                amenities: JSON.stringify(['Leather Seating', 'Wi-Fi', 'USB Outlets', 'Premium Sound']),
+                image: '/images/fleet-sprinter.webp',
+                description: 'Luxury passenger van perfect for airport transfers, business teams, and boutique tours.',
+                starting_rate: '$85/hr'
             },
             {
                 id: 2,
-                name: 'Executive Minibus',
-                slug: 'executive-minibus',
-                capacity: '35 Passengers',
-                bags: '35 Bags',
-                amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'TV Screens', 'Overhead Storage']),
-                image: '/images/fleet-minibus.webp',
-                description: 'Spacious and stylish minibus offering a premium passenger environment for corporate events and wedding shuttles.',
-                starting_rate: '$125/hr'
-            },
-            {
-                id: 3,
-                name: 'Standard Minibus',
-                slug: 'standard-minibus',
-                capacity: '28 Passengers',
+                name: '24 Passenger Bus',
+                slug: '24-passenger-bus',
+                capacity: '24 Passengers',
                 bags: '20 Bags',
                 amenities: JSON.stringify(['Climate Control', 'High-Back Seats', 'Bluetooth Audio', 'PA System', 'Rear Storage']),
                 image: '/images/fleet-standard-minibus.webp',
-                description: 'Maneuverable group transit ideal for local shuttling, school clubs, and mid-sized private gatherings.',
+                description: 'Premium Grech minibus offering comfort and reliability for corporate events, shuttle routes, and DC private tours.',
+                starting_rate: '$100/hr'
+            },
+            {
+                id: 3,
+                name: '28 Passenger Bus',
+                slug: '28-passenger-bus',
+                capacity: '28 Passengers',
+                bags: '25 Bags',
+                amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'PA System', 'Rear Storage']),
+                image: '/images/fleet-minibus.webp',
+                description: 'Mid-sized executive minibus equipped with comfortable seating and connectivity features for group transport.',
                 starting_rate: '$110/hr'
             },
             {
                 id: 4,
-                name: 'Luxury Sprinter Van',
-                slug: 'luxury-sprinter-van',
-                capacity: '14 Passengers',
-                bags: '14 Bags',
-                amenities: JSON.stringify(['Leather Seating', 'Wi-Fi', 'Standing Room', 'USB Outlets', 'Premium Sound']),
-                image: '/images/fleet-sprinter.webp',
-                description: 'Standing height luxury passenger van perfect for airport transfers, business teams, and boutique tours.',
-                starting_rate: '$85/hr'
+                name: '32 Passenger Bus',
+                slug: '32-passenger-bus',
+                capacity: '32 Passengers',
+                bags: '30 Bags',
+                amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'PA System', 'TV Screens', 'Rear Storage']),
+                image: '/images/fleet_minibus_32.png',
+                description: 'Spacious executive minibus providing an elevated passenger experience for corporate events and private excursions.',
+                starting_rate: '$120/hr'
             },
             {
                 id: 5,
-                name: 'Standard School Bus',
-                slug: 'standard-school-bus',
-                capacity: '47 Passengers',
-                bags: 'None',
-                amenities: JSON.stringify(['Safety Belts', 'Climate Control', 'Emergency Exits', 'School Board Certified']),
-                image: '/images/fleet-school-bus.webp',
-                description: 'Secure, classic school bus rental. The most cost-efficient option for local field trips and community logistics.',
-                starting_rate: '$90/hr'
+                name: '40 Passenger Bus',
+                slug: '40-passenger-bus',
+                capacity: '40 Passengers',
+                bags: '40 Bags',
+                amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'PA System', 'TV Screens', 'Luggage Compartment']),
+                image: '/images/fleet_minibus_40.png',
+                description: 'High-capacity luxury minibus ideal for larger group logistics, corporate shuttles, and private tours.',
+                starting_rate: '$130/hr'
+            },
+            {
+                id: 6,
+                name: 'ADA 24 Passenger Bus (Wheelchair Accessible)',
+                slug: 'ada-24-passenger-bus',
+                capacity: '24 Passengers',
+                bags: '15 Bags',
+                amenities: JSON.stringify(['Wheelchair Lift', 'ADA Compliant Securement', 'Climate Control', 'High-Back Seats', 'PA System']),
+                image: '/images/fleet_minibus_ada.png',
+                description: 'Fully ADA-compliant wheelchair-accessible minibus ensuring comfortable and safe transit for all passengers.',
+                starting_rate: '$115/hr'
+            },
+            {
+                id: 7,
+                name: '50 Passenger Coach Bus',
+                slug: '50-passenger-coach-bus',
+                capacity: '50 Passengers',
+                bags: '50 Bags',
+                amenities: JSON.stringify(['Restroom', 'Wi-Fi', 'Power Outlets', 'PA System', 'Luggage Bay', 'Reclining Seats']),
+                image: '/images/fleet_coach_50.png',
+                description: 'Premium full-sized motorcoach for long-distance group tours, conventions, and large-scale shuttle loops.',
+                starting_rate: '$150/hr'
+            },
+            {
+                id: 8,
+                name: 'Chevrolet Suburban SUV – 6 Passengers',
+                slug: 'chevrolet-suburban-suv',
+                capacity: '6 Passengers',
+                bags: '6 Bags',
+                amenities: JSON.stringify(['Leather Seating', 'Climate Control', 'Rear Seat Entertainment', 'Tinted Windows', 'Premium Sound']),
+                image: '/images/fleet_suburban.png',
+                description: 'Executive black SUV providing premium private rides, airport transfers, and VIP transport.',
+                starting_rate: '$75/hr'
+            },
+            {
+                id: 9,
+                name: 'Town Car – 4 Passengers',
+                slug: 'town-car',
+                capacity: '4 Passengers',
+                bags: '3 Bags',
+                amenities: JSON.stringify(['Leather Seating', 'Climate Control', 'USB Outlets', 'Smooth Ride Suspension']),
+                image: '/images/fleet_towncar.png',
+                description: 'Classic executive town car perfect for business travelers, private events, and airport transport.',
+                starting_rate: '$60/hr'
+            },
+            {
+                id: 10,
+                name: 'Limousine – 8 to 10 Passengers',
+                slug: 'limousine',
+                capacity: '8 to 10 Passengers',
+                bags: '4 Bags',
+                amenities: JSON.stringify(['Bar Console', 'Fiber Optic Lighting', 'Premium Sound', 'Leather Wrap-Around Seating', 'Privacy Partition']),
+                image: '/images/fleet_limo.png',
+                description: 'Elegant stretch limousine for weddings, VIP events, executive transport, and celebratory excursions.',
+                starting_rate: '$130/hr'
+            },
+            {
+                id: 11,
+                name: 'Hummer Limousine – 14 Passengers',
+                slug: 'hummer-limousine',
+                capacity: '14 Passengers',
+                bags: '6 Bags',
+                amenities: JSON.stringify(['Premium Sound', 'Strobe & Laser Lighting', 'Multi-Color Bar', 'Wrap-Around Leather Seating', 'Privacy Glass']),
+                image: '/images/fleet_hummer.png',
+                description: 'Stunning stretch Hummer limousine offering a high-impact, luxury party atmosphere for larger groups.',
+                starting_rate: '$160/hr'
             }
         ];
     }
@@ -216,10 +287,10 @@ function seedData(db) {
         db.blogs = [
             {
                 id: 1,
-                title: 'The Ultimate Guide to Renting a Charter Bus in Dallas-Fort Worth',
-                slug: 'ultimate-guide-charter-bus-rental-dfw',
-                content: 'Renting a charter bus for a large group can seem challenging, but understanding the logistics makes it simple. In this guide, we break down everything you need to know about booking a coach bus in the DFW area: how to choose the right size (from 14-pax Sprinters to 56-pax motorcoaches), estimating rental costs, navigating stadium logistics at AT&T Stadium or the Toyota Center, and planning passenger pick-ups. Choosing the right vehicle with correct amenities like restrooms and power outlets ensures a comfortable, stress-free road trip.',
-                tags: 'Travel Tips, Dallas, Group Logistics',
+                title: 'The Ultimate Guide to Renting a Charter Bus in Washington, DC',
+                slug: 'ultimate-guide-charter-bus-rental-dc',
+                content: 'Renting a charter bus for a large group can seem challenging, but understanding the logistics makes it simple. In this guide, we break down everything you need to know about booking a coach bus in the Washington, DC area: how to choose the right size (from 14-passenger Sprinters to 50-passenger coaches), estimating rental costs, navigating local logistics at the National Mall or FedexField, and planning passenger pick-ups. Choosing the right vehicle with correct amenities like restrooms and power outlets ensures a comfortable, stress-free road trip.',
+                tags: 'Travel Tips, Washington DC, Group Logistics',
                 publish_date: 'June 10, 2026',
                 author: 'United Bus Pro Team',
                 image: '/images/blog-guide.webp',
@@ -229,7 +300,7 @@ function seedData(db) {
                 id: 2,
                 title: 'Corporate Shuttle Programs: Improving Employee Commutes in 2026',
                 slug: 'corporate-shuttle-commute-programs-2026',
-                content: 'As corporate offices in Dallas, Plano, and Frisco adapt to modern work styles, employee transportation programs have become a powerful recruitment and retention tool. Custom shuttle routes between transit stations and office parks reduce commuter stress, bypass highway traffic, and give employees a productive environment with on-board Wi-Fi and USB power. Here, we outline the steps to design, launch, and manage a reliable employee shuttle program for your company.',
+                content: 'As corporate offices in Washington, DC, Arlington, and Alexandria adapt to modern work styles, employee transportation programs have become a powerful recruitment and retention tool. Custom shuttle routes between transit stations and office parks reduce commuter stress, bypass highway traffic, and give employees a productive environment with on-board Wi-Fi and USB power. Here, we outline the steps to design, launch, and manage a reliable employee shuttle program for your company.',
                 tags: 'Corporate Travel, Shuttles, Employee Commute',
                 publish_date: 'June 11, 2026',
                 author: 'United Bus Pro Team',
@@ -350,7 +421,7 @@ function readDb() {
                 db.pages.push({
                     slug: 'careers',
                     title: 'Careers at United Bus Pro | Group Travel Careers',
-                    meta_description: 'Join the United Bus Pro team. View active driver jobs, logistics coordinator openings, and corporate roles in Dallas and nationwide.',
+                    meta_description: 'Join the United Bus Pro team. View active driver jobs, logistics coordinator openings, and corporate roles in Washington, DC and nationwide.',
                     header_h1: 'Join the United Bus Pro Team',
                     body_content: 'At United Bus Pro, we are building the future of group transit. We are always looking for background-checked, safety-first commercial drivers, logistics managers, and customer coordinators to join our team. We offer competitive salaries, modern training schedules, and comprehensive insurance coverage.'
                 });
@@ -423,7 +494,7 @@ function readDb() {
         }
         if (!db.teams || db.teams.length === 0) {
             db.teams = [
-                { id: 1, name: "Dallas Dispatch Team", region: "Texas", supervisor: "Supervisor Thomas" },
+                { id: 1, name: "Washington Dispatch Team", region: "DC Metro", supervisor: "Supervisor Thomas" },
                 { id: 2, name: "Houston Logistics Unit", region: "Texas", supervisor: "Supervisor Melissa" },
                 { id: 3, name: "California Coast Route Team", region: "California", supervisor: "Supervisor Ronald" },
                 { id: 4, name: "Northeast Corridor Dispatch", region: "New York", supervisor: "Supervisor Robert" },
