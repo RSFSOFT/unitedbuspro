@@ -156,6 +156,10 @@ header {
     padding-bottom: 5px;
 }
 
+.nav-item-dropdown.has-mega-menu {
+    position: static;
+}
+
 @keyframes menuFadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
