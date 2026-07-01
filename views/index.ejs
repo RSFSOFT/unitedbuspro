@@ -1,5 +1,13 @@
 <%- include('partials/header') %>
 
+<script>
+    window.quoteHelpTexts = {
+        'one-way': `<%- (settings.help_text_oneway || "A one way trip is pretty self-explanatory.").replace(/`/g, '\\`') %>`,
+        'round-trip': `<%- (settings.help_text_roundtrip || "A round-trip includes a return journey.").replace(/`/g, '\\`') %>`,
+        'large-event': `<%- (settings.help_text_largeevent || "Planning a major gathering, convention, or corporate shuttle loop? Let us coordinate high-capacity routing for your attendees.").replace(/`/g, '\\`') %>`
+    };
+</script>
+
 <!-- HERO SECTION & QUOTE CALCULATOR -->
 <section class="hero-section" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-home.webp?v=4'); background-size: cover; background-position: center;">
     <div class="hero-grid">
@@ -26,8 +34,8 @@
                     <form id="quoteCalculatorForm">
                         <!-- STEP 1: TRIP TYPE -->
                         <div class="quote-form-step active" id="step1">
-                            <h3 style="margin-bottom: 5px;">Let's get you a quote</h3>
-                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">What kind of trip is this?</p>
+                            <h3 style="margin-bottom: 5px;"><%= settings.quote_title || "Let's get you a quote" %></h3>
+                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;"><%= settings.step1_title || "What kind of trip is this?" %></p>
                             
                             <div class="trip-type-grid">
                                 <div class="trip-type-card active" data-type="one-way">
@@ -52,7 +60,7 @@
 
                         <!-- STEP 2: ITINERARY -->
                         <div class="quote-form-step" id="step2">
-                            <h3 style="margin-bottom: 5px;">Where are you headed?</h3>
+                            <h3 style="margin-bottom: 5px;"><%= settings.step2_title || "Where are we picking you up?" %></h3>
                             <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Add your trip itinerary below.</p>
                             
                             <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Itinerary</h5>
@@ -156,7 +164,7 @@
 
                         <!-- STEP 3: CONTACT & DETAILS -->
                         <div class="quote-form-step" id="step3">
-                            <h3 style="margin-bottom: 5px;">Who is coordinating?</h3>
+                            <h3 style="margin-bottom: 5px;"><%= settings.step3_title || "Who is coordinating this trip?" %></h3>
                             <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Enter passenger count and contact information.</p>
                             
                             <div class="form-row">
@@ -199,7 +207,7 @@
 
                         <!-- STEP 4: ESTIMATED QUOTE DISPLAY & SUBMIT -->
                         <div class="quote-form-step" id="step4">
-                            <h3 style="margin-bottom: 5px;">Your Instant Estimate</h3>
+                            <h3 style="margin-bottom: 5px;"><%= settings.step4_title || "Your Instant Estimate" %></h3>
                             <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Review estimate and reserve vehicle logistics.</p>
                             
                             <div class="quote-result-box">
@@ -242,7 +250,7 @@
 
                     <div class="help-box" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
                         <h4><i class="fa fa-info-circle"></i> Need Help?</h4>
-                        <p id="tripTypeHelpText" style="font-size: 0.8rem; line-height: 1.4; opacity: 0.85; margin: 0;">A one way trip is pretty self-explanatory.</p>
+                        <p id="tripTypeHelpText" style="font-size: 0.8rem; line-height: 1.4; opacity: 0.85; margin: 0;"><%= settings.help_text_oneway || "A one way trip is pretty self-explanatory." %></p>
                     </div>
                 </div>
             </div>

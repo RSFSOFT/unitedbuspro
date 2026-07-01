@@ -1054,9 +1054,15 @@ app.post('/admin/state/edit/:slug', requireAuth, (req, res) => {
 
 // Update System Settings
 app.post('/admin/settings/edit', requireAuth, (req, res) => {
-    const { phone, email, address, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, smtp_to } = req.body;
+    const { 
+        phone, email, address, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, smtp_to,
+        quote_title, step1_title, step2_title, step3_title, step4_title,
+        help_text_oneway, help_text_roundtrip, help_text_largeevent
+    } = req.body;
     db.updateSettings({
-        phone, email, address, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, smtp_to
+        phone, email, address, smtp_host, smtp_port, smtp_user, smtp_pass, smtp_from, smtp_to,
+        quote_title, step1_title, step2_title, step3_title, step4_title,
+        help_text_oneway, help_text_roundtrip, help_text_largeevent
     });
     res.redirect('/admin/dashboard?success=settings_updated');
 });

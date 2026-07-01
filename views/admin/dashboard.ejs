@@ -602,6 +602,58 @@
                     </div>
                 </div>
             </div>
+
+            <!-- QUOTE WIZARD CUSTOMIZATION CARD -->
+            <div class="admin-card" style="margin-top: 30px;">
+                <h3>Quote Wizard Customizer</h3>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Dynamically configure the header title, step instructions, and sidebar help texts for the homepage Quote Wizard form.</p>
+                <form action="/admin/settings/edit" method="post">
+                    <div class="form-row" style="display: flex; gap: 20px; margin-bottom: 15px; flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1; min-width: 250px;">
+                            <label class="form-label" style="color: var(--primary-dark);" for="quote_title">Form Title Headline</label>
+                            <input type="text" id="quote_title" name="quote_title" class="form-field" value="<%= settings.quote_title || "Let's get you a quote" %>" required>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 250px;">
+                            <label class="form-label" style="color: var(--primary-dark);" for="step1_title">Step 1 Question (Trip Type)</label>
+                            <input type="text" id="step1_title" name="step1_title" class="form-field" value="<%= settings.step1_title || 'What kind of trip is this?' %>" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row" style="display: flex; gap: 20px; margin-bottom: 15px; flex-wrap: wrap;">
+                        <div class="form-group" style="flex: 1; min-width: 250px;">
+                            <label class="form-label" style="color: var(--primary-dark);" for="step2_title">Step 2 Question (Route details)</label>
+                            <input type="text" id="step2_title" name="step2_title" class="form-field" value="<%= settings.step2_title || 'Where are we picking you up?' %>" required>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 250px;">
+                            <label class="form-label" style="color: var(--primary-dark);" for="step3_title">Step 3 Question (Contact details)</label>
+                            <input type="text" id="step3_title" name="step3_title" class="form-field" value="<%= settings.step3_title || 'Who is coordinating this trip?' %>" required>
+                        </div>
+                        <div class="form-group" style="flex: 1; min-width: 250px;">
+                            <label class="form-label" style="color: var(--primary-dark);" for="step4_title">Step 4 Header (Estimate overview)</label>
+                            <input type="text" id="step4_title" name="step4_title" class="form-field" value="<%= settings.step4_title || 'Your Instant Estimate' %>" required>
+                        </div>
+                    </div>
+                    
+                    <h4 style="font-size: 0.95rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; margin-top: 25px; margin-bottom: 15px;">Wizard Sidebar Help Descriptions</h4>
+                    
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--primary-dark);" for="help_text_oneway">One Way Help Copy</label>
+                        <textarea id="help_text_oneway" name="help_text_oneway" class="form-field" rows="2" required><%= settings.help_text_oneway || 'A one way trip is pretty self-explanatory.' %></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--primary-dark);" for="help_text_roundtrip">Round Trip Help Copy</label>
+                        <textarea id="help_text_roundtrip" name="help_text_roundtrip" class="form-field" rows="2" required><%= settings.help_text_roundtrip || 'A round-trip includes a return journey.' %></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" style="color: var(--primary-dark);" for="help_text_largeevent">Large Event Help Copy</label>
+                        <textarea id="help_text_largeevent" name="help_text_largeevent" class="form-field" rows="3" required><%= settings.help_text_largeevent || 'Planning a major gathering, convention, or corporate shuttle loop? Let us coordinate high-capacity routing for your attendees.' %></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="display: block; width: 100%; margin-top: 25px;">Update Quote Wizard Content</button>
+                </form>
+            </div>
         </div>
     </div>
 

@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const whatsThisStop = document.getElementById('whatsThisStop');
 
-        const helpTexts = {
+        const helpTexts = window.quoteHelpTexts || {
             'one-way': "A one way trip is pretty self-explanatory.",
             'round-trip': "A round trip includes a return or additional stop. The Stop address serves as your return departure origin or stopover location.",
             'large-event': "Planning a major gathering, convention, or corporate shuttle loop? Let us coordinate high-capacity routing for your attendees."

@@ -12,7 +12,35 @@ if (process.env.NETLIFY || process.env.LAMBDA_TASK_ROOT) {
             if (fs.existsSync(DB_PATH)) {
                 fs.copyFileSync(DB_PATH, tempDbPath);
             } else {
-                 const initialDb = { users: [], pages: [], services: [], fleet: [], blogs: [], inquiries: [], cities: [], states: [], settings: { phone: "(202) 991-1203", email: "info@unitedlimopro.com", address: "Washington, DC", smtp_host: "", smtp_port: "", smtp_user: "", smtp_pass: "", smtp_from: "", smtp_to: "info@unitedlimopro.com, ijazdc@gmail.com" } };
+                 const initialDb = { 
+                     users: [], 
+                     pages: [], 
+                     services: [], 
+                     fleet: [], 
+                     blogs: [], 
+                     inquiries: [], 
+                     cities: [], 
+                     states: [], 
+                     settings: { 
+                         phone: "(202) 991-1203", 
+                         email: "info@unitedlimopro.com", 
+                         address: "Washington, DC", 
+                         smtp_host: "", 
+                         smtp_port: "", 
+                         smtp_user: "", 
+                         smtp_pass: "", 
+                         smtp_from: "", 
+                         smtp_to: "info@unitedlimopro.com, ijazdc@gmail.com",
+                         quote_title: "Let's get you a quote",
+                         step1_title: "What kind of trip is this?",
+                         step2_title: "Where are we picking you up?",
+                         step3_title: "Who is coordinating this trip?",
+                         step4_title: "Your Instant Estimate",
+                         help_text_oneway: "A one way trip is pretty self-explanatory.",
+                         help_text_roundtrip: "A round-trip includes a return journey.",
+                         help_text_largeevent: "Planning a major gathering, convention, or corporate shuttle loop? Let us coordinate high-capacity routing for your attendees."
+                     } 
+                 };
                 fs.writeFileSync(tempDbPath, JSON.stringify(initialDb, null, 2));
             }
         } catch (copyErr) {
@@ -46,7 +74,15 @@ const initialDb = {
         smtp_user: "",
         smtp_pass: "",
         smtp_from: "",
-        smtp_to: "info@unitedlimopro.com, ijazdc@gmail.com"
+        smtp_to: "info@unitedlimopro.com, ijazdc@gmail.com",
+        quote_title: "Let's get you a quote",
+        step1_title: "What kind of trip is this?",
+        step2_title: "Where are we picking you up?",
+        step3_title: "Who is coordinating this trip?",
+        step4_title: "Your Instant Estimate",
+        help_text_oneway: "A one way trip is pretty self-explanatory.",
+        help_text_roundtrip: "A round-trip includes a return journey.",
+        help_text_largeevent: "Planning a major gathering, convention, or corporate shuttle loop? Let us coordinate high-capacity routing for your attendees."
     }
 };
 
