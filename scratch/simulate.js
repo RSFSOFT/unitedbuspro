@@ -112,6 +112,12 @@ for (let i = 0; i < customers.length; i++) {
         itineraryDetails += `- ADA Standards Compliant: Yes\n`;
     }
 
+    const baseRate = passengers <= 14 ? 85 : (passengers <= 36 ? 125 : 150);
+    const hours = randomRange(3, 8);
+    let simulatedPrice = baseRate * hours;
+    if (tripType === 'round-trip') simulatedPrice *= 1.6;
+    if (tripType === 'large-event') simulatedPrice *= 2.0;
+
     const payload = {
         name: customer.name,
         phone: `(${randomRange(200, 999)}) 555-${String(randomRange(1000, 9999))}`,
@@ -122,7 +128,8 @@ for (let i = 0; i < customers.length; i++) {
         trip_date: tripDate,
         passengers: passengers,
         plan: customer.plan,
-        message: itineraryDetails
+        message: itineraryDetails,
+        price: `$${simulatedPrice.toFixed(2)}`
     };
 
     const newBooking = db.createInquiry(payload);
@@ -142,6 +149,10 @@ for (let i = 0; i < bookings.length; i++) {
     const assigned = db.assignInquiry(booking.id, driver.name, team.name);
     if (assigned) {
         assignmentsCount++;
+        // Randomly mark 30% of simulated bookings as paid
+        if (Math.random() < 0.3) {
+            db.updateInquiryStatus(booking.id, 'paid');
+        }
     }
 }
 console.log(`[OK] Successfully completed ${assignmentsCount} dispatch assignments.`);

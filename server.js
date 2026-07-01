@@ -675,6 +675,7 @@ app.get('/customer/login', (req, res) => {
         meta_description: 'Sign in to manage your group transportation plans and view driver coordinates.',
         customer: null,
         inquiries: [],
+        customerUsers: db.getCustomerUsers(),
         error: req.query.error || null,
         success: req.query.success || null
     });
@@ -716,6 +717,22 @@ app.post('/api/customer/login', (req, res) => {
     }
 });
 
+// Customer Secure Payment Simulation API
+app.post('/api/customer/pay/:id', (req, res) => {
+    const { cardNumber, cardExpiry, cardCvv, cardZip } = req.body;
+    if (!cardNumber || !cardExpiry || !cardCvv || !cardZip) {
+        return res.status(400).json({ success: false, message: 'All credit card fields are required.' });
+    }
+    
+    // Simulate payment transaction check
+    const inquiry = db.payInquiry(req.params.id);
+    if (inquiry) {
+        res.status(200).json({ success: true, inquiry });
+    } else {
+        res.status(404).json({ success: false, message: 'Inquiry not found.' });
+    }
+});
+
 // Admin Assignment API
 app.post('/api/admin/assign', (req, res) => {
     const { inquiry_id, driver_name, team_name } = req.body;
@@ -733,6 +750,11 @@ app.post('/api/admin/assign', (req, res) => {
 // ==========================================
 // ADMIN DASHBOARD / CMS PORTAL
 // ==========================================
+
+// Base Admin Redirect
+app.get('/admin', (req, res) => {
+    res.redirect('/admin/login');
+});
 
 // Login Portal
 app.get('/admin/login', (req, res) => {

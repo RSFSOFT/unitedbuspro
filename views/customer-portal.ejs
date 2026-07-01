@@ -43,14 +43,15 @@
                                     <th>Trip Date</th>
                                     <th>Routing Details</th>
                                     <th>Service</th>
+                                    <th>Estimated Rate</th>
                                     <th>Chauffeur & Dispatch</th>
-                                    <th>Status</th>
+                                    <th>Status / Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <% if (inquiries.length === 0) { %>
                                     <tr>
-                                        <td colspan="5" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
+                                        <td colspan="6" style="text-align: center; color: var(--text-muted); padding: 40px 0;">
                                             <i class="fa fa-bus" style="font-size: 2.5rem; color: rgba(0,0,0,0.08); display: block; margin-bottom: 10px;"></i>
                                             No active bookings logged under this email address. Ready to travel? Use the form to book!
                                         </td>
@@ -69,6 +70,9 @@
                                         <td>
                                             <span class="badge" style="background-color: var(--primary-dark); color: #ffffff; font-size: 0.75rem;"><%= inq.service_type || 'General Charter' %></span>
                                         </td>
+                                        <td>
+                                            <strong style="color: var(--accent-gold-hover); font-size: 0.95rem;"><%= inq.price || 'Custom Quote' %></strong>
+                                        </td>
                                         <td style="font-size: 0.85rem;">
                                             <% if (inq.assigned_driver || inq.assigned_team) { %>
                                                 <div style="font-weight: 600; color: var(--primary-dark);"><i class="fa fa-id-card" style="color: var(--accent-gold); margin-right: 5px;"></i> <%= inq.assigned_driver %></div>
@@ -78,10 +82,17 @@
                                             <% } %>
                                         </td>
                                         <td>
-                                            <% if (inq.status === 'assigned') { %>
-                                                <span class="badge" style="background-color: #def7ec; color: #03543f; font-weight: 700;"><i class="fa fa-check-circle"></i> Assigned</span>
+                                            <% if (inq.status === 'paid') { %>
+                                                <span class="badge" style="background-color: #def7ec; color: #03543f; font-weight: 700; display: inline-flex; align-items: center; gap: 4px;"><i class="fa fa-check-circle"></i> Paid</span>
                                             <% } else { %>
-                                                <span class="badge badge-<%= inq.status %>"><%= inq.status %></span>
+                                                <div style="display: flex; flex-direction: column; gap: 6px; align-items: start;">
+                                                    <% if (inq.status === 'assigned') { %>
+                                                        <span class="badge" style="background-color: #fef3c7; color: #92400e; font-weight: 700;"><i class="fa fa-clock"></i> Assigned</span>
+                                                    <% } else { %>
+                                                        <span class="badge badge-<%= inq.status %>"><%= inq.status %></span>
+                                                    <% } %>
+                                                    <button onclick="openPaymentModal('<%= inq.id %>', '<%= inq.price || 'Custom Quote' %>')" class="btn-primary" style="padding: 6px 12px; font-size: 0.75rem; border-radius: var(--radius-sm); border: none; font-weight: 700; cursor: pointer; background-color: var(--accent-gold); color: var(--primary-dark); text-transform: uppercase; box-shadow: var(--shadow-sm); display: inline-block;">Pay Invoice</button>
+                                                </div>
                                             <% } %>
                                         </td>
                                     </tr>
@@ -165,12 +176,21 @@
                         <button type="submit" class="btn-primary" style="display: block; width: 100%; text-align: center; padding: 12px;">Sign In to Account <i class="fa fa-arrow-right"></i></button>
                     </form>
                     
+                    <p style="margin-top: 15px; font-size: 0.9rem; text-align: center; color: var(--text-muted);">
+                        Don't have a portal account? <a href="#customerSignupForm" style="color: var(--accent-gold-hover); font-weight: 700; text-decoration: underline;">Register here</a>
+                    </p>
+                    
                     <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
                         <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Simulation Testing Quick-Logins</h4>
-                        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Use any of the 100 simulated customer accounts seeded in the database. For example:</p>
-                        <code style="display: block; font-size: 0.8rem; margin: 10px 0; background-color: var(--accent-gold-light); color: var(--accent-gold-hover); padding: 8px; border-radius: var(--radius-sm); font-weight: 700;">
-                            Email: john.smith45@gmail.com<br>
-                            Password: passCustomer1
+                        <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Use any of the simulated customer accounts in the database. For example:</p>
+                        <code style="display: block; font-size: 0.85rem; margin: 10px 0; background-color: var(--accent-gold-light); color: var(--accent-gold-hover); padding: 8px; border-radius: var(--radius-sm); font-weight: 700; text-align: left; line-height: 1.5;">
+                            <% if (typeof customerUsers !== 'undefined' && customerUsers.length > 0) { %>
+                                Email: <%= customerUsers[0].username %><br>
+                                Password: passCustomer1
+                            <% } else { %>
+                                Email: john.jackson97@gmail.com<br>
+                                Password: passCustomer1
+                            <% } %>
                         </code>
                     </div>
                 </div>
@@ -411,6 +431,165 @@ function selectPlan(planValue) {
         }
     }
 }
+
+// Payment Modal Controller
+function openPaymentModal(bookingId, priceVal) {
+    const modal = document.getElementById('paymentModal');
+    const bIdInput = document.getElementById('pay_booking_id');
+    const payTitle = document.getElementById('pay_title_details');
+    const btnSubmit = document.getElementById('btnSubmitPayment');
+    
+    if (modal && bIdInput && payTitle) {
+        bIdInput.value = bookingId;
+        payTitle.innerHTML = `Booking Reference: <strong>#${bookingId}</strong> | Amount: <strong style="color: var(--accent-gold-hover);">${priceVal}</strong>`;
+        btnSubmit.innerHTML = `Process Payment for ${priceVal} <i class="fa fa-lock" style="margin-left: 5px;"></i>`;
+        
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden'; // Lock background scroll
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const modal = document.getElementById('paymentModal');
+    const closeBtn = document.querySelector('#paymentModal .close-btn');
+    
+    if (closeBtn && modal) {
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+        
+        window.addEventListener('click', function(e) {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+    }
+    
+    // Auto-format card number spaces
+    const cardInput = document.getElementById('card_num');
+    if (cardInput) {
+        cardInput.addEventListener('input', function(e) {
+            let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            let formatted = '';
+            for (let i = 0; i < val.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += val[i];
+            }
+            e.target.value = formatted;
+        });
+    }
+
+    // Auto-format expiration MM/YY
+    const expInput = document.getElementById('card_exp');
+    if (expInput) {
+        expInput.addEventListener('input', function(e) {
+            let val = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+            if (val.length >= 2) {
+                e.target.value = val.slice(0, 2) + '/' + val.slice(2, 4);
+            } else {
+                e.target.value = val;
+            }
+        });
+    }
+
+    const payForm = document.getElementById('creditCardForm');
+    if (payForm) {
+        payForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const bookingId = document.getElementById('pay_booking_id').value;
+            const cardNumber = document.getElementById('card_num').value.trim();
+            const cardExpiry = document.getElementById('card_exp').value.trim();
+            const cardCvv = document.getElementById('card_cvv').value.trim();
+            const cardZip = document.getElementById('card_zip').value.trim();
+            const alertBox = document.getElementById('paymentAlertBox');
+            const btnSubmit = document.getElementById('btnSubmitPayment');
+            
+            alertBox.style.display = 'none';
+            btnSubmit.disabled = true;
+            btnSubmit.innerHTML = 'Authorizing Funds... <i class="fa fa-spinner fa-spin" style="margin-left: 5px;"></i>';
+            
+            fetch(`/api/customer/pay/${bookingId}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ cardNumber, cardExpiry, cardCvv, cardZip })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alertBox.style.backgroundColor = '#def7ec';
+                    alertBox.style.color = '#03543f';
+                    alertBox.innerText = 'Payment Authorized! Receipt emailed to account owner.';
+                    alertBox.style.display = 'block';
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1200);
+                } else {
+                    alertBox.style.backgroundColor = '#fde8e8';
+                    alertBox.style.color = '#9b1c1c';
+                    alertBox.innerText = 'Declined: ' + data.message;
+                    alertBox.style.display = 'block';
+                    btnSubmit.disabled = false;
+                    btnSubmit.innerHTML = 'Process Payment <i class="fa fa-lock" style="margin-left: 5px;"></i>';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alertBox.style.backgroundColor = '#fde8e8';
+                alertBox.style.color = '#9b1c1c';
+                alertBox.innerText = 'Secure processing connection timeout.';
+                alertBox.style.display = 'block';
+                btnSubmit.disabled = false;
+                btnSubmit.innerHTML = 'Process Payment <i class="fa fa-lock" style="margin-left: 5px;"></i>';
+            });
+        });
+    }
+});
 </script>
+
+<!-- Secure Payment Modal Dialog -->
+<div id="paymentModal" class="modal" style="display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(17, 24, 39, 0.7); backdrop-filter: blur(4px); align-items: center; justify-content: center;">
+    <div class="admin-card" style="background-color: #ffffff; padding: 35px; border-radius: var(--radius-md); max-width: 450px; width: 90%; box-shadow: var(--shadow-2xl); position: relative; margin: auto; border: 1px solid rgba(0,0,0,0.08);">
+        <span class="close-btn" style="position: absolute; right: 20px; top: 15px; font-size: 1.6rem; cursor: pointer; color: var(--text-muted); font-weight: bold;">&times;</span>
+        <h3 style="font-size: 1.4rem; color: var(--primary-dark); margin-bottom: 10px; border-bottom: 2px solid var(--accent-gold); padding-bottom: 8px; font-family: 'Outfit', sans-serif;"><i class="fa fa-shield-alt" style="color: var(--accent-gold); margin-right: 8px;"></i> Secure Payment Portal</h3>
+        <p id="pay_title_details" style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;"></p>
+        
+        <div id="paymentAlertBox" style="display: none; padding: 12px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; text-align: center;"></div>
+        
+        <form id="creditCardForm">
+            <input type="hidden" id="pay_booking_id" value="">
+            <div class="form-group" style="margin-bottom: 15px;">
+                <label class="form-label" style="color: var(--primary-dark); font-size: 0.8rem; font-weight: 700; text-transform: uppercase;" for="card_num">Cardholder Number</label>
+                <div style="position: relative;">
+                    <input type="text" id="card_num" class="form-field" style="padding: 12px 12px 12px 38px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); width: 100%;" placeholder="4111 2222 3333 4444" maxlength="19" required>
+                    <i class="fa fa-credit-card" style="position: absolute; left: 12px; top: 16px; color: var(--text-muted); font-size: 0.95rem;"></i>
+                </div>
+            </div>
+            
+            <div style="display: flex; gap: 15px; margin-bottom: 20px;">
+                <div class="form-group" style="flex: 1.2; margin-bottom: 0;">
+                    <label class="form-label" style="color: var(--primary-dark); font-size: 0.8rem; font-weight: 700; text-transform: uppercase;" for="card_exp">Expiry Date</label>
+                    <input type="text" id="card_exp" class="form-field" style="padding: 12px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); width: 100%;" placeholder="MM/YY" maxlength="5" required>
+                </div>
+                <div class="form-group" style="flex: 0.8; margin-bottom: 0;">
+                    <label class="form-label" style="color: var(--primary-dark); font-size: 0.8rem; font-weight: 700; text-transform: uppercase;" for="card_cvv">CVV</label>
+                    <input type="password" id="card_cvv" class="form-field" style="padding: 12px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); width: 100%;" placeholder="123" maxlength="4" required>
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label class="form-label" style="color: var(--primary-dark); font-size: 0.8rem; font-weight: 700; text-transform: uppercase;" for="card_zip">Billing ZIP Code</label>
+                <input type="text" id="card_zip" class="form-field" style="padding: 12px; border: 1px solid #d1d5db; border-radius: var(--radius-sm); width: 100%;" placeholder="e.g. 20001" maxlength="5" required>
+            </div>
+            
+            <button type="submit" class="btn-primary" id="btnSubmitPayment" style="display: block; width: 100%; text-align: center; padding: 14px; font-weight: 700; background-color: var(--primary-dark); color: #ffffff; border: none; border-radius: var(--radius-sm); cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;">Process Payment <i class="fa fa-lock" style="margin-left: 5px;"></i></button>
+        </form>
+    </div>
+</div>
 
 <%- include('partials/footer') %>

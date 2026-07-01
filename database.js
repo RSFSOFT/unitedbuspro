@@ -12,7 +12,7 @@ if (process.env.NETLIFY || process.env.LAMBDA_TASK_ROOT) {
             if (fs.existsSync(DB_PATH)) {
                 fs.copyFileSync(DB_PATH, tempDbPath);
             } else {
-                 const initialDb = { users: [], pages: [], services: [], fleet: [], blogs: [], inquiries: [], cities: [], states: [], settings: { phone: "(202) 991-1203", email: "reservations@unitedbuspro.com", address: "Washington, DC", smtp_host: "", smtp_port: "", smtp_user: "", smtp_pass: "", smtp_from: "", smtp_to: "reservations@unitedbuspro.com" } };
+                 const initialDb = { users: [], pages: [], services: [], fleet: [], blogs: [], inquiries: [], cities: [], states: [], settings: { phone: "(202) 991-1203", email: "info@unitedlimopro.com", address: "Washington, DC", smtp_host: "", smtp_port: "", smtp_user: "", smtp_pass: "", smtp_from: "", smtp_to: "info@unitedlimopro.com, ijazdc@gmail.com" } };
                 fs.writeFileSync(tempDbPath, JSON.stringify(initialDb, null, 2));
             }
         } catch (copyErr) {
@@ -39,14 +39,14 @@ const initialDb = {
     states: [],
     settings: {
         phone: "(202) 991-1203",
-        email: "reservations@unitedbuspro.com",
+        email: "info@unitedlimopro.com",
         address: "Washington, DC",
         smtp_host: "",
         smtp_port: "",
         smtp_user: "",
         smtp_pass: "",
         smtp_from: "",
-        smtp_to: "reservations@unitedbuspro.com"
+        smtp_to: "info@unitedlimopro.com, ijazdc@gmail.com"
     }
 };
 
@@ -110,6 +110,8 @@ function seedData(db) {
             { name: 'Sports Teams', category: 'Bus Charters', desc: 'Large athletic travel logistics with under-coach compartments for heavy gear and spacious reclining seating.' },
             { name: 'Travel Agents', category: 'Bus Charters', desc: 'Professional charter partnerships providing dedicated coaches and custom itineraries for tour agencies.' },
             { name: 'University Bus Rentals', category: 'Bus Charters', desc: 'Collegiate travel services for sports tournaments, admissions events, and student organization tours.' },
+            { name: 'Limousine Rental', category: 'Bus Charters', desc: 'Luxury stretch limousine rentals for VIP events, weddings, prom, and corporate transport.' },
+            { name: 'SUV/Sedan Rental', category: 'Bus Charters', desc: 'Premium black car SUV and sedan rentals for airport transfers, business travelers, and executive charters.' },
 
             // Category: Continuous Shuttles
             { name: 'Airport Shuttles', category: 'Continuous Shuttles', desc: 'Scheduled terminal shuttles for airports, hotels, flight crews, and parking facilities.' },
@@ -182,14 +184,14 @@ function seedData(db) {
             },
             {
                 id: 3,
-                name: '28 Passenger Bus',
-                slug: '28-passenger-bus',
-                capacity: '28 Passengers',
-                bags: '25 Bags',
-                amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'PA System', 'Rear Storage']),
-                image: '/images/fleet_minibus_28.png',
-                description: 'Mid-sized executive minibus equipped with comfortable seating and connectivity features for group transport.',
-                starting_rate: '$110/hr'
+                name: '36 Passenger Bus',
+                slug: '36-passenger-bus',
+                capacity: '36 Passengers',
+                bags: '36 Bags',
+                amenities: JSON.stringify(['Wi-Fi', 'Leather Seats', 'USB Outlets', 'PA System', 'Rear Storage', 'TV Screens']),
+                image: '/images/fleet_minibus_36.png',
+                description: 'Premium executive minibus with 36 passenger seating, high-back leather chairs, and rear storage.',
+                starting_rate: '$125/hr'
             },
             {
                 id: 4,
@@ -825,5 +827,15 @@ module.exports = {
         }
         return null;
     },
-    getCustomerUsers: () => readDb().customerUsers || []
+    getCustomerUsers: () => readDb().customerUsers || [],
+    payInquiry: (id) => {
+        const db = readDb();
+        const idx = db.inquiries.findIndex(i => i.id === parseInt(id));
+        if (idx > -1) {
+            db.inquiries[idx].status = 'paid';
+            writeDb(db);
+            return db.inquiries[idx];
+        }
+        return null;
+    }
 };

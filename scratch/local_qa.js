@@ -88,7 +88,7 @@ async function runQa() {
         const capacities = [
             "14 Passenger Bus",
             "24 Passenger Bus",
-            "28 Passenger Bus",
+            "36 Passenger Bus",
             "32 Passenger Bus",
             "40 Passenger Bus",
             "ADA 24 Passenger Bus",

@@ -31,11 +31,9 @@
                         <label class="form-label" for="service_type"><i class="fa fa-bus" style="color: var(--accent-gold); margin-right: 5px;"></i> Service Category *</label>
                         <select id="service_type" name="service_type" class="form-field" required>
                             <option value="">Select Service</option>
-                            <option value="Charter Bus Rental">Charter Bus Rental</option>
-                            <option value="Corporate Shuttle Service">Corporate Shuttle Service</option>
-                            <option value="Minibus Hires">Minibus Hires</option>
-                            <option value="Wedding Guest Shuttles">Wedding Guest Shuttles</option>
-                            <option value="School Field Trips">School Field Trips</option>
+                            <% services.forEach(s => { %>
+                                <option value="<%= s.name %>"><%= s.name %></option>
+                            <% }) %>
                         </select>
                     </div>
                 </div>

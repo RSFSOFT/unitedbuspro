@@ -168,15 +168,9 @@
                                     <label for="service_type"><i class="fa fa-bus"></i> Service Category</label>
                                     <select id="service_type" name="service_type" class="form-input" required>
                                         <option value="">Select Service</option>
-                                        <option value="Charter Bus Rental">Charter Bus Rental</option>
-                                        <option value="Airport Shuttle Service">Airport Shuttle Service</option>
-                                        <option value="Minibus Hires">Minibus Hires</option>
-                                        <option value="Wedding Guest Shuttles">Wedding Guest Shuttles</option>
-                                        <option value="School Field Trips">School Field Trips</option>
-                                        <option value="Corporate Shuttle Service">Corporate Shuttle Service</option>
-                                        <option value="Employee Shuttles">Employee Shuttles</option>
-                                        <option value="Campus Shuttles">Campus Shuttles</option>
-                                        <option value="Large Events & Conventions">Large Events & Conventions</option>
+                                        <% services.forEach(s => { %>
+                                            <option value="<%= s.name %>"><%= s.name %></option>
+                                        <% }) %>
                                     </select>
                                 </div>
                             </div>

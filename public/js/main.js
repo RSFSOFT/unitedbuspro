@@ -357,34 +357,45 @@ document.addEventListener('DOMContentLoaded', function () {
                 let startingRate = 0;
                 let minHrs = 4;
 
-                if (passengersVal <= 14) {
-                    recVehicle = 'Luxury Sprinter Van';
-                    startingRate = 85;
-                    minHrs = 3;
-                } else if (passengersVal <= 28) {
-                    if (serviceVal.includes('School')) {
-                        recVehicle = 'Standard School Bus';
-                        startingRate = 90;
-                        minHrs = 4;
-                    } else {
-                        recVehicle = 'Standard Minibus';
-                        startingRate = 110;
-                        minHrs = 4;
+                function parseCapacity(capacityStr) {
+                    if (!capacityStr) return 0;
+                    const matches = capacityStr.match(/\d+/g);
+                    if (!matches) return 0;
+                    return Math.max(...matches.map(Number));
+                }
+                
+                function parseRate(rateStr) {
+                    if (!rateStr) return 0;
+                    const match = rateStr.match(/\d+/);
+                    return match ? parseFloat(match[0]) : 0;
+                }
+
+                if (window.fleetData && window.fleetData.length > 0) {
+                    const sortedFleet = [...window.fleetData].sort((a, b) => parseCapacity(a.capacity) - parseCapacity(b.capacity));
+                    let recommended = sortedFleet.find(v => parseCapacity(v.capacity) >= passengersVal);
+                    if (!recommended) {
+                        recommended = sortedFleet[sortedFleet.length - 1];
                     }
-                } else if (passengersVal <= 35) {
-                    if (serviceVal.includes('School')) {
-                        recVehicle = 'Standard School Bus';
-                        startingRate = 90;
-                        minHrs = 4;
-                    } else {
-                        recVehicle = 'Executive Minibus';
-                        startingRate = 125;
-                        minHrs = 4;
+                    
+                    recVehicle = recommended.name;
+                    startingRate = parseRate(recommended.starting_rate);
+                    
+                    const cap = parseCapacity(recommended.capacity);
+                    if (cap <= 6) {
+                        minHrs = 3;
+                    } else if (cap <= 14) {
+                        minHrs = 3;
+                    } else if (cap > 40) {
+                        minHrs = 5;
                     }
                 } else {
-                    if (serviceVal.includes('School')) {
-                        recVehicle = 'Standard School Bus';
-                        startingRate = 95;
+                    if (passengersVal <= 14) {
+                        recVehicle = 'Luxury Sprinter Van';
+                        startingRate = 85;
+                        minHrs = 3;
+                    } else if (passengersVal <= 36) {
+                        recVehicle = '36 Passenger Bus';
+                        startingRate = 125;
                         minHrs = 4;
                     } else {
                         recVehicle = 'Full-Sized Charter Bus';
@@ -395,12 +406,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 if (elRecBlock && elRec) {
                     elRecBlock.style.display = 'block';
-                    elRec.innerHTML = `
-                        <div style="font-weight: 700; color: var(--accent-gold-light);">${recVehicle}</div>
-                        <div style="font-size: 0.75rem; color: var(--text-light); font-weight: normal; margin-top: 2px;">
-                            Capacity: ${passengersVal} Pax | Rates: from $${startingRate}/hr (min ${minHrs}h)
-                        </div>
-                    `;
+                    if (startingRate > 0) {
+                        elRec.innerHTML = `
+                            <div style="font-weight: 700; color: var(--accent-gold-light);">${recVehicle}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-light); font-weight: normal; margin-top: 2px;">
+                                Capacity: ${passengersVal} Pax | Rates: from $${startingRate}/hr (min ${minHrs}h)
+                            </div>
+                        `;
+                    } else {
+                        elRec.innerHTML = `
+                            <div style="font-weight: 700; color: var(--accent-gold-light);">${recVehicle}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-light); font-weight: normal; margin-top: 2px;">
+                                Capacity: ${passengersVal} Pax | Rates: Custom Quote (Pending Review)
+                            </div>
+                        `;
+                    }
                 }
             } else {
                 if (elRecBlock) elRecBlock.style.display = 'none';
@@ -682,55 +702,80 @@ document.addEventListener('DOMContentLoaded', function () {
             let baseRate = 0;
             let minHours = 4;
 
-            if (passengers <= 14) {
-                recommendedVehicle = 'Luxury Sprinter Van (14 Passengers)';
-                baseRate = 85; 
-                minHours = 3;
-            } else if (passengers <= 28) {
-                if (service.includes('School')) {
-                    recommendedVehicle = 'Standard School Bus (47 Passengers)';
-                    baseRate = 90;
-                    minHours = 4;
-                } else {
-                    recommendedVehicle = 'Standard Minibus (28 Passengers)';
-                    baseRate = 110;
-                    minHours = 4;
+            function parseCapacity(capacityStr) {
+                if (!capacityStr) return 0;
+                const matches = capacityStr.match(/\d+/g);
+                if (!matches) return 0;
+                return Math.max(...matches.map(Number));
+            }
+            
+            function parseRate(rateStr) {
+                if (!rateStr) return 0;
+                const match = rateStr.match(/\d+/);
+                return match ? parseFloat(match[0]) : 0;
+            }
+
+            if (window.fleetData && window.fleetData.length > 0) {
+                const sortedFleet = [...window.fleetData].sort((a, b) => parseCapacity(a.capacity) - parseCapacity(b.capacity));
+                let recommended = sortedFleet.find(v => parseCapacity(v.capacity) >= passengers);
+                if (!recommended) {
+                    recommended = sortedFleet[sortedFleet.length - 1];
                 }
-            } else if (passengers <= 35) {
-                if (service.includes('School')) {
-                    recommendedVehicle = 'Standard School Bus (47 Passengers)';
-                    baseRate = 90;
-                    minHours = 4;
-                } else {
-                    recommendedVehicle = 'Executive Minibus (35 Passengers)';
-                    baseRate = 125;
-                    minHours = 4;
+                
+                recommendedVehicle = recommended.name + ' (' + recommended.capacity + ')';
+                baseRate = parseRate(recommended.starting_rate);
+                
+                const cap = parseCapacity(recommended.capacity);
+                if (cap <= 6) {
+                    minHours = 3;
+                } else if (cap <= 14) {
+                    minHours = 3;
+                } else if (cap > 40) {
+                    minHours = 5;
                 }
             } else {
-                if (service.includes('School')) {
-                    recommendedVehicle = 'Standard School Bus (47 Passengers)';
-                    baseRate = 95;
+                if (passengers <= 14) {
+                    recommendedVehicle = 'Luxury Sprinter Van (14 Passengers)';
+                    baseRate = 85; 
+                    minHours = 3;
+                } else if (passengers <= 36) {
+                    recommendedVehicle = '36 Passenger Bus (36 Passengers)';
+                    baseRate = 125;
                     minHours = 4;
                 } else {
-                    recommendedVehicle = 'Full-Sized Charter Bus (56 Passengers)';
+                    recommendedVehicle = 'Full-Sized Charter Bus (50 Passengers)';
                     baseRate = 150;
                     minHours = 5;
                 }
             }
 
-            let estPrice = baseRate * minHours;
+            let priceDisplay = '';
+            let subtitleDisplay = 'Pending booking coordinator confirmation.';
             
-            // Adjust price based on trip type
-            const type = tripTypeInput.value;
-            if (type === 'round-trip') {
-                estPrice = estPrice * 1.6; // 1.6x multiplier for round-trip return leg estimation
-            } else if (type === 'large-event') {
-                estPrice = estPrice * 2.0; // 2.0x multiplier for large event loops/conventions
+            if (baseRate > 0) {
+                let estPrice = baseRate * minHours;
+                
+                // Adjust price based on trip type
+                const type = tripTypeInput.value;
+                if (type === 'round-trip') {
+                    estPrice = estPrice * 1.6; // 1.6x multiplier for round-trip return leg estimation
+                } else if (type === 'large-event') {
+                    estPrice = estPrice * 2.0; // 2.0x multiplier for large event loops/conventions
+                }
+                priceDisplay = `$${estPrice.toFixed(2)}`;
+            } else {
+                priceDisplay = 'Custom Quote';
+                subtitleDisplay = 'Our representative will contact you with a custom quote shortly.';
             }
 
             // Populate quote details in Step 4
             document.getElementById('recommendedVehicle').innerHTML = `<strong>Recommended Vehicle:</strong> ${recommendedVehicle}`;
-            document.getElementById('quoteEstPrice').innerText = `$${estPrice.toFixed(2)}`;
+            document.getElementById('quoteEstPrice').innerText = priceDisplay;
+            
+            const estSubtitle = document.querySelector('#step4 p');
+            if (estSubtitle) {
+                estSubtitle.innerText = subtitleDisplay;
+            }
 
             step3.classList.remove('active');
             step4.classList.add('active');
@@ -791,6 +836,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 itineraryDetails += `\n[Special Instructions]\n${customNotes}`;
             }
 
+            const priceEl = document.getElementById('quoteEstPrice');
+            const priceVal = priceEl ? priceEl.innerText : 'Custom Quote';
+
             const payload = {
                 name: document.getElementById('name').value,
                 phone: document.getElementById('phone').value,
@@ -800,7 +848,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropoff_loc: dropoffAddress,
                 trip_date: pickupDate,
                 passengers: passengers,
-                message: itineraryDetails
+                message: itineraryDetails,
+                price: priceVal
             };
 
             const btnSubmit = document.getElementById('btnSubmit');
@@ -853,7 +902,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropoff_loc: document.getElementById('dropoff_loc').value,
                 trip_date: document.getElementById('trip_date').value,
                 passengers: document.getElementById('passengers').value,
-                message: document.getElementById('message').value
+                message: document.getElementById('message').value,
+                price: 'Custom Quote'
             };
 
             const submitBtn = reservationForm.querySelector('button[type="submit"]');
@@ -897,25 +947,65 @@ document.addEventListener('DOMContentLoaded', function () {
         const urlParams = new URLSearchParams(window.location.search);
         const serviceParam = urlParams.get('service');
         const vehicleParam = urlParams.get('vehicle');
+        const pickupParam = urlParams.get('pickup');
 
         if (serviceParam) {
             const selectEl = document.getElementById('service_type');
-            for (let i = 0; i < selectEl.options.length; i++) {
-                if (selectEl.options[i].value.toLowerCase().includes(serviceParam.replace(/-/g, ' '))) {
-                    selectEl.selectedIndex = i;
-                    break;
+            if (selectEl) {
+                const targetText = serviceParam.replace(/-/g, ' ').toLowerCase();
+                for (let i = 0; i < selectEl.options.length; i++) {
+                    if (selectEl.options[i].value.toLowerCase().includes(targetText) || targetText.includes(selectEl.options[i].value.toLowerCase())) {
+                        selectEl.selectedIndex = i;
+                        break;
+                    }
                 }
             }
         } else if (vehicleParam) {
             const selectEl = document.getElementById('service_type');
-            if (vehicleParam.includes('coach') || vehicleParam.includes('charter')) {
-                selectEl.value = 'Charter Bus Rental';
-            } else if (vehicleParam.includes('minibus')) {
-                selectEl.value = 'Minibus Hires';
-            } else if (vehicleParam.includes('sprinter')) {
-                selectEl.value = 'Corporate Shuttle Service';
-            } else if (vehicleParam.includes('school')) {
-                selectEl.value = 'School Field Trips';
+            if (selectEl) {
+                if (vehicleParam.includes('coach') || vehicleParam.includes('charter')) {
+                    for (let i = 0; i < selectEl.options.length; i++) {
+                        if (selectEl.options[i].value.toLowerCase().includes('charter')) {
+                            selectEl.selectedIndex = i;
+                            break;
+                        }
+                    }
+                } else if (vehicleParam.includes('minibus')) {
+                    for (let i = 0; i < selectEl.options.length; i++) {
+                        if (selectEl.options[i].value.toLowerCase().includes('minibus')) {
+                            selectEl.selectedIndex = i;
+                            break;
+                        }
+                    }
+                } else if (vehicleParam.includes('sprinter') || vehicleParam.includes('van')) {
+                    for (let i = 0; i < selectEl.options.length; i++) {
+                        if (selectEl.options[i].value.toLowerCase().includes('shuttle')) {
+                            selectEl.selectedIndex = i;
+                            break;
+                        }
+                    }
+                } else if (vehicleParam.includes('limo')) {
+                    for (let i = 0; i < selectEl.options.length; i++) {
+                        if (selectEl.options[i].value.toLowerCase().includes('limousine')) {
+                            selectEl.selectedIndex = i;
+                            break;
+                        }
+                    }
+                } else if (vehicleParam.includes('suburban') || vehicleParam.includes('towncar')) {
+                    for (let i = 0; i < selectEl.options.length; i++) {
+                        if (selectEl.options[i].value.toLowerCase().includes('suv') || selectEl.options[i].value.toLowerCase().includes('sedan')) {
+                            selectEl.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (pickupParam) {
+            const pickupEl = document.getElementById('pickup_loc');
+            if (pickupEl) {
+                pickupEl.value = decodeURIComponent(pickupParam);
             }
         }
     }
