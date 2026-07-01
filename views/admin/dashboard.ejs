@@ -290,9 +290,9 @@
                                 <thead>
                                     <tr>
                                         <th>Vehicle Class Name</th>
+                                        <th>Category</th>
                                         <th>Specs (Pax/Bags)</th>
                                         <th>Starting Rate</th>
-                                        <th>Linked Image Asset</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -300,10 +300,13 @@
                                     <% fleet.forEach(f => { %>
                                         <tr>
                                             <td><strong><%= f.name %></strong></td>
+                                            <td><span class="badge" style="background-color: var(--bg-main); color: var(--primary-dark); font-size: 0.75rem;"><%= f.category || 'Buses & Coaches' %></span></td>
                                             <td><span style="font-size: 0.85rem;"><i class="fa fa-users"></i> <%= f.capacity %> | <i class="fa fa-suitcase"></i> <%= f.bags %></span></td>
                                             <td><strong style="color: var(--accent-gold-hover); font-size: 0.95rem;"><%= f.starting_rate %></strong></td>
-                                            <td><span style="font-size: 0.8rem; font-family: monospace; color: var(--text-muted);"><%= f.image %></span></td>
-                                            <td><a href="/admin/fleet/edit/<%= f.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit Spec</a></td>
+                                            <td>
+                                                <a href="/admin/fleet/edit/<%= f.slug %>" class="action-link"><i class="fa fa-edit"></i> Edit</a>
+                                                <a href="/admin/fleet/delete/<%= f.slug %>" class="action-link" style="color: #9b1c1c; margin-left: 8px;" onclick="return confirm('Delete vehicle spec permanently?')"><i class="fa fa-trash"></i> Delete</a>
+                                            </td>
                                         </tr>
                                     <% }) %>
                                 </tbody>
@@ -370,6 +373,56 @@
                                 <textarea id="new_service_desc" name="body_content" class="form-field" rows="3" placeholder="Describe the service details..." required></textarea>
                             </div>
                             <button type="submit" class="btn-primary" style="display: block; width: 100%;">Create Service Category <i class="fa fa-plus-circle" style="margin-left: 5px;"></i></button>
+                        </form>
+                    </div>
+
+                    <!-- DYNAMIC ADD VEHICLE FORM -->
+                    <div class="admin-card" style="margin-top: 30px;">
+                        <h3>Add New Fleet Vehicle</h3>
+                        <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Add a new vehicle to the fleet database to display on the website and dynamically calculate quotes.</p>
+                        <form action="/admin/fleet/add" method="post">
+                            <div class="form-group">
+                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_name">Vehicle Name</label>
+                                <input type="text" id="new_vehicle_name" name="name" class="form-field" placeholder="e.g. 56 Passenger Coach Bus" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_category">Fleet Category</label>
+                                <select id="new_vehicle_category" name="category" class="form-field" required>
+                                    <option value="Buses & Coaches">Buses & Coaches</option>
+                                    <option value="Minibuses & Shuttles">Minibuses & Shuttles</option>
+                                    <option value="Executive Vans">Executive Vans</option>
+                                    <option value="Executive SUVs">Executive SUVs</option>
+                                    <option value="Luxury Sedans">Luxury Sedans</option>
+                                    <option value="Luxury Limousines">Luxury Limousines</option>
+                                </select>
+                            </div>
+                            <div class="form-row" style="display: flex; gap: 15px; margin-bottom: 15px;">
+                                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                    <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_capacity">Seating Capacity</label>
+                                    <input type="number" id="new_vehicle_capacity" name="capacity" class="form-field" placeholder="e.g. 56" required>
+                                </div>
+                                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                    <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_bags">Luggage Capacity</label>
+                                    <input type="number" id="new_vehicle_bags" name="bags" class="form-field" placeholder="e.g. 56" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_rate">Starting Rate</label>
+                                <input type="text" id="new_vehicle_rate" name="price" class="form-field" placeholder="e.g. $150/hr" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_image">Vehicle Image Path (Optional)</label>
+                                <input type="text" id="new_vehicle_image" name="image" class="form-field" placeholder="e.g. /images/fleet_coach_50.png">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_desc">Vehicle Description</label>
+                                <textarea id="new_vehicle_desc" name="body_content" class="form-field" rows="3" placeholder="Describe the vehicle amenities, luggage, space details..." required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_details">Included Amenities (One per line)</label>
+                                <textarea id="new_vehicle_details" name="details" class="form-field" rows="3" placeholder="Wi-Fi&#10;Power Outlets&#10;Certified Chauffeur"></textarea>
+                            </div>
+                            <button type="submit" class="btn-primary" style="display: block; width: 100%;">Create Fleet Vehicle <i class="fa fa-plus-circle" style="margin-left: 5px;"></i></button>
                         </form>
                     </div>
                 </div>

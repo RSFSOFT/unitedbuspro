@@ -96,6 +96,10 @@
                                 <label class="form-label" for="bags">Luggage Capacity</label>
                                 <input type="text" id="bags" name="bags" class="form-field" value="<%= item.bags %>" placeholder="e.g. 56 Bags" required>
                             </div>
+                            <div class="form-group">
+                                <label class="form-label" for="category">Fleet Category</label>
+                                <input type="text" id="category" name="category" class="form-field" value="<%= item.category || 'Buses & Coaches' %>" placeholder="e.g. Buses & Coaches" required>
+                            </div>
                         <% } %>
                         <div class="form-group">
                             <label class="form-label" for="price">Starting Rate</label>

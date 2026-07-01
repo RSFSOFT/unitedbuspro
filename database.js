@@ -695,6 +695,25 @@ module.exports = {
         }
         return null;
     },
+    createVehicle: (vehicleData) => {
+        const db = readDb();
+        const newId = db.fleet.length > 0 ? Math.max(...db.fleet.map(f => f.id)) + 1 : 1;
+        const newVehicle = {
+            id: newId,
+            slug: vehicleData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+            ...vehicleData,
+            image: vehicleData.image || '/images/fleet_sprinter.png',
+            amenities: JSON.stringify(vehicleData.amenities || [])
+        };
+        db.fleet.push(newVehicle);
+        writeDb(db);
+        return newVehicle;
+    },
+    deleteVehicle: (slug) => {
+        const db = readDb();
+        db.fleet = db.fleet.filter(f => f.slug !== slug);
+        writeDb(db);
+    },
 
     // Inquiries
     getInquiries: () => readDb().inquiries.sort((a, b) => b.id - a.id),

@@ -945,6 +945,7 @@ app.get('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
             bags: vehicle.bags,
             price: vehicle.starting_rate,
             body_content: vehicle.description,
+            category: vehicle.category || 'Buses & Coaches',
             details: vehicle.parsedAmenities
         },
         actionUrl: `/admin/fleet/edit/${req.params.slug}`,
@@ -953,7 +954,7 @@ app.get('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
 });
 
 app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
-    const { name, capacity, bags, price, body_content, details } = req.body;
+    const { name, capacity, bags, price, body_content, details, category } = req.body;
 
     let parsedAmenities = [];
     if (details) {
@@ -970,10 +971,40 @@ app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
         bags,
         starting_rate: price,
         description: body_content,
+        category: category || 'Buses & Coaches',
         amenities: JSON.stringify(parsedAmenities)
     });
 
     res.redirect(`/admin/fleet/edit/${req.params.slug}?success=1`);
+});
+
+// Add New Vehicle Spec
+app.post('/admin/fleet/add', requireAuth, (req, res) => {
+    const { name, capacity, bags, price, body_content, category, image, details } = req.body;
+    
+    let parsedAmenities = [];
+    if (details) {
+        parsedAmenities = details.split('\n').map(d => d.trim()).filter(Boolean);
+    }
+
+    db.createVehicle({
+        name,
+        capacity: parseInt(capacity) || 0,
+        bags: parseInt(bags) || 0,
+        starting_rate: price || '$0/hr',
+        description: body_content || '',
+        category: category || 'Buses & Coaches',
+        image: image || '/images/fleet_sprinter.png',
+        amenities: parsedAmenities
+    });
+
+    res.redirect('/admin/dashboard?success=vehicle_added');
+});
+
+// Delete Vehicle Spec
+app.get('/admin/fleet/delete/:slug', requireAuth, (req, res) => {
+    db.deleteVehicle(req.params.slug);
+    res.redirect('/admin/dashboard?success=vehicle_deleted');
 });
 
 // Edit City Details
