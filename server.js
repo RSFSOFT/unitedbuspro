@@ -946,6 +946,7 @@ app.get('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
             price: vehicle.starting_rate,
             body_content: vehicle.description,
             category: vehicle.category || 'Buses & Coaches',
+            image: vehicle.image,
             details: vehicle.parsedAmenities
         },
         actionUrl: `/admin/fleet/edit/${req.params.slug}`,
@@ -954,7 +955,7 @@ app.get('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
 });
 
 app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
-    const { name, capacity, bags, price, body_content, details, category } = req.body;
+    const { name, capacity, bags, price, body_content, details, category, image } = req.body;
 
     let parsedAmenities = [];
     if (details) {
@@ -972,6 +973,7 @@ app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
         starting_rate: price,
         description: body_content,
         category: category || 'Buses & Coaches',
+        image: image || '/images/fleet_sprinter.png',
         amenities: JSON.stringify(parsedAmenities)
     });
 

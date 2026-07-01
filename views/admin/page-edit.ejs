@@ -100,6 +100,10 @@
                                 <label class="form-label" for="category">Fleet Category</label>
                                 <input type="text" id="category" name="category" class="form-field" value="<%= item.category || 'Buses & Coaches' %>" placeholder="e.g. Buses & Coaches" required>
                             </div>
+                            <div class="form-group">
+                                <label class="form-label" for="image">Vehicle Image Path</label>
+                                <input type="text" id="image" name="image" class="form-field" value="<%= item.image %>" placeholder="e.g. /images/fleet_coach_50.png" required>
+                            </div>
                         <% } %>
                         <div class="form-group">
                             <label class="form-label" for="price">Starting Rate</label>
