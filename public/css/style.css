@@ -312,15 +312,15 @@ header {
    ========================================== */
 .hero-section {
     position: relative;
-    background-color: var(--primary-dark);
-    background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-bg.webp?v=4');
+    background-color: #f9fafb;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.93) 0%, rgba(243, 244, 246, 0.88) 100%), url('/images/hero-bg.webp?v=4');
     background-size: cover;
     background-position: center;
     padding: 120px 30px 100px;
     min-height: 80vh;
     display: flex;
     align-items: center;
-    color: #ffffff;
+    color: var(--primary-dark);
 }
 
 .hero-grid {
@@ -336,7 +336,7 @@ header {
 .hero-content h1 {
     font-size: 3.5rem;
     font-weight: 800;
-    color: #ffffff;
+    color: var(--primary-dark);
     margin-bottom: 20px;
     letter-spacing: -1px;
 }
@@ -347,24 +347,23 @@ header {
 
 .hero-content p {
     font-size: 1.15rem;
-    color: var(--text-light);
-    opacity: 0.9;
+    color: var(--text-muted);
+    opacity: 0.95;
     margin-bottom: 30px;
-    max-width: 550px;
+    line-height: 1.6;
 }
 
 /* Quote Calculator Card */
 .quote-card {
-    background-color: rgba(255, 255, 255, 0.08);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-lg);
     padding: 30px;
     box-shadow: var(--shadow-xl);
 }
 
 .quote-card h3 {
-    color: #ffffff;
+    color: var(--primary-dark);
     font-size: 1.5rem;
     margin-bottom: 25px;
     text-align: center;
@@ -385,9 +384,9 @@ header {
 
 .form-group label {
     display: block;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--text-light);
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--primary-light);
     margin-bottom: 8px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -395,11 +394,11 @@ header {
 
 .form-input {
     width: 100%;
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    background-color: #ffffff;
+    border: 1.5px solid rgba(0, 0, 0, 0.15);
     border-radius: var(--radius-md);
     padding: 12px 16px;
-    color: #ffffff;
+    color: var(--primary-dark);
     font-family: var(--font-body);
     font-size: 1rem;
     outline: none;
@@ -408,13 +407,13 @@ header {
 
 .form-input:focus {
     border-color: var(--accent-gold);
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.25);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
 }
 
 .form-input option {
-    background-color: var(--primary-dark);
-    color: #ffffff;
+    background-color: #ffffff;
+    color: var(--primary-dark);
 }
 
 /* Multi-step controls */
@@ -555,10 +554,12 @@ header {
 
 /* Trust Bar / Stats */
 .trust-bar {
-    background-color: var(--primary-medium);
-    color: #ffffff;
+    background-color: #f3f4f6;
+    color: var(--primary-dark);
     padding: 40px 30px;
     text-align: center;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
 .stats-grid {
@@ -575,7 +576,7 @@ header {
 }
 
 .stat-item p {
-    color: var(--text-light);
+    color: var(--text-muted);
     font-size: 0.95rem;
     font-weight: 600;
     text-transform: uppercase;

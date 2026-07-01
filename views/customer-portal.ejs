@@ -180,6 +180,25 @@
                         Don't have a portal account? <a href="#customerSignupForm" style="color: var(--accent-gold-hover); font-weight: 700; text-decoration: underline;">Register here</a>
                     </p>
                     
+                    <p style="margin-top: 8px; font-size: 0.85rem; text-align: center;">
+                        <a href="#" id="forgotUsernameLink" style="color: var(--accent-gold); text-decoration: underline; font-weight: 600;">Forgot Username?</a>
+                    </p>
+
+                    <!-- FORGOT USERNAME SECTION -->
+                    <div id="forgotUsernameSection" style="display: none; margin-top: 20px; padding: 20px; background-color: var(--bg-main); border-radius: var(--radius-sm); border: 1px solid rgba(0,0,0,0.06);">
+                        <h4 style="font-size: 1.05rem; margin-bottom: 10px; color: var(--primary-dark);"><i class="fa fa-question-circle" style="color: var(--accent-gold); margin-right: 5px;"></i> Recover Username</h4>
+                        <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px;">Enter the phone number associated with your bookings to find your username.</p>
+                        <form id="forgotUsernameForm">
+                            <div class="form-group" style="margin-bottom: 15px;">
+                                <label class="form-label" style="font-size: 0.75rem; color: var(--primary-dark);" for="forgot_phone">Phone Number</label>
+                                <input type="tel" id="forgot_phone" class="form-field" placeholder="e.g. (202) 555-0199" required>
+                            </div>
+                            <button type="submit" class="btn-primary" style="display: block; width: 100%; text-align: center; padding: 10px; font-size: 0.85rem;">Find Username</button>
+                            <button type="button" id="cancelForgotUsernameBtn" class="btn-secondary" style="display: block; width: 100%; text-align: center; padding: 8px; font-size: 0.85rem; margin-top: 8px; border-color: rgba(0,0,0,0.15); color: var(--text-muted);">Cancel</button>
+                        </form>
+                        <div id="forgotUsernameResult" style="display: none; margin-top: 15px; padding: 10px; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; text-align: center; border: 1px solid transparent;"></div>
+                    </div>
+                    
                     <div style="margin-top: 35px; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.05); text-align: center;">
                         <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Simulation Testing Quick-Logins</h4>
                         <p style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4;">Use any of the simulated customer accounts in the database. For example:</p>
@@ -361,6 +380,67 @@ document.addEventListener('DOMContentLoaded', function() {
                 alertBox.style.color = '#9b1c1c';
                 alertBox.innerText = 'Network connection failed.';
                 alertBox.style.display = 'block';
+            });
+        });
+    }
+
+    // Forgot Username Toggler
+    const forgotUsernameLink = document.getElementById('forgotUsernameLink');
+    const forgotSection = document.getElementById('forgotUsernameSection');
+    const cancelForgotBtn = document.getElementById('cancelForgotUsernameBtn');
+    if (forgotUsernameLink && forgotSection) {
+        forgotUsernameLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            forgotSection.style.display = forgotSection.style.display === 'none' ? 'block' : 'none';
+        });
+    }
+    if (cancelForgotBtn && forgotSection) {
+        cancelForgotBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            forgotSection.style.display = 'none';
+        });
+    }
+
+    // Forgot Username Submit Handler
+    const forgotForm = document.getElementById('forgotUsernameForm');
+    if (forgotForm) {
+        forgotForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const phone = document.getElementById('forgot_phone').value.trim();
+            const resultBox = document.getElementById('forgotUsernameResult');
+            
+            resultBox.style.display = 'none';
+            resultBox.innerText = '';
+            
+            fetch('/api/customer/forgot-username', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    resultBox.style.backgroundColor = '#def7ec';
+                    resultBox.style.color = '#03543f';
+                    resultBox.style.borderColor = '#319795';
+                    const list = data.usernames.join(', ');
+                    resultBox.innerHTML = `Found Account Username(s):<br><strong style="font-size: 1rem; margin-top: 5px; display: inline-block; word-break: break-all;">${list}</strong>`;
+                    resultBox.style.display = 'block';
+                } else {
+                    resultBox.style.backgroundColor = '#fde8e8';
+                    resultBox.style.color = '#9b1c1c';
+                    resultBox.style.borderColor = '#f56565';
+                    resultBox.innerText = 'Error: ' + data.message;
+                    resultBox.style.display = 'block';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                resultBox.style.backgroundColor = '#fde8e8';
+                resultBox.style.color = '#9b1c1c';
+                resultBox.style.borderColor = '#f56565';
+                resultBox.innerText = 'Connection error.';
+                resultBox.style.display = 'block';
             });
         });
     }

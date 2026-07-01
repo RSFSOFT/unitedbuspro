@@ -140,7 +140,7 @@ function seedData(db) {
             { name: 'Airport Charter Bus Rentals', category: 'Bus Charters', desc: 'Seamless group transfers to and from major airports with ample luggage space and flight tracking.' },
             { name: 'Camps', category: 'Bus Charters', desc: 'Safe, reliable transportation for summer camps, outdoor excursions, and recreational trips.' },
             { name: 'Corporate Events', category: 'Bus Charters', desc: 'Premium executive coaches for company events, executive dinners, team outings, and conventions.' },
-            { name: 'K12 Schools', category: 'Bus Charters', desc: 'DOT-certified bus charters for field trips, sports matches, and school events with vetted drivers.' },
+            { name: 'K12 Schools', category: 'Bus Charters', desc: 'Safe and reliable bus charters for field trips, sports matches, and school events with vetted drivers.' },
             { name: 'Nonprofits', category: 'Bus Charters', desc: 'Budget-friendly travel rates for community centers, volunteer groups, and charitable events.' },
             { name: 'Religious Groups', category: 'Bus Charters', desc: 'Dependable transportation for church youth retreats, conferences, and community gatherings.' },
             { name: 'Sports Teams', category: 'Bus Charters', desc: 'Large athletic travel logistics with under-coach compartments for heavy gear and spacious reclining seating.' },
@@ -424,7 +424,7 @@ function seedData(db) {
                 title: `${s.name} Charter Bus Rentals & Group Transportation | United Bus Pro`,
                 meta_description: `Rent a charter bus, minibus, or executive shuttle van in ${s.name}. Reliable group transportation for corporate events, tours, and weddings statewide.`,
                 header_h1: `Statewide Charter Bus Rentals in ${s.name}`,
-                body_content: `United Bus Pro provides executive-class group travel, minibus rentals, and custom shuttle networks across the state of ${s.name}. We support corporate meetings, university shuttle routes, athletic event transfers, and private group excursions with our modern, DOT-compliant fleet. From local daily shuttles to long-distance motorcoach travel, our logistics coordinators make group transportation simple.`,
+                body_content: `United Bus Pro provides executive-class group travel, minibus rentals, and custom shuttle networks across the state of ${s.name}. We support corporate meetings, university shuttle routes, athletic event transfers, and private group excursions with our modern, premium fleet. From local daily shuttles to long-distance motorcoach travel, our logistics coordinators make group transportation simple.`,
                 popular_destinations: s.destinations
             };
         });
@@ -881,6 +881,26 @@ module.exports = {
             return { id: customer.id, username: customer.username, plan: customer.plan };
         }
         return null;
+    },
+    findCustomerUsernamesByPhone: (phone) => {
+        const db = readDb();
+        const cleanPhone = (phone || '').replace(/\D/g, '');
+        if (!db.inquiries || !db.customerUsers || !cleanPhone) return [];
+        
+        const matchingInquiries = db.inquiries.filter(inq => {
+            const inqPhoneClean = (inq.phone || '').replace(/\D/g, '');
+            return inqPhoneClean === cleanPhone && inq.email;
+        });
+        
+        if (matchingInquiries.length === 0) return [];
+        
+        const uniqueEmails = [...new Set(matchingInquiries.map(inq => inq.email.toLowerCase()))];
+        
+        const registeredUsernames = db.customerUsers
+            .filter(cu => uniqueEmails.includes(cu.username.toLowerCase()))
+            .map(cu => cu.username);
+            
+        return registeredUsernames;
     },
     getCustomerUsers: () => readDb().customerUsers || [],
     payInquiry: (id) => {

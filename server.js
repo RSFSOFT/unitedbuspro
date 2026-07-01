@@ -322,7 +322,7 @@ app.get('/about', (req, res) => {
             price: 'Quality Transportation',
             parsedDetails: [
                 'State-of-the-art commercial charter coaches and minibuses',
-                'Comprehensive DOT certification and commercial insurance coverage',
+                'Comprehensive safety screening and premium commercial insurance coverage',
                 'Pre-trip vehicle diagnostics and rigorous sanitation checks',
                 '24/7 client dispatch and dedicated logistics planners'
             ]
@@ -623,22 +623,37 @@ app.post('/api/book', (req, res) => {
             <p>If you have any questions or require immediate support, please contact our dispatch team at (202) 991-1203.</p>
         `;
 
+        // Dispatch emails independently to prevent cross-failure
         try {
-            transporter.sendMail({
-                from: settings.smtp_from || settings.smtp_user,
-                to: settings.smtp_to || settings.email,
-                subject: `New Lead: ${name} - ${passengers} Pax`,
-                html: htmlToOwner
-            });
+            // 1. Company notification email
+            try {
+                transporter.sendMail({
+                    from: settings.smtp_from || settings.smtp_user,
+                    to: settings.smtp_to || settings.email,
+                    subject: `New Lead: ${name} - ${passengers} Pax`,
+                    html: htmlToOwner
+                }, (err, info) => {
+                    if (err) console.error('SMTP Company Notification Error:', err);
+                });
+            } catch (errComp) {
+                console.error('SMTP Company dispatch failed:', errComp);
+            }
 
-            transporter.sendMail({
-                from: settings.smtp_from || settings.smtp_user,
-                to: email,
-                subject: `We Have Received Your Quote Request - United Bus Pro`,
-                html: htmlToClient
-            });
-        } catch (mailErr) {
-            console.error('SMTP Mail notification failure:', mailErr);
+            // 2. Customer confirmation email
+            try {
+                transporter.sendMail({
+                    from: settings.smtp_from || settings.smtp_user,
+                    to: email,
+                    subject: `We Have Received Your Quote Request - United Bus Pro`,
+                    html: htmlToClient
+                }, (err, info) => {
+                    if (err) console.error('SMTP Customer Confirmation Error:', err);
+                });
+            } catch (errCust) {
+                console.error('SMTP Customer dispatch failed:', errCust);
+            }
+        } catch (errGlobal) {
+            console.error('SMTP Mailer setup error:', errGlobal);
         }
     }
 
@@ -716,6 +731,20 @@ app.post('/api/customer/login', (req, res) => {
         res.status(400).json({ success: false, message: 'Invalid customer credentials.' });
     }
 });
+
+// Customer Forgot Username API
+app.post('/api/customer/forgot-username', (req, res) => {
+    const { phone } = req.body;
+    if (!phone) {
+        return res.status(400).json({ success: false, message: 'Phone number is required.' });
+    }
+    const usernames = db.findCustomerUsernamesByPhone(phone);
+    if (usernames.length === 0) {
+        return res.status(400).json({ success: false, message: 'No registered accounts found matching that phone number.' });
+    }
+    res.status(200).json({ success: true, usernames });
+});
+
 
 // Customer Secure Payment Simulation API
 app.post('/api/customer/pay/:id', (req, res) => {

@@ -9,15 +9,14 @@
 </script>
 
 <!-- HERO SECTION & QUOTE CALCULATOR -->
-<section class="hero-section" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('/images/hero-home.webp?v=4'); background-size: cover; background-position: center;">
+<section class="hero-section" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.93) 0%, rgba(243, 244, 246, 0.88) 100%), url('/images/hero-home.webp?v=4'); background-size: cover; background-position: center;">
     <div class="hero-grid">
         <div class="hero-content">
             <h1>Reliable <span>Group Travel</span> Made Simple</h1>
             <p>United's premium self-service charter bus and shuttle portal. Compare vehicle classes, calculate instant estimates, and reserve passenger logistics in under 60 seconds.</p>
-            <div style="display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap;">
-                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-shield-alt" style="color: var(--accent-gold); margin-right: 5px;"></i> DOT Certified</span>
-                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-user-check" style="color: var(--accent-gold); margin-right: 5px;"></i> Insured Chauffeurs</span>
-                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(255,255,255,0.1); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-clock" style="color: var(--accent-gold); margin-right: 5px;"></i> 24/7 Dispatch Desk</span>
+            <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap;">
+                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(0,0,0,0.05); color: var(--primary-dark); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-user-check" style="color: var(--accent-gold); margin-right: 5px;"></i> Insured Chauffeurs</span>
+                <span style="font-size: 0.9rem; font-weight: 700; background-color: rgba(0,0,0,0.05); color: var(--primary-dark); padding: 6px 12px; border-radius: var(--radius-sm);"><i class="fa fa-clock" style="color: var(--accent-gold); margin-right: 5px;"></i> 24/7 Dispatch Desk</span>
             </div>
         </div>
 
@@ -281,7 +280,7 @@
 </section>
 
 <!-- SERVICES SECTION -->
-<section class="section-padding">
+<section class="section-padding" style="background-color: #ffffff; border-top: 1px solid rgba(0,0,0,0.02);">
     <div class="container">
         <div class="section-header">
             <h2>Group Transportation Services</h2>
@@ -289,46 +288,38 @@
         </div>
         
         <div class="services-grid">
-            <% services.forEach(s => { %>
-                <%
-                  const imageMap = {
-                      'airport-charter-bus-rentals': '/images/service-airport.webp',
-                      'camps': '/images/service-school.png',
-                      'corporate-events': '/images/service-corporate.webp',
-                      'k12-schools': '/images/service-school.png',
-                      'nonprofits': '/images/service-community.webp',
-                      'religious-groups': '/images/service-community.webp',
-                      'sports-teams': '/images/service-sports.webp',
-                      'travel-agents': '/images/service-corporate.webp',
-                      'university-bus-rentals': '/images/service-school.png',
-                      'airport-shuttles': '/images/service-airport.webp',
-                      'campus-shuttles': '/images/service-school.png',
-                      'construction-shuttles': '/images/service-emergency.webp',
-                      'employee-shuttles': '/images/service-corporate.webp',
-                      'hospitals--healthcare': '/images/service-emergency.webp',
-                      'k12-districts': '/images/service-school.png',
-                      'wedding-shuttles': '/images/service-wedding.webp',
-                      'emergency-response': '/images/service-emergency.webp',
-                      'government--military': '/images/service-corporate.webp',
-                      'large-events': '/images/service-corporate.webp',
-                      'private-events': '/images/service-wedding.webp',
-                      'trade-shows--conferences': '/images/service-corporate.webp',
-                      'workforce-contingency': '/images/service-emergency.webp',
-                      'dc-monuments-private-tour': '/images/hero-location-dc.webp',
-                      'mount-vernon-historical-tour': '/images/hero-location-dc.webp',
-                      'smithsonian-museum-tour': '/images/hero-location-dc.webp'
-                  };
-                  
-                  const sSlug = (s.slug || '').toLowerCase().trim();
-                  let serviceBg = '/images/hero-bg.webp'; // Fallback
-                  if (imageMap[sSlug]) {
-                      serviceBg = imageMap[sSlug];
-                  }
-                %>
-                <div class="service-card" style="display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-md); background-color: var(--primary-light); border: 1px solid rgba(255,255,255,0.05); height: 100%; padding: 0;">
+            <% 
+            const featuredSlugs = [
+                'corporate-events', 
+                'wedding-shuttles', 
+                'airport-charter-bus-rentals', 
+                'k12-schools', 
+                'sports-teams', 
+                'dc-monuments-private-tour'
+            ];
+            const featuredServices = services.filter(s => featuredSlugs.includes(s.slug.toLowerCase().trim()));
+            featuredServices.sort((a, b) => featuredSlugs.indexOf(a.slug.toLowerCase().trim()) - featuredSlugs.indexOf(b.slug.toLowerCase().trim()));
+
+            featuredServices.forEach(s => { 
+                const imageMap = {
+                    'airport-charter-bus-rentals': '/images/service-airport.webp',
+                    'corporate-events': '/images/service-corporate.webp',
+                    'k12-schools': '/images/service-school.png',
+                    'sports-teams': '/images/service-sports.webp',
+                    'wedding-shuttles': '/images/service-wedding.webp',
+                    'dc-monuments-private-tour': '/images/hero-location-dc.webp'
+                };
+                
+                const sSlug = (s.slug || '').toLowerCase().trim();
+                let serviceBg = '/images/hero-bg.webp'; // Fallback
+                if (imageMap[sSlug]) {
+                    serviceBg = imageMap[sSlug];
+                }
+            %>
+                <div class="service-card" onclick="window.location.href='/services/<%= s.slug %>'" style="cursor: pointer; display: flex; flex-direction: column; overflow: hidden; border-radius: var(--radius-md); background-color: #ffffff; border: 1.5px solid rgba(0,0,0,0.08); height: 100%; padding: 0; box-shadow: var(--shadow-sm); transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseover="this.style.transform='translateY(-5px)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.transform='none'; this.style.boxShadow='var(--shadow-sm)'">
                     <div style="height: 160px; overflow: hidden; position: relative;">
                         <img src="<%= serviceBg %>?v=4" style="width: 100%; height: 100%; object-fit: cover;" alt="<%= s.name %>">
-                        <div style="position: absolute; top: 15px; left: 15px; background-color: var(--accent-gold); color: var(--primary-dark); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.3);">
+                        <div style="position: absolute; top: 15px; left: 15px; background-color: var(--accent-gold); color: var(--primary-dark); width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 700; box-shadow: 0 4px 10px rgba(0,0,0,0.12);">
                             <% if(s.slug.includes('charter')) { %>
                                 <i class="fa fa-bus-alt"></i>
                             <% } else if(s.slug.includes('corporate') || s.slug.includes('employee') || s.slug.includes('workforce')) { %>
@@ -342,12 +333,15 @@
                             <% } %>
                         </div>
                     </div>
-                    <div style="padding: 20px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
+                    <div style="padding: 22px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between;">
                         <div>
-                            <h3 style="font-size: 1.2rem; margin-bottom: 10px; color: #ffffff; text-align: left; font-family: var(--font-display);"><%= s.name %></h3>
-                            <p style="font-size: 0.9rem; color: var(--text-light); opacity: 0.85; line-height: 1.5; margin-bottom: 15px; text-align: left;"><%= s.description %></p>
+                            <h3 style="font-size: 1.25rem; margin-bottom: 10px; color: var(--primary-dark); text-align: left; font-family: var(--font-heading); font-weight: 700;"><%= s.name %></h3>
+                            <p style="font-size: 0.92rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 15px; text-align: left;"><%= s.description %></p>
                         </div>
-                        <a href="/services/<%= s.slug %>" class="action-link" style="font-size: 0.9rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px;">Learn More <i class="fa fa-chevron-right" style="font-size: 0.75rem;"></i></a>
+                        <div style="margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 15px; display: flex; flex-direction: column; gap: 8px;">
+                            <a href="/services/<%= s.slug %>" class="action-link" style="font-size: 0.88rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; color: var(--primary-light);">Learn More <i class="fa fa-chevron-right" style="font-size: 0.7rem;"></i></a>
+                            <a href="/reservation?service=<%= s.slug %>" onclick="event.stopPropagation();" style="color: var(--accent-gold-hover); font-weight: 700; text-decoration: underline; font-size: 0.88rem; display: inline-block; text-align: left; margin-top: 5px;">Click here to get your FREE Quote. <i class="fa fa-arrow-right" style="font-size: 0.75rem;"></i></a>
+                        </div>
                     </div>
                 </div>
             <% }) %>
@@ -428,12 +422,12 @@
     </div>
 </section>
 
-<!-- NATIONWIDE SERVICES AREA -->
+<!-- SERVICE AREAS SECTION -->
 <section class="section-padding" style="background-color: var(--bg-main); border-top: 1px solid rgba(0,0,0,0.05); padding-bottom: 0;">
     <div class="container">
         <div class="section-header">
-            <h2>Nationwide Service Coverage</h2>
-            <p>Providing premium group charter bus rentals and continuous shuttle networks across major cities and states.</p>
+            <h2>Our Service Areas</h2>
+            <p>United Bus Pro provides charter coach rentals and corporate shuttle logistics across our dedicated service areas. Explore states and popular cities served by our local hubs.</p>
         </div>
 
         <div class="responsive-grid-1-2" style="margin-top: 40px;">
@@ -457,6 +451,18 @@
                 </div>
             </div>
         </div>
+    </div>
+</section>
+
+<!-- 24/7 AVAILABILITY CONTACT SECTION -->
+<section class="section-padding" style="background-color: var(--accent-gold-light); border-top: 1px solid rgba(0,0,0,0.05); text-align: center; padding: 60px 20px;">
+    <div class="container" style="max-width: 700px;">
+        <span style="font-size: 0.9rem; font-weight: 700; background-color: var(--accent-gold); color: var(--primary-dark); padding: 5px 12px; border-radius: var(--radius-sm); text-transform: uppercase; letter-spacing: 1px; display: inline-block; margin-bottom: 15px;"><i class="fa fa-clock"></i> 24/7 Availability</span>
+        <h2 style="font-size: 2.2rem; margin-bottom: 15px; color: var(--primary-dark);">We Are Available 24/7/365</h2>
+        <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.6; margin-bottom: 25px;">Need immediate dispatch assistance, group route adjustments, or last-minute reservation changes? Contact our coordinators at any time.</p>
+        <a href="tel:<%= settings.phone || '(202) 991-1203' %>" class="btn-primary" style="display: inline-flex; align-items: center; gap: 10px; font-size: 1.4rem; padding: 15px 35px; background-color: var(--primary-dark); color: #ffffff; border: none; border-radius: var(--radius-sm); text-decoration: none; font-weight: 700; box-shadow: var(--shadow-lg); transition: all 0.3s ease;">
+            <i class="fa fa-phone-alt" style="color: var(--accent-gold);"></i> <%= settings.phone || '(202) 991-1203' %>
+        </a>
     </div>
 </section>
 
