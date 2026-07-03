@@ -16,12 +16,15 @@
         <h2>United<span>BusPro</span> CMS</h2>
         
         <% if (error) { %>
-            <div style="background-color: #fde8e8; color: #9b1c1c; padding: 12px; border-radius: var(--radius-sm); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600;">
+            <div id="loginErrorBox" style="background-color: #fde8e8; color: #9b1c1c; padding: 12px; border-radius: var(--radius-sm); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600;">
                 <i class="fa fa-exclamation-circle" style="margin-right: 5px;"></i> <%= error %>
             </div>
         <% } %>
 
-        <form action="/admin/login" method="post">
+        <div id="resetAlertBox" style="display: none; padding: 12px; border-radius: var(--radius-sm); font-size: 0.9rem; margin-bottom: 20px; font-weight: 600; text-align: center; border: 1px solid transparent;"></div>
+
+        <!-- Admin Login Form -->
+        <form id="adminLoginForm" action="/admin/login" method="post">
             <div class="form-group">
                 <label for="username"><i class="fa fa-user"></i> Username</label>
                 <input type="text" id="username" name="username" class="form-input" placeholder="Enter username" required>
@@ -30,9 +33,127 @@
                 <label for="password"><i class="fa fa-lock"></i> Password</label>
                 <input type="password" id="password" name="password" class="form-input" placeholder="Enter password" required>
             </div>
-            <button type="submit" class="btn-primary" style="display: block; width: 100%; padding: 12px 0; font-size: 1.05rem;">Access Dashboard <i class="fa fa-sign-in-alt" style="margin-left: 5px;"></i></button>
+            <button type="submit" class="btn-primary" style="display: block; width: 100%; padding: 12px 0; font-size: 1.05rem; font-weight: 700;">Access Dashboard <i class="fa fa-sign-in-alt" style="margin-left: 5px;"></i></button>
         </form>
+
+        <!-- Admin Forgot/Reset Password Link -->
+        <p style="text-align: center; margin-top: 20px;">
+            <a href="#" id="toggleResetBtn" style="color: var(--accent-gold); font-size: 0.88rem; font-weight: 600; text-decoration: underline; cursor: pointer;">Forgot / Change Password?</a>
+        </p>
+
+        <!-- Admin Password Reset Panel (Initially Hidden) -->
+        <div id="resetPasswordContainer" style="display: none; margin-top: 25px; padding-top: 25px; border-top: 1px solid rgba(0,0,0,0.08);">
+            <h4 style="font-size: 1.1rem; color: var(--primary-dark); margin-bottom: 15px; font-family: var(--font-heading); font-weight: 700;"><i class="fa fa-key" style="color: var(--accent-gold); margin-right: 5px;"></i> Reset Admin Credentials</h4>
+            
+            <form id="adminResetForm">
+                <div class="form-group">
+                    <label for="reset_username"><i class="fa fa-user"></i> Admin Username</label>
+                    <input type="text" id="reset_username" class="form-input" placeholder="e.g. admin" required>
+                </div>
+                <div class="form-group">
+                    <label for="reset_email"><i class="fa fa-envelope"></i> Configured Company Email</label>
+                    <input type="email" id="reset_email" class="form-input" placeholder="e.g. info@unitedlimopro.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="reset_phone"><i class="fa fa-phone"></i> Configured Company Phone</label>
+                    <input type="tel" id="reset_phone" class="form-input" placeholder="e.g. (202) 991-1203" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label for="reset_new_password"><i class="fa fa-lock"></i> Create New Password</label>
+                    <input type="password" id="reset_new_password" class="form-input" placeholder="At least 6 characters" required>
+                </div>
+                
+                <button type="submit" class="btn-primary" style="display: block; width: 100%; padding: 10px 0; font-size: 0.95rem; font-weight: 700; margin-bottom: 10px;">Update Password <i class="fa fa-check-circle" style="margin-left: 5px;"></i></button>
+                <button type="button" id="cancelResetBtn" class="btn-secondary" style="display: block; width: 100%; padding: 10px 0; font-size: 0.95rem; font-weight: 700; border-color: rgba(0,0,0,0.12); color: var(--text-muted);">Cancel</button>
+            </form>
+        </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const toggleResetBtn = document.getElementById('toggleResetBtn');
+            const cancelResetBtn = document.getElementById('cancelResetBtn');
+            const resetContainer = document.getElementById('resetPasswordContainer');
+            const loginForm = document.getElementById('adminLoginForm');
+            const resetForm = document.getElementById('adminResetForm');
+            const alertBox = document.getElementById('resetAlertBox');
+            
+            if (toggleResetBtn && resetContainer) {
+                toggleResetBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isHidden = resetContainer.style.display === 'none';
+                    resetContainer.style.display = isHidden ? 'block' : 'none';
+                    if (isHidden) {
+                        loginForm.style.display = 'none';
+                        toggleResetBtn.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (cancelResetBtn && resetContainer) {
+                cancelResetBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    resetContainer.style.display = 'none';
+                    loginForm.style.display = 'block';
+                    toggleResetBtn.style.display = 'inline-block';
+                    alertBox.style.display = 'none';
+                });
+            }
+            
+            if (resetForm) {
+                resetForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const username = document.getElementById('reset_username').value.trim();
+                    const verificationEmail = document.getElementById('reset_email').value.trim();
+                    const verificationPhone = document.getElementById('reset_phone').value.trim();
+                    const newPassword = document.getElementById('reset_new_password').value;
+                    
+                    alertBox.style.display = 'none';
+                    alertBox.innerText = '';
+                    
+                    fetch('/api/admin/reset-password', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username, verificationEmail, verificationPhone, newPassword })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.success) {
+                            alertBox.style.backgroundColor = '#def7ec';
+                            alertBox.style.color = '#03543f';
+                            alertBox.style.borderColor = '#319795';
+                            alertBox.innerText = data.message;
+                            alertBox.style.display = 'block';
+                            
+                            // Reset inputs
+                            resetForm.reset();
+                            
+                            // Switch back to login form after 2 seconds
+                            setTimeout(() => {
+                                resetContainer.style.display = 'none';
+                                loginForm.style.display = 'block';
+                                toggleResetBtn.style.display = 'inline-block';
+                                alertBox.style.display = 'none';
+                            }, 2200);
+                        } else {
+                            alertBox.style.backgroundColor = '#fde8e8';
+                            alertBox.style.color = '#9b1c1c';
+                            alertBox.style.borderColor = '#f56565';
+                            alertBox.innerText = 'Error: ' + data.message;
+                            alertBox.style.display = 'block';
+                        }
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        alertBox.style.backgroundColor = '#fde8e8';
+                        alertBox.style.color = '#9b1c1c';
+                        alertBox.style.borderColor = '#f56565';
+                        alertBox.innerText = 'Network connection failed.';
+                        alertBox.style.display = 'block';
+                    });
+                });
+            }
+        });
+    </script>
 </body>
 </html>

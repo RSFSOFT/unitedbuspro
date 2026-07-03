@@ -590,6 +590,25 @@ module.exports = {
         }
         return false;
     },
+    resetAdminPassword: (username, verificationEmail, verificationPhone, newPassword) => {
+        const db = readDb();
+        const userIdx = db.users.findIndex(u => u.username === username);
+        const settings = db.settings || {};
+        
+        const cleanInputPhone = (verificationPhone || '').replace(/\D/g, '');
+        const cleanDbPhone = (settings.phone || '').replace(/\D/g, '');
+        
+        const isEmailMatch = (settings.email || '').toLowerCase().trim() === verificationEmail.toLowerCase().trim();
+        const isPhoneMatch = cleanInputPhone === cleanDbPhone && cleanDbPhone.length > 0;
+        
+        if (userIdx > -1 && isEmailMatch && isPhoneMatch) {
+            const salt = bcrypt.genSaltSync(10);
+            db.users[userIdx].password = bcrypt.hashSync(newPassword, salt);
+            writeDb(db);
+            return true;
+        }
+        return false;
+    },
 
     // Settings
     getSettings: () => {

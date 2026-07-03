@@ -801,6 +801,20 @@ app.post('/admin/login', (req, res) => {
     }
 });
 
+app.post('/api/admin/reset-password', (req, res) => {
+    const { username, verificationEmail, verificationPhone, newPassword } = req.body;
+    if (!username || !verificationEmail || !verificationPhone || !newPassword) {
+        return res.status(400).json({ success: false, message: 'All verification fields and the new password are required.' });
+    }
+    
+    const success = db.resetAdminPassword(username, verificationEmail, verificationPhone, newPassword);
+    if (success) {
+        res.status(200).json({ success: true, message: 'Admin password updated successfully. You can now sign in.' });
+    } else {
+        res.status(400).json({ success: false, message: 'Verification failed. Admin username, company email, or phone number do not match settings.' });
+    }
+});
+
 // Logout
 app.get('/admin/logout', (req, res) => {
     req.session.destroy();
