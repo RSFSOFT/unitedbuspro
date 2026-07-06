@@ -197,11 +197,21 @@ header {
     max-width: 1100px;
     z-index: 1000;
 }
-
 .company-dropdown {
     min-width: 240px !important;
 }
 
+/* Bridge the hover gap between nav links and dropdown containers */
+.dropdown-menu::before,
+.mega-menu::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    right: 0;
+    height: 25px;
+    background: transparent;
+}
 @media (min-width: 1151px) {
     .nav-item-dropdown:hover .dropdown-menu,
     .nav-item-dropdown:hover .mega-menu {
