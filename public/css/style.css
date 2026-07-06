@@ -1014,7 +1014,7 @@ footer {
     left: 0;
     right: 0;
     height: 60px;
-    z-index: 999;
+    z-index: 99999;
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.15);
 }
 
@@ -1027,6 +1027,11 @@ footer {
     color: #ffffff;
     font-weight: 700;
     font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+.sticky-btn-left:hover {
+    background-color: var(--accent-gold-hover);
+    color: #ffffff;
 }
 
 .sticky-btn-right {
@@ -1039,6 +1044,11 @@ footer {
     font-weight: 700;
     font-size: 1rem;
     border-left: 1px solid rgba(255, 255, 255, 0.1);
+    transition: background-color 0.2s ease;
+}
+.sticky-btn-right:hover {
+    background-color: var(--primary-light);
+    color: #ffffff;
 }
 
 /* ==========================================
@@ -1088,10 +1098,12 @@ footer {
         grid-template-columns: 1fr;
     }
     
+}
+
+@media (max-width: 991px) {
     .mobile-sticky-bar {
         display: flex;
     }
-    
     body {
         padding-bottom: 60px; /* Leave room for mobile sticky bar */
     }
