@@ -79,8 +79,18 @@
         </a>
     </div>
 
+    <!-- FLOATING DESKTOP CTA WIDGET -->
+    <div class="desktop-floating-cta">
+        <a href="tel:<%= (settings.phone || '+18004958017').replace(/[^0-9+]/g, '') %>" class="floating-cta-btn phone-btn" title="Call Us 24/7">
+            <i class="fa fa-phone"></i> <span>Call Us 24/7</span>
+        </a>
+        <a href="/reservation" class="floating-cta-btn quote-btn" title="Get Instant Quote">
+            <i class="fa fa-calendar-alt"></i> <span>Book Online</span>
+        </a>
+    </div>
+
     <!-- Cookie Consent Banner -->
-    <div id="cookieConsentBanner" style="display: none; position: fixed; bottom: 85px; left: 20px; right: 20px; z-index: 99999; background: #ffffff; border: 1.5px solid rgba(0, 0, 0, 0.08); padding: 20px; border-radius: var(--radius-md); box-shadow: var(--shadow-xl); max-width: 500px; flex-direction: column; gap: 12px; font-family: var(--font-body);">
+    <div id="cookieConsentBanner" style="display: none;">
         <h4 style="font-size: 1.05rem; color: var(--primary-dark); font-family: var(--font-heading); font-weight: 700; margin: 0; display: flex; align-items: center; gap: 8px;"><i class="fa fa-cookie-bite" style="color: var(--accent-gold); font-size: 1.2rem;"></i> Cookie Consent & Visitor Tracking</h4>
         <p style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; margin: 0;">We use cookies to analyze web traffic, personalize quotes, and optimize page performance. By clicking "Accept All", you consent to our website analytics and visitor tracking.</p>
         <div style="display: flex; gap: 10px; margin-top: 5px;">

@@ -59,6 +59,98 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    // 1c. DESKTOP DROPDOWN HOVER & CLICK CONTROLLER (with closing buffer to prevent jumpiness)
+    const desktopDropdowns = document.querySelectorAll('.nav-item-dropdown');
+    desktopDropdowns.forEach(item => {
+        let closeTimeout = null;
+        
+        const openMenu = () => {
+            if (closeTimeout) clearTimeout(closeTimeout);
+            
+            // Close other dropdowns first
+            desktopDropdowns.forEach(other => {
+                if (other !== item) {
+                    other.classList.remove('desktop-open');
+                    const otherMenu = other.querySelector('.dropdown-menu, .mega-menu');
+                    if (otherMenu) {
+                        otherMenu.style.display = 'none';
+                    }
+                }
+            });
+            
+            item.classList.add('desktop-open');
+            const menu = item.querySelector('.dropdown-menu, .mega-menu');
+            if (menu) {
+                menu.style.display = 'block';
+            }
+        };
+        
+        const closeMenu = () => {
+            if (closeTimeout) clearTimeout(closeTimeout);
+            closeTimeout = setTimeout(() => {
+                item.classList.remove('desktop-open');
+                const menu = item.querySelector('.dropdown-menu, .mega-menu');
+                if (menu) {
+                    menu.style.display = 'none';
+                }
+            }, 250); // 250ms buffer prevents accidental hover loss closures
+        };
+        
+        // Hover listeners
+        item.addEventListener('mouseenter', function() {
+            if (window.innerWidth > 1150) openMenu();
+        });
+        item.addEventListener('mouseleave', function() {
+            if (window.innerWidth > 1150) closeMenu();
+        });
+        
+        // Also listen inside dropdown menu to prevent gap issues
+        const menu = item.querySelector('.dropdown-menu, .mega-menu');
+        if (menu) {
+            menu.addEventListener('mouseenter', function() {
+                if (window.innerWidth > 1150) openMenu();
+            });
+            menu.addEventListener('mouseleave', function() {
+                if (window.innerWidth > 1150) closeMenu();
+            });
+        }
+        
+        // Click listener to toggle on desktop (e.g. touch/hybrid screen, or direct clicks)
+        const link = item.querySelector('.nav-link');
+        if (link) {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth > 1150) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const menu = item.querySelector('.dropdown-menu, .mega-menu');
+                    if (menu) {
+                        const isVisible = menu.style.display === 'block';
+                        if (isVisible) {
+                            closeMenu();
+                        } else {
+                            openMenu();
+                        }
+                    }
+                }
+            });
+        }
+    });
+    
+    // Click outside closes desktop dropdowns
+    document.addEventListener('click', function(e) {
+        if (window.innerWidth > 1150) {
+            desktopDropdowns.forEach(item => {
+                if (!item.contains(e.target)) {
+                    item.classList.remove('desktop-open');
+                    const menu = item.querySelector('.dropdown-menu, .mega-menu');
+                    if (menu) {
+                        menu.style.display = 'none';
+                    }
+                }
+            });
+        }
+    });
+
     // 2. MULTI-STEP INSTANT QUOTE CALCULATOR WITH INTERACTIVE MAP
     const form = document.getElementById('quoteCalculatorForm');
     if (form) {

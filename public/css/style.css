@@ -212,10 +212,11 @@ header {
     height: 25px;
     background: transparent;
 }
+
 @media (min-width: 1151px) {
-    .nav-item-dropdown:hover .dropdown-menu,
-    .nav-item-dropdown:hover .mega-menu {
-        display: block;
+    .nav-item-dropdown.desktop-open > .dropdown-menu,
+    .nav-item-dropdown.desktop-open > .mega-menu {
+        display: block !important;
         animation: menuFadeIn var(--transition-fast) ease-out;
     }
 }
@@ -1379,6 +1380,84 @@ footer {
     }
     .responsive-grid-1-2 {
         grid-template-columns: 1fr;
+    }
+}
+
+/* Floating Desktop CTA Widget styles */
+.desktop-floating-cta {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    z-index: 99998;
+}
+
+@media (max-width: 991px) {
+    .desktop-floating-cta {
+        display: none !important;
+    }
+}
+
+.floating-cta-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: #ffffff !important;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+}
+
+.floating-cta-btn.phone-btn {
+    background-color: #059669; /* Emerald green for call actions */
+}
+.floating-cta-btn.phone-btn:hover {
+    background-color: #047857;
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(5, 150, 105, 0.3);
+}
+
+.floating-cta-btn.quote-btn {
+    background-color: var(--accent-gold);
+}
+.floating-cta-btn.quote-btn:hover {
+    background-color: var(--accent-gold-hover);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.3);
+}
+
+/* Cookie Consent Banner Styling */
+#cookieConsentBanner {
+    position: fixed;
+    bottom: 85px;
+    left: 20px;
+    right: 20px;
+    z-index: 99999;
+    background: #ffffff;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
+    padding: 20px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-xl);
+    max-width: 500px;
+    flex-direction: column;
+    gap: 12px;
+    font-family: var(--font-body);
+}
+
+@media (min-width: 992px) {
+    #cookieConsentBanner {
+        bottom: 30px;
+        left: 30px;
+        right: auto;
+        width: 420px;
     }
 }
 
