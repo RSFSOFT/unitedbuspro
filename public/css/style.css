@@ -459,8 +459,8 @@ header {
 
 /* Quote Results display */
 .quote-result-box {
-    background-color: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: #fef3c7;
+    border: 1.5px solid rgba(217, 119, 6, 0.2);
     border-radius: var(--radius-md);
     padding: 20px;
     margin-bottom: 25px;
@@ -470,7 +470,7 @@ header {
 .quote-result-price {
     font-size: 2.2rem;
     font-weight: 800;
-    color: var(--accent-gold-light);
+    color: var(--accent-gold-hover);
     margin: 10px 0;
 }
 
@@ -488,7 +488,7 @@ header {
     left: 0;
     right: 0;
     height: 3px;
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(0, 0, 0, 0.08);
     z-index: 1;
     transform: translateY(-50%);
 }
@@ -497,9 +497,9 @@ header {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background-color: var(--primary-medium);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    color: rgba(255, 255, 255, 0.6);
+    background-color: #f3f4f6;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    color: #4b5563;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -514,7 +514,7 @@ header {
     background-color: var(--accent-gold);
     border-color: var(--accent-gold);
     color: #ffffff;
-    box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
+    box-shadow: 0 0 10px rgba(217, 119, 6, 0.25);
 }
 
 .progress-step.completed {
@@ -523,7 +523,7 @@ header {
     color: var(--accent-gold);
 }
 
-/* ==========================================
+/* ==========================================================
    FEATURED/SECTIONS STYLING
    ========================================== */
 .section-padding {
@@ -1113,8 +1113,8 @@ footer {
 }
 
 .trip-type-card {
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1.5px solid rgba(255, 255, 255, 0.15);
+    background-color: #f9fafb;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-md);
     padding: 20px 10px;
     text-align: center;
@@ -1128,14 +1128,14 @@ footer {
 }
 
 .trip-type-card:hover {
-    border-color: rgba(255, 255, 255, 0.4);
-    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(0, 0, 0, 0.2);
+    background-color: #f3f4f6;
 }
 
 .trip-type-card.active {
     border-color: var(--accent-gold);
-    background-color: rgba(217, 119, 6, 0.15);
-    box-shadow: 0 0 10px rgba(217, 119, 6, 0.25);
+    background-color: #fef3c7;
+    box-shadow: 0 0 10px rgba(217, 119, 6, 0.15);
 }
 
 .trip-type-card i {
@@ -1146,7 +1146,7 @@ footer {
 .trip-type-card span {
     font-weight: 700;
     font-size: 0.9rem;
-    color: #ffffff;
+    color: var(--primary-dark);
 }
 
 /* Sidebar and layout within calculator step */
@@ -1161,8 +1161,8 @@ footer {
 
 .quote-card-sidebar {
     width: 220px;
-    background-color: rgba(255, 255, 255, 0.03);
-    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: transparent;
+    border-left: 1.5px solid rgba(0, 0, 0, 0.08);
     padding-left: 20px;
     display: flex;
     flex-direction: column;
@@ -1186,14 +1186,14 @@ footer {
 
 .help-box p {
     font-size: 0.8rem;
-    color: var(--text-light);
-    opacity: 0.8;
+    color: var(--text-muted);
+    opacity: 0.9;
     line-height: 1.4;
 }
 
 .whats-this-link {
     font-size: 0.8rem;
-    color: var(--accent-gold-light);
+    color: var(--accent-gold-hover);
     text-decoration: underline;
     cursor: pointer;
     margin-left: 8px;
@@ -1206,8 +1206,8 @@ footer {
 
 /* Itinerary Step Styling */
 .itinerary-item {
-    background-color: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background-color: #f9fafb;
+    border: 1.5px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-md);
     padding: 15px;
     margin-bottom: 15px;
@@ -1237,7 +1237,7 @@ footer {
 .itinerary-item-title {
     font-weight: 700;
     font-size: 0.95rem;
-    color: #ffffff;
+    color: var(--primary-dark);
     margin-bottom: 10px;
     display: flex;
     align-items: center;
@@ -1302,27 +1302,27 @@ footer {
     gap: 8px;
     font-size: 0.82rem;
     font-weight: 700;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--text-muted);
     margin-bottom: 20px;
     text-transform: uppercase;
     letter-spacing: 1px;
 }
 
 .breadcrumbs a {
-    color: rgba(255, 255, 255, 0.85);
+    color: var(--primary-light);
     transition: var(--transition-fast);
 }
 
 .breadcrumbs a:hover {
-    color: var(--accent-gold);
+    color: var(--accent-gold-hover);
 }
 
 .breadcrumbs .separator {
-    color: rgba(255, 255, 255, 0.45);
+    color: rgba(0, 0, 0, 0.25);
 }
 
 .breadcrumbs .current {
-    color: var(--accent-gold);
+    color: var(--accent-gold-hover);
 }
 
 /* Hide Leaflet map attribution for cleaner look */

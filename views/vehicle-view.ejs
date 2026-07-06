@@ -1,17 +1,16 @@
 <%- include('partials/header') %>
 
 <!-- VEHICLE HERO -->
-<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.8) 100%), url('<%= vehicle.image %>?v=4'); background-size: cover; background-position: center; color: #ffffff; padding: 100px 30px 80px;">
+<section class="section-padding" style="background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(243, 244, 246, 0.90) 100%), url('<%= vehicle.image %>?v=4'); background-size: cover; background-position: center; color: var(--primary-dark); padding: 100px 30px 80px;">
     <div class="container">
         <div class="breadcrumbs">
             <a href="/"><i class="fa fa-home"></i> Home</a>
             <span class="separator">/</span>
-            <a href="/fleet" style="color: rgba(255,255,255,0.7);">Our Fleet</a>
+            <a href="/fleet">Our Fleet</a>
             <span class="separator">/</span>
             <span class="current"><%= vehicle.name %></span>
         </div>
-        <h1 style="color: #ffffff; font-size: 2.8rem;"><%= vehicle.name %> Specifications</h1>
-    </div>
+        <h1 style="color: var(--primary-dark); font-size: 2.8rem;"><%= vehicle.name %> Specifications</h1>
 </section>
 
 <!-- VEHICLE DETAIL CONTENT -->

@@ -33,8 +33,8 @@
                     <form id="quoteCalculatorForm">
                         <!-- STEP 1: TRIP TYPE -->
                         <div class="quote-form-step active" id="step1">
-                            <h3 style="margin-bottom: 5px;"><%= settings.quote_title || "Let's get you a quote" %></h3>
-                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;"><%= settings.step1_title || "What kind of trip is this?" %></p>
+                            <h3 style="margin-bottom: 5px; color: var(--primary-dark); font-weight: 700;"><%= settings.quote_title || "Let's get you a quote" %></h3>
+                            <p style="color: var(--text-muted); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.9;"><%= settings.step1_title || "What kind of trip is this?" %></p>
                             
                             <div class="trip-type-grid">
                                 <div class="trip-type-card active" data-type="one-way">
@@ -59,9 +59,8 @@
 
                         <!-- STEP 2: ITINERARY -->
                         <div class="quote-form-step" id="step2">
-                            <h3 style="margin-bottom: 5px;"><%= settings.step2_title || "Where are we picking you up?" %></h3>
-                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Add your trip itinerary below.</p>
-                            
+                            <h3 style="margin-bottom: 5px; color: var(--primary-dark); font-weight: 700;"><%= settings.step2_title || "Where are we picking you up?" %></h3>
+                            <p style="color: var(--text-muted); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.9;">Add your trip itinerary below.</p>
                             <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Itinerary</h5>
                             
                             <!-- Pickup Item -->
@@ -121,7 +120,7 @@
                             </div>
 
                             <!-- Trip Details Block (Large Event Only) -->
-                            <div id="tripDetailsBlock" style="display: none; margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px;">
+                            <div id="tripDetailsBlock" style="display: none; margin-top: 20px; border-top: 1.5px solid rgba(0,0,0,0.06); padding-top: 20px;">
                                 <h5 style="color: var(--accent-gold); text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; margin-bottom: 15px;">Trip Details</h5>
                                 
                                 <div class="form-group">
@@ -145,10 +144,10 @@
                                 <div class="form-group" style="margin-bottom: 0;">
                                     <label style="font-size: 0.75rem; margin-bottom: 8px; display: block;">Special Requirements - Optional</label>
                                     <div style="display: flex; flex-direction: column; gap: 8px;">
-                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
                                             <input type="checkbox" id="req_accessible" style="width: 16px; height: 16px; accent-color: var(--accent-gold);"> Accessible vehicle
                                         </label>
-                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-light); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
+                                        <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); cursor: pointer; text-transform: none; font-weight: normal; letter-spacing: normal;">
                                             <input type="checkbox" id="req_ada" style="width: 16px; height: 16px; accent-color: var(--accent-gold);"> ADA standards compliant
                                         </label>
                                     </div>
@@ -163,9 +162,8 @@
 
                         <!-- STEP 3: CONTACT & DETAILS -->
                         <div class="quote-form-step" id="step3">
-                            <h3 style="margin-bottom: 5px;"><%= settings.step3_title || "Who is coordinating this trip?" %></h3>
-                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Enter passenger count and contact information.</p>
-                            
+                            <h3 style="margin-bottom: 5px; color: var(--primary-dark); font-weight: 700;"><%= settings.step3_title || "Who is coordinating this trip?" %></h3>
+                            <p style="color: var(--text-muted); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.9;">Enter passenger count and contact information.</p>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="passengers"><i class="fa fa-users"></i> Passenger Count</label>
@@ -203,16 +201,16 @@
                                 <button type="button" class="btn-primary" id="btnNext3">Calculate Quote <i class="fa fa-calculator"></i></button>
                             </div>
                         </div>
-
+                        
                         <!-- STEP 4: ESTIMATED QUOTE DISPLAY & SUBMIT -->
                         <div class="quote-form-step" id="step4">
-                            <h3 style="margin-bottom: 5px;"><%= settings.step4_title || "Your Instant Estimate" %></h3>
-                            <p style="color: var(--text-light); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.8;">Review estimate and reserve vehicle logistics.</p>
+                            <h3 style="margin-bottom: 5px; color: var(--primary-dark); font-weight: 700;"><%= settings.step4_title || "Your Instant Estimate" %></h3>
+                            <p style="color: var(--text-muted); text-align: center; font-size: 0.9rem; margin-bottom: 25px; opacity: 0.9;">Review estimate and reserve vehicle logistics.</p>
                             
                             <div class="quote-result-box">
-                                <p id="recommendedVehicle">Recommended Vehicle: Charter Bus</p>
+                                <p id="recommendedVehicle" style="color: var(--primary-dark); font-weight: 700; margin-bottom: 5px;">Recommended Vehicle: Charter Bus</p>
                                 <div class="quote-result-price" id="quoteEstPrice">$0.00</div>
-                                <p style="font-size: 0.8rem; color: var(--text-light); opacity: 0.8;">Estimated rate. Includes driver, fuel, tolls. Excludes parking and gratuity.</p>
+                                <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; opacity: 0.9;">Estimated rate. Includes driver, fuel, tolls. Excludes parking and gratuity.</p>
                             </div>
                             
                             <div class="form-group">
@@ -230,26 +228,26 @@
 
                 <!-- Persistent Sidebar (Interactive map and Dynamic Trip Overview details) -->
                 <div class="quote-card-sidebar">
-                    <div id="calculatorMap" style="height: 180px; border-radius: var(--radius-md); border: 1.5px solid rgba(255,255,255,0.15); margin-bottom: 20px; background-color: rgba(0,0,0,0.2); overflow: hidden; position: relative; z-index: 1;"></div>
+                    <div id="calculatorMap" style="height: 180px; border-radius: var(--radius-md); border: 1.5px solid rgba(0,0,0,0.08); margin-bottom: 20px; background-color: #f3f4f6; overflow: hidden; position: relative; z-index: 1;"></div>
                     
                     <div class="help-box">
-                        <h4><i class="fa fa-map-marker-alt"></i> Trip Overview</h4>
-                        <div id="liveOverviewDetails" style="font-size: 0.82rem; color: var(--text-light); line-height: 1.5; display: flex; flex-direction: column; gap: 8px;">
-                            <div><strong>Trip Type:</strong> <span id="overviewTripType">One Way</span></div>
-                            <div id="overviewPickupBlock"><strong>Pickup:</strong> <span id="overviewPickup">-</span></div>
-                            <div id="overviewStopBlock" style="display: none;"><strong>Stop:</strong> <span id="overviewStop">-</span></div>
-                            <div id="overviewDropoffBlock"><strong>Dropoff:</strong> <span id="overviewDropoff">-</span></div>
-                            <div id="overviewPassengersBlock"><strong>Passengers:</strong> <span id="overviewPassengers">-</span></div>
-                            <div id="overviewRecommendationBlock" style="display: none; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
-                                <strong>Recommendation:</strong>
-                                <div id="overviewRecommendation" style="color: var(--accent-gold-light); font-weight: 700; margin-top: 2px;">-</div>
+                        <h4 style="color: var(--accent-gold); font-size: 0.9rem; margin-bottom: 12px; font-weight: 700;"><i class="fa fa-map-marker-alt"></i> Trip Overview</h4>
+                        <div id="liveOverviewDetails" style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; display: flex; flex-direction: column; gap: 8px;">
+                            <div><strong style="color: var(--primary-dark);">Trip Type:</strong> <span id="overviewTripType">One Way</span></div>
+                            <div id="overviewPickupBlock"><strong style="color: var(--primary-dark);">Pickup:</strong> <span id="overviewPickup">-</span></div>
+                            <div id="overviewStopBlock" style="display: none;"><strong style="color: var(--primary-dark);">Stop:</strong> <span id="overviewStop">-</span></div>
+                            <div id="overviewDropoffBlock"><strong style="color: var(--primary-dark);">Dropoff:</strong> <span id="overviewDropoff">-</span></div>
+                            <div id="overviewPassengersBlock"><strong style="color: var(--primary-dark);">Passengers:</strong> <span id="overviewPassengers">-</span></div>
+                            <div id="overviewRecommendationBlock" style="display: none; border-top: 1.5px solid rgba(0,0,0,0.06); padding-top: 8px;">
+                                <strong style="color: var(--primary-dark);">Recommendation:</strong>
+                                <div id="overviewRecommendation" style="color: var(--accent-gold-hover); font-weight: 700; margin-top: 2px;">-</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="help-box" style="margin-top: 20px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
-                        <h4><i class="fa fa-info-circle"></i> Need Help?</h4>
-                        <p id="tripTypeHelpText" style="font-size: 0.8rem; line-height: 1.4; opacity: 0.85; margin: 0;"><%= settings.help_text_oneway || "A one way trip is pretty self-explanatory." %></p>
+                    <div class="help-box" style="margin-top: 20px; border-top: 1.5px solid rgba(0,0,0,0.06); padding-top: 15px;">
+                        <h4 style="color: var(--accent-gold); font-size: 0.9rem; margin-bottom: 12px; font-weight: 700;"><i class="fa fa-info-circle"></i> Need Help?</h4>
+                        <p id="tripTypeHelpText" style="font-size: 0.8rem; line-height: 1.4; color: var(--text-muted); opacity: 0.95; margin: 0;"><%= settings.help_text_oneway || "A one way trip is pretty self-explanatory." %></p>
                     </div>
                 </div>
             </div>
