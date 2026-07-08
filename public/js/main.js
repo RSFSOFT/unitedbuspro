@@ -330,12 +330,228 @@ document.addEventListener('DOMContentLoaded', function () {
             dropoffIcon = createMarkerIcon('#D97706', 1);
         }
 
+        const AMERICAN_AIRPORTS = [
+            { code: 'ATL', name: 'Hartsfield-Jackson Atlanta International Airport (ATL)', city: 'Atlanta, GA', coords: [33.6407, -84.4277] },
+            { code: 'LAX', name: 'Los Angeles International Airport (LAX)', city: 'Los Angeles, CA', coords: [33.9416, -118.4085] },
+            { code: 'ORD', name: 'O\'Hare International Airport (ORD)', city: 'Chicago, IL', coords: [41.9742, -87.9073] },
+            { code: 'DFW', name: 'Dallas/Fort Worth International Airport (DFW)', city: 'Dallas, TX', coords: [32.8998, -97.0403] },
+            { code: 'DEN', name: 'Denver International Airport (DEN)', city: 'Denver, CO', coords: [39.8561, -104.6737] },
+            { code: 'JFK', name: 'John F. Kennedy International Airport (JFK)', city: 'New York, NY', coords: [40.6413, -73.7781] },
+            { code: 'SFO', name: 'San Francisco International Airport (SFO)', city: 'San Francisco, CA', coords: [37.6213, -122.3790] },
+            { code: 'SEA', name: 'Seattle-Tacoma International Airport (SEA)', city: 'Seattle, WA', coords: [47.4502, -122.3088] },
+            { code: 'MCO', name: 'Orlando International Airport (MCO)', city: 'Orlando, FL', coords: [28.4312, -81.3081] },
+            { code: 'LAS', name: 'Harry Reid International Airport (LAS)', city: 'Las Vegas, NV', coords: [36.0840, -115.1537] },
+            { code: 'EWR', name: 'Newark Liberty International Airport (EWR)', city: 'Newark, NJ', coords: [40.6895, -74.1745] },
+            { code: 'CLT', name: 'Charlotte Douglas International Airport (CLT)', city: 'Charlotte, NC', coords: [35.2144, -80.9473] },
+            { code: 'PHX', name: 'Phoenix Sky Harbor International Airport (PHX)', city: 'Phoenix, AZ', coords: [33.4343, -112.0083] },
+            { code: 'IAH', name: 'George Bush Intercontinental Airport (IAH)', city: 'Houston, TX', coords: [29.9902, -95.3368] },
+            { code: 'MIA', name: 'Miami International Airport (MIA)', city: 'Miami, FL', coords: [25.7959, -80.2870] },
+            { code: 'BOS', name: 'Boston Logan International Airport (BOS)', city: 'Boston, MA', coords: [42.3656, -71.0096] },
+            { code: 'MSP', name: 'Minneapolis-Saint Paul International Airport (MSP)', city: 'Minneapolis, MN', coords: [44.8848, -93.2223] },
+            { code: 'DTW', name: 'Detroit Metropolitan Airport (DTW)', city: 'Detroit, MI', coords: [42.2162, -83.3554] },
+            { code: 'FLL', name: 'Fort Lauderdale-Hollywood International Airport (FLL)', city: 'Fort Lauderdale, FL', coords: [26.0742, -80.1506] },
+            { code: 'PHL', name: 'Philadelphia International Airport (PHL)', city: 'Philadelphia, PA', coords: [39.8729, -75.2437] },
+            { code: 'LGA', name: 'LaGuardia Airport (LGA)', city: 'New York, NY', coords: [40.7769, -73.8740] },
+            { code: 'BWI', name: 'Baltimore/Washington International Thurgood Marshall Airport (BWI)', city: 'Baltimore, MD', coords: [39.1774, -76.6684] },
+            { code: 'SLC', name: 'Salt Lake City International Airport (SLC)', city: 'Salt Lake City, UT', coords: [40.7899, -111.9791] },
+            { code: 'SAN', name: 'San Diego International Airport (SAN)', city: 'San Diego, CA', coords: [32.7338, -117.1933] },
+            { code: 'IAD', name: 'Washington Dulles International Airport (IAD)', city: 'Washington, DC', coords: [38.9531, -77.4565] },
+            { code: 'DCA', name: 'Ronald Reagan Washington National Airport (DCA)', city: 'Washington, DC', coords: [38.8512, -77.0377] },
+            { code: 'TPA', name: 'Tampa International Airport (TPA)', city: 'Tampa, FL', coords: [27.9772, -82.5311] },
+            { code: 'MDW', name: 'Chicago Midway International Airport (MDW)', city: 'Chicago, IL', coords: [41.7868, -87.7524] },
+            { code: 'PDX', name: 'Portland International Airport (PDX)', city: 'Portland, OR', coords: [45.5898, -122.5951] },
+            { code: 'HNL', name: 'Daniel K. Inouye International Airport (HNL)', city: 'Honolulu, HI', coords: [21.3187, -157.9225] },
+            { code: 'BNA', name: 'Nashville International Airport (BNA)', city: 'Nashville, TN', coords: [36.1263, -86.6774] },
+            { code: 'AUS', name: 'Austin-Bergstrom International Airport (AUS)', city: 'Austin, TX', coords: [30.1975, -97.6664] },
+            { code: 'DAL', name: 'Dallas Love Field (DAL)', city: 'Dallas, TX', coords: [32.8471, -96.8518] },
+            { code: 'STL', name: 'St. Louis Lambert International Airport (STL)', city: 'St. Louis, MO', coords: [38.7477, -90.3597] },
+            { code: 'HOU', name: 'William P. Hobby Airport (HOU)', city: 'Houston, TX', coords: [29.6454, -95.2789] },
+            { code: 'IND', name: 'Indianapolis International Airport (IND)', city: 'Indianapolis, IN', coords: [39.7173, -86.2944] },
+            { code: 'CVG', name: 'Cincinnati/Northern Kentucky International Airport (CVG)', city: 'Cincinnati, OH', coords: [39.0461, -84.6621] },
+            { code: 'PIT', name: 'Pittsburgh International Airport (PIT)', city: 'Pittsburgh, PA', coords: [40.4915, -80.2329] },
+            { code: 'CLE', name: 'Cleveland Hopkins International Airport (CLE)', city: 'Cleveland, OH', coords: [41.4108, -81.8498] },
+            { code: 'CMH', name: 'John Glenn Columbus International Airport (CMH)', city: 'Columbus, OH', coords: [39.9980, -82.8919] },
+            { code: 'RDU', name: 'Raleigh-Durham International Airport (RDU)', city: 'Raleigh, NC', coords: [35.8801, -78.7880] },
+            { code: 'MCI', name: 'Kansas City International Airport (MCI)', city: 'Kansas City, MO', coords: [39.2976, -94.7139] },
+            { code: 'SMF', name: 'Sacramento International Airport (SMF)', city: 'Sacramento, CA', coords: [38.6954, -121.5908] },
+            { code: 'SJC', name: 'San Jose International Airport (SJC)', city: 'San Jose, CA', coords: [37.3618, -121.9290] },
+            { code: 'SNA', name: 'John Wayne Airport (SNA)', city: 'Santa Ana, CA', coords: [33.6762, -117.8675] },
+            { code: 'SAT', name: 'San Antonio International Airport (SAT)', city: 'San Antonio, TX', coords: [29.5337, -98.4697] },
+            { code: 'RSW', name: 'Southwest Florida International Airport (RSW)', city: 'Fort Myers, FL', coords: [26.5362, -81.7551] },
+            { code: 'PBI', name: 'Palm Beach International Airport (PBI)', city: 'West Palm Beach, FL', coords: [26.6832, -80.0956] },
+            { code: 'BDL', name: 'Bradley International Airport (BDL)', city: 'Hartford, CT', coords: [41.9389, -72.6832] },
+            { code: 'BUF', name: 'Buffalo Niagara International Airport (BUF)', city: 'Buffalo, NY', coords: [42.9405, -78.7322] },
+            { code: 'OAK', name: 'Oakland International Airport (OAK)', city: 'Oakland, CA', coords: [37.7126, -122.2197] },
+            { code: 'MEM', name: 'Memphis International Airport (MEM)', city: 'Memphis, TN', coords: [35.0424, -89.9767] },
+            { code: 'ABQ', name: 'Albuquerque International Sunport (ABQ)', city: 'Albuquerque, NM', coords: [35.0402, -106.6092] },
+            { code: 'OKC', name: 'Will Rogers World Airport (OKC)', city: 'Oklahoma City, OK', coords: [35.3931, -97.6007] },
+            { code: 'TUL', name: 'Tulsa International Airport (TUL)', city: 'Tulsa, OK', coords: [36.1984, -95.8881] },
+            { code: 'PVD', name: 'T. F. Green International Airport (PVD)', city: 'Providence, RI', coords: [41.7240, -71.4278] },
+            { code: 'CHS', name: 'Charleston International Airport (CHS)', city: 'Charleston, SC', coords: [32.8986, -80.0405] },
+            { code: 'SAV', name: 'Savannah/Hilton Head International Airport (SAV)', city: 'Savannah, GA', coords: [32.1276, -81.2021] },
+            { code: 'ORF', name: 'Norfolk International Airport (ORF)', city: 'Norfolk, VA', coords: [36.8946, -76.2012] },
+            { code: 'RIC', name: 'Richmond International Airport (RIC)', city: 'Richmond, VA', coords: [37.5052, -77.3197] },
+            { code: 'SDF', name: 'Louisville Muhammad Ali International Airport (SDF)', city: 'Louisville, KY', coords: [38.1744, -85.7360] },
+            { code: 'LEX', name: 'Blue Grass Airport (LEX)', city: 'Lexington, KY', coords: [38.0365, -84.6059] },
+            { code: 'TYS', name: 'McGhee Tyson Airport (TYS)', city: 'Knoxville, TN', coords: [35.8110, -83.9940] },
+            { code: 'GRR', name: 'Gerald R. Ford International Airport (GRR)', city: 'Grand Rapids, MI', coords: [42.8808, -85.5228] },
+            { code: 'MKE', name: 'Milwaukee Mitchell International Airport (MKE)', city: 'Milwaukee, WI', coords: [42.9472, -87.8967] },
+            { code: 'MSY', name: 'Louis Armstrong New Orleans International Airport (MSY)', city: 'New Orleans, LA', coords: [29.9934, -90.2580] },
+            { code: 'JAX', name: 'Jacksonville International Airport (JAX)', city: 'Jacksonville, FL', coords: [30.4941, -81.6879] },
+            { code: 'SRQ', name: 'Sarasota Bradenton International Airport (SRQ)', city: 'Sarasota, FL', coords: [27.3954, -82.5543] },
+            { code: 'PNS', name: 'Pensacola International Airport (PNS)', city: 'Pensacola, FL', coords: [30.4734, -87.1874] },
+            { code: 'MOB', name: 'Mobile Regional Airport (MOB)', city: 'Mobile, AL', coords: [30.6914, -88.2428] },
+            { code: 'HSV', name: 'Huntsville International Airport (HSV)', city: 'Huntsville, AL', coords: [34.6372, -86.7751] },
+            { code: 'BHM', name: 'Birmingham-Shuttlesworth International Airport (BHM)', city: 'Birmingham, AL', coords: [33.5629, -86.7535] },
+            { code: 'LIT', name: 'Bill and Hillary Clinton National Airport (LIT)', city: 'Little Rock, AR', coords: [34.7294, -92.2247] },
+            { code: 'DSM', name: 'Des Moines International Airport (DSM)', city: 'Des Moines, IA', coords: [41.5340, -93.6631] },
+            { code: 'OMA', name: 'Eppley Airfield (OMA)', city: 'Omaha, NE', coords: [41.3025, -95.8941] },
+            { code: 'ICT', name: 'Wichita Dwight D. Eisenhower National Airport (ICT)', city: 'Wichita, KS', coords: [37.6499, -97.4331] },
+            { code: 'GEG', name: 'Spokane International Airport (GEG)', city: 'Spokane, WA', coords: [47.6186, -117.5338] },
+            { code: 'BOI', name: 'Boise Airport (BOI)', city: 'Boise, ID', coords: [43.5644, -116.2228] },
+            { code: 'HLN', name: 'Helena Regional Airport (HLN)', city: 'Helena, MT', coords: [46.6068, -111.9827] },
+            { code: 'BIL', name: 'Billings Logan International Airport (BIL)', city: 'Billings, MT', coords: [45.8076, -108.5429] },
+            { code: 'RNO', name: 'Reno-Tahoe International Airport (RNO)', city: 'Reno, NV', coords: [39.4985, -119.7681] },
+            { code: 'ANC', name: 'Ted Stevens Anchorage International Airport (ANC)', city: 'Anchorage, AK', coords: [61.1744, -150.0167] },
+            { code: 'FAT', name: 'Fresno Yosemite International Airport (FAT)', city: 'Fresno, CA', coords: [36.7762, -119.7181] },
+            { code: 'PSP', name: 'Palm Springs International Airport (PSP)', city: 'Palm Springs, CA', coords: [33.8292, -116.5065] },
+            { code: 'SBA', name: 'Santa Barbara Municipal Airport (SBA)', city: 'Santa Barbara, CA', coords: [34.4262, -119.8403] },
+            { code: 'TUS', name: 'Tucson International Airport (TUS)', city: 'Tucson, AZ', coords: [32.1161, -110.9410] },
+            { code: 'ELP', name: 'El Paso International Airport (ELP)', city: 'El Paso, TX', coords: [31.8072, -106.3778] },
+            { code: 'LBB', name: 'Lubbuck Preston Smith International Airport (LBB)', city: 'Lubbock, TX', coords: [33.6625, -101.8233] },
+            { code: 'AMA', name: 'Rick Husband Amarillo International Airport (AMA)', city: 'Amarillo, TX', coords: [35.2194, -101.7059] },
+            { code: 'MAF', name: 'Midland International Air and Space Port (MAF)', city: 'Midland, TX', coords: [31.9425, -102.2019] },
+            { code: 'CRP', name: 'Corpus Christi International Airport (CRP)', city: 'Corpus Christi, TX', coords: [27.7704, -97.5011] },
+            { code: 'MFE', name: 'McAllen International Airport (MFE)', city: 'McAllen, TX', coords: [26.1758, -98.2386] },
+            { code: 'BRO', name: 'Brownsville South Padre Island International Airport (BRO)', city: 'Brownsville, TX', coords: [25.9068, -97.4258] }
+        ];
+
         const geocodeCache = {};
+
+        function setupAirportAutocomplete(inputId) {
+            const input = document.getElementById(inputId);
+            if (!input) return;
+
+            const dropdown = document.createElement('div');
+            dropdown.className = 'airport-autocomplete-dropdown';
+            dropdown.style.position = 'absolute';
+            dropdown.style.backgroundColor = '#ffffff';
+            dropdown.style.border = '1px solid rgba(0,0,0,0.1)';
+            dropdown.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            dropdown.style.borderRadius = '6px';
+            dropdown.style.zIndex = '10000';
+            dropdown.style.maxHeight = '250px';
+            dropdown.style.overflowY = 'auto';
+            dropdown.style.display = 'none';
+            
+            if (input.parentElement) {
+                input.parentElement.style.position = 'relative';
+                input.parentElement.appendChild(dropdown);
+            }
+
+            function adjustWidth() {
+                dropdown.style.width = input.offsetWidth + 'px';
+            }
+            adjustWidth();
+            window.addEventListener('resize', adjustWidth);
+
+            input.addEventListener('input', function () {
+                const val = input.value.trim().toLowerCase();
+                if (!val || val.length < 2) {
+                    dropdown.innerHTML = '';
+                    dropdown.style.display = 'none';
+                    return;
+                }
+
+                const matches = AMERICAN_AIRPORTS.filter(a => 
+                    a.code.toLowerCase().includes(val) || 
+                    a.name.toLowerCase().includes(val) || 
+                    a.city.toLowerCase().includes(val)
+                ).slice(0, 8);
+
+                if (matches.length === 0) {
+                    dropdown.innerHTML = '';
+                    dropdown.style.display = 'none';
+                    return;
+                }
+
+                dropdown.innerHTML = '';
+                matches.forEach(a => {
+                    const item = document.createElement('div');
+                    item.className = 'airport-autocomplete-item';
+                    item.style.padding = '10px 14px';
+                    item.style.cursor = 'pointer';
+                    item.style.borderBottom = '1px solid rgba(0,0,0,0.03)';
+                    item.style.transition = 'background 0.15s ease';
+                    item.style.display = 'flex';
+                    item.style.flexDirection = 'column';
+
+                    item.addEventListener('mouseenter', () => {
+                        item.style.backgroundColor = 'rgba(212, 175, 55, 0.08)';
+                    });
+                    item.addEventListener('mouseleave', () => {
+                        item.style.backgroundColor = '';
+                    });
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.className = 'airport-name';
+                    nameSpan.style.fontWeight = '700';
+                    nameSpan.style.color = '#1f2937';
+                    nameSpan.style.fontSize = '0.88rem';
+                    nameSpan.innerText = a.name;
+
+                    const locSpan = document.createElement('span');
+                    locSpan.className = 'airport-location';
+                    locSpan.style.fontSize = '0.75rem';
+                    locSpan.style.color = '#6b7280';
+                    locSpan.style.marginTop = '2px';
+                    locSpan.innerText = a.city;
+
+                    item.appendChild(nameSpan);
+                    item.appendChild(locSpan);
+
+                    item.addEventListener('click', function () {
+                        input.value = a.name;
+                        dropdown.innerHTML = '';
+                        dropdown.style.display = 'none';
+                        input.dispatchEvent(new Event('input'));
+                        input.dispatchEvent(new Event('change'));
+                        if (typeof updateMapAndOverview === 'function') {
+                            updateMapAndOverview();
+                        }
+                    });
+
+                    dropdown.appendChild(item);
+                });
+
+                dropdown.style.display = 'block';
+                adjustWidth();
+            });
+
+            document.addEventListener('click', function (e) {
+                if (e.target !== input && e.target !== dropdown && !dropdown.contains(e.target)) {
+                    dropdown.innerHTML = '';
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
 
         async function geocodeAddress(address) {
             if (!address) return null;
             const clean = address.toLowerCase().trim();
             if (geocodeCache[clean]) return geocodeCache[clean];
+
+            // Check hardcoded American Airports list first
+            const airportMatch = AMERICAN_AIRPORTS.find(a => 
+                clean === a.code.toLowerCase() || 
+                clean === a.name.toLowerCase() || 
+                clean.includes(a.name.toLowerCase()) || 
+                clean.includes('(' + a.code.toLowerCase() + ')')
+            );
+            if (airportMatch) {
+                geocodeCache[clean] = airportMatch.coords;
+                return airportMatch.coords;
+            }
 
             // 1. Check local city coords first
             for (const [cityName, coords] of Object.entries(CITY_COORDS)) {
@@ -628,6 +844,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.addEventListener('change', () => triggerUpdate(true));
             }
         });
+
+        // Setup Airport Autocomplete
+        setupAirportAutocomplete('pickup_address');
+        setupAirportAutocomplete('stop_address');
+        setupAirportAutocomplete('dropoff_address');
 
         [passengersInput, serviceInput].forEach(input => {
             if (input) {
