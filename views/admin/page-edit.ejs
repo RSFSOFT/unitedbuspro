@@ -176,6 +176,12 @@
                             <label class="form-label" for="price">Starting Rate</label>
                             <input type="text" id="price" name="price" class="form-field" value="<%= item.price %>" placeholder="e.g. $150/hr" required>
                         </div>
+                        <% if (type === 'fleet') { %>
+                            <div class="form-group">
+                                <label class="form-label" for="per_mile_rate">Per Mile Price ($)</label>
+                                <input type="number" step="0.01" id="per_mile_rate" name="per_mile_rate" class="form-field" value="<%= item.per_mile_rate %>" placeholder="e.g. 3.50" required>
+                            </div>
+                        <% } %>
                     </div>
                 <% } %>
 

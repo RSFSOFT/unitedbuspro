@@ -548,6 +548,22 @@ function readDb() {
             db.settings = initialDb.settings;
             updated = true;
         }
+        let migrated = false;
+        if (db.fleet && Array.isArray(db.fleet)) {
+            db.fleet.forEach(f => {
+                if (f.per_mile_rate === undefined) {
+                    const cap = parseInt(f.capacity) || 0;
+                    if (cap <= 4) f.per_mile_rate = 2.00;
+                    else if (cap <= 14) f.per_mile_rate = 2.50;
+                    else if (cap <= 36) f.per_mile_rate = 3.50;
+                    else f.per_mile_rate = 4.50;
+                    migrated = true;
+                }
+            });
+        }
+        if (migrated) {
+            updated = true;
+        }
         if (updated) {
             writeDb(db);
         }

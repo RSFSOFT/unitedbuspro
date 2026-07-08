@@ -599,13 +599,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (routeLine) {
                     map.removeLayer(routeLine);
                     routeLine = null;
-                }
-                if (activeCoords.length === 1) {
+                }                if (activeCoords.length === 1) {
                     map.setView(activeCoords[0], 12);
                 }
             }
+            window.calculatedRouteCoords = activeCoords;
         }
-
         let mapDebounceTimer;
         const triggerUpdate = (immediate = false) => {
             if (immediate) {
@@ -791,6 +790,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Estimate calculation & recommendation logic
             let recommendedVehicle = '';
             let baseRate = 0;
+            let perMileRate = 0;
             let minHours = 4;
 
             function parseCapacity(capacityStr) {
@@ -799,7 +799,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!matches) return 0;
                 return Math.max(...matches.map(Number));
             }
-            
+
             function parseRate(rateStr) {
                 if (!rateStr) return 0;
                 const match = rateStr.match(/\d+/);
@@ -815,6 +815,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 recommendedVehicle = recommended.name + ' (' + recommended.capacity + ')';
                 baseRate = parseRate(recommended.starting_rate);
+                perMileRate = parseFloat(recommended.per_mile_rate) || 0.0;
                 
                 const cap = parseCapacity(recommended.capacity);
                 if (cap <= 6) {
@@ -829,14 +830,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     recommendedVehicle = 'Luxury Sprinter Van (14 Passengers)';
                     baseRate = 85; 
                     minHours = 3;
+                    perMileRate = 2.50;
                 } else if (passengers <= 36) {
                     recommendedVehicle = '36 Passenger Bus (36 Passengers)';
                     baseRate = 125;
                     minHours = 4;
+                    perMileRate = 3.50;
                 } else {
                     recommendedVehicle = 'Full-Sized Charter Bus (50 Passengers)';
                     baseRate = 150;
                     minHours = 5;
+                    perMileRate = 4.50;
                 }
             }
 
@@ -846,6 +850,28 @@ document.addEventListener('DOMContentLoaded', function () {
             if (baseRate > 0) {
                 let estPrice = baseRate * minHours;
                 
+                // Calculate distance in miles if coordinates exist
+                let estMiles = 0;
+                if (window.calculatedRouteCoords && window.calculatedRouteCoords.length >= 2) {
+                    const c1 = window.calculatedRouteCoords[0];
+                    const c2 = window.calculatedRouteCoords[window.calculatedRouteCoords.length - 1];
+                    
+                    const R = 3958.8; // earth radius in miles
+                    const dLat = (c2[0] - c1[0]) * Math.PI / 180;
+                    const dLon = (c2[1] - c1[1]) * Math.PI / 180;
+                    const a = 
+                        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(c1[0] * Math.PI / 180) * Math.cos(c2[0] * Math.PI / 180) * 
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                    estMiles = R * c * 1.25; // 1.25x road winding factor
+                }
+                
+                // Add distance charge
+                if (perMileRate > 0 && estMiles > 0) {
+                    estPrice += perMileRate * estMiles;
+                }
+                
                 // Adjust price based on trip type
                 const type = tripTypeInput.value;
                 if (type === 'round-trip') {
@@ -853,13 +879,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 } else if (type === 'large-event') {
                     estPrice = estPrice * 2.0; // 2.0x multiplier for large event loops/conventions
                 }
+                
                 priceDisplay = `$${estPrice.toFixed(2)}`;
+                if (estMiles > 0) {
+                    subtitleDisplay = `Estimated route: ${estMiles.toFixed(1)} miles. Pending coordinator confirmation.`;
+                }
             } else {
                 priceDisplay = 'Custom Quote';
                 subtitleDisplay = 'Our representative will contact you with a custom quote shortly.';
             }
 
-            // Populate quote details in Step 4
             document.getElementById('recommendedVehicle').innerHTML = `<strong>Recommended Vehicle:</strong> ${recommendedVehicle}`;
             document.getElementById('quoteEstPrice').innerText = priceDisplay;
             

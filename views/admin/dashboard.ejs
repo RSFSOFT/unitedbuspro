@@ -406,11 +406,16 @@
                                     <input type="number" id="new_vehicle_bags" name="bags" class="form-field" placeholder="e.g. 56" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_rate">Starting Rate</label>
-                                <input type="text" id="new_vehicle_rate" name="price" class="form-field" placeholder="e.g. $150/hr" required>
+                            <div class="form-row" style="display: flex; gap: 15px; margin-bottom: 15px;">
+                                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                    <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_rate">Starting Rate</label>
+                                    <input type="text" id="new_vehicle_rate" name="price" class="form-field" placeholder="e.g. $150/hr" required>
+                                </div>
+                                <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                                    <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_per_mile">Per Mile Price ($)</label>
+                                    <input type="number" step="0.01" id="new_vehicle_per_mile" name="per_mile_rate" class="form-field" placeholder="e.g. 3.50" value="3.50" required>
+                                </div>
                             </div>
-                            <div class="form-group">
                                 <label class="form-label" style="color: var(--primary-dark);" for="new_vehicle_image">Vehicle Image Path (Optional)</label>
                                 <input type="text" id="new_vehicle_image" name="image" class="form-field" placeholder="e.g. /images/fleet_coach_50.png">
                             </div>
