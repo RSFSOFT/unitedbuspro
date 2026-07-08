@@ -799,6 +799,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (!matches) return 0;
                 return Math.max(...matches.map(Number));
             }
+            let minPrice = 300.00;
+            let perMileRate_1_10 = 4.00;
+            let perMileRate_11_50 = 3.50;
+            let perMileRate_51 = 3.00;
 
             function parseRate(rateStr) {
                 if (!rateStr) return 0;
@@ -815,7 +819,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 
                 recommendedVehicle = recommended.name + ' (' + recommended.capacity + ')';
                 baseRate = parseRate(recommended.starting_rate);
-                perMileRate = parseFloat(recommended.per_mile_rate) || 0.0;
+                minPrice = parseFloat(recommended.min_price) || 300.00;
+                perMileRate_1_10 = parseFloat(recommended.per_mile_rate_1_10) || parseFloat(recommended.per_mile_rate) || 4.00;
+                perMileRate_11_50 = parseFloat(recommended.per_mile_rate_11_50) || 3.50;
+                perMileRate_51 = parseFloat(recommended.per_mile_rate_51) || 3.00;
                 
                 const cap = parseCapacity(recommended.capacity);
                 if (cap <= 6) {
@@ -830,17 +837,26 @@ document.addEventListener('DOMContentLoaded', function () {
                     recommendedVehicle = 'Luxury Sprinter Van (14 Passengers)';
                     baseRate = 85; 
                     minHours = 3;
-                    perMileRate = 2.50;
+                    minPrice = 300.00;
+                    perMileRate_1_10 = 4.00;
+                    perMileRate_11_50 = 3.50;
+                    perMileRate_51 = 3.00;
                 } else if (passengers <= 36) {
                     recommendedVehicle = '36 Passenger Bus (36 Passengers)';
                     baseRate = 125;
                     minHours = 4;
-                    perMileRate = 3.50;
+                    minPrice = 300.00;
+                    perMileRate_1_10 = 4.50;
+                    perMileRate_11_50 = 4.00;
+                    perMileRate_51 = 3.50;
                 } else {
                     recommendedVehicle = 'Full-Sized Charter Bus (50 Passengers)';
                     baseRate = 150;
                     minHours = 5;
-                    perMileRate = 4.50;
+                    minPrice = 300.00;
+                    perMileRate_1_10 = 5.00;
+                    perMileRate_11_50 = 4.50;
+                    perMileRate_51 = 4.00;
                 }
             }
 
@@ -849,6 +865,11 @@ document.addEventListener('DOMContentLoaded', function () {
             
             if (baseRate > 0) {
                 let estPrice = baseRate * minHours;
+                
+                // Enforce minimum booking price
+                if (estPrice < minPrice) {
+                    estPrice = minPrice;
+                }
                 
                 // Calculate distance in miles if coordinates exist
                 let estMiles = 0;
@@ -867,10 +888,18 @@ document.addEventListener('DOMContentLoaded', function () {
                     estMiles = R * c * 1.25; // 1.25x road winding factor
                 }
                 
-                // Add distance charge
-                if (perMileRate > 0 && estMiles > 0) {
-                    estPrice += perMileRate * estMiles;
+                // Add tiered distance charge
+                let distanceCharge = 0;
+                if (estMiles > 0) {
+                    if (estMiles <= 10) {
+                        distanceCharge = estMiles * perMileRate_1_10;
+                    } else if (estMiles <= 50) {
+                        distanceCharge = (10 * perMileRate_1_10) + ((estMiles - 10) * perMileRate_11_50);
+                    } else {
+                        distanceCharge = (10 * perMileRate_1_10) + (40 * perMileRate_11_50) + ((estMiles - 50) * perMileRate_51);
+                    }
                 }
+                estPrice += distanceCharge;
                 
                 // Adjust price based on trip type
                 const type = tripTypeInput.value;
@@ -910,7 +939,6 @@ document.addEventListener('DOMContentLoaded', function () {
             progStep4.classList.remove('active');
             progStep3.classList.remove('completed');
         });
-
         // Form Submit Handler via AJAX
         form.addEventListener('submit', function (e) {
             e.preventDefault();

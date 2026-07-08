@@ -987,6 +987,10 @@ app.get('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
             capacity: vehicle.capacity,
             bags: vehicle.bags,
             price: vehicle.starting_rate,
+            min_price: vehicle.min_price || 300.00,
+            per_mile_rate_1_10: vehicle.per_mile_rate_1_10 || 4.00,
+            per_mile_rate_11_50: vehicle.per_mile_rate_11_50 || 3.50,
+            per_mile_rate_51: vehicle.per_mile_rate_51 || 3.00,
             per_mile_rate: vehicle.per_mile_rate || 0.0,
             body_content: vehicle.description,
             category: vehicle.category || 'Buses & Coaches',
@@ -999,7 +1003,7 @@ app.get('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
 });
 
 app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
-    const { name, capacity, bags, price, per_mile_rate, body_content, details, category, image } = req.body;
+    const { name, capacity, bags, price, min_price, per_mile_rate_1_10, per_mile_rate_11_50, per_mile_rate_51, per_mile_rate, body_content, details, category, image } = req.body;
 
     let parsedAmenities = [];
     if (details) {
@@ -1015,6 +1019,10 @@ app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
         capacity,
         bags,
         starting_rate: price,
+        min_price: parseFloat(min_price) || 300.00,
+        per_mile_rate_1_10: parseFloat(per_mile_rate_1_10) || 4.00,
+        per_mile_rate_11_50: parseFloat(per_mile_rate_11_50) || 3.50,
+        per_mile_rate_51: parseFloat(per_mile_rate_51) || 3.00,
         per_mile_rate: parseFloat(per_mile_rate) || 0.0,
         description: body_content,
         category: category || 'Buses & Coaches',
@@ -1027,7 +1035,7 @@ app.post('/admin/fleet/edit/:slug', requireAuth, (req, res) => {
 
 // Add New Vehicle Spec
 app.post('/admin/fleet/add', requireAuth, (req, res) => {
-    const { name, capacity, bags, price, per_mile_rate, body_content, category, image, details } = req.body;
+    const { name, capacity, bags, price, min_price, per_mile_rate_1_10, per_mile_rate_11_50, per_mile_rate_51, per_mile_rate, body_content, category, image, details } = req.body;
     
     let parsedAmenities = [];
     if (details) {
@@ -1039,6 +1047,10 @@ app.post('/admin/fleet/add', requireAuth, (req, res) => {
         capacity: parseInt(capacity) || 0,
         bags: parseInt(bags) || 0,
         starting_rate: price || '$0/hr',
+        min_price: parseFloat(min_price) || 300.00,
+        per_mile_rate_1_10: parseFloat(per_mile_rate_1_10) || 4.00,
+        per_mile_rate_11_50: parseFloat(per_mile_rate_11_50) || 3.50,
+        per_mile_rate_51: parseFloat(per_mile_rate_51) || 3.00,
         per_mile_rate: parseFloat(per_mile_rate) || 0.0,
         description: body_content || '',
         category: category || 'Buses & Coaches',

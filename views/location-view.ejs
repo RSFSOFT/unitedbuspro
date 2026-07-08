@@ -356,6 +356,29 @@
                             <span><i class="fa fa-suitcase"></i> <%= f.bags %></span>
                         </div>
                         <p><%= f.description %></p>
+                        
+                        <!-- Pricing Details Box -->
+                        <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 20px; font-size: 0.85rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 700; color: var(--primary-dark);">
+                                <span>Min Booking Price:</span>
+                                <span>$<%= (f.min_price || 300.00).toFixed(2) %></span>
+                            </div>
+                            <div style="border-top: 1px dashed rgba(212, 175, 55, 0.2); margin: 6px 0; padding-top: 6px;">
+                                <div style="font-weight: 600; color: var(--text-muted); margin-bottom: 4px; font-size: 0.78rem; text-transform: uppercase;">Tiered Mileage Rates:</div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-main); margin-bottom: 3px;">
+                                    <span>• 1 to 10 miles:</span>
+                                    <strong>$<%= (f.per_mile_rate_1_10 || 4.00).toFixed(2) %>/mile</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-main); margin-bottom: 3px;">
+                                    <span>• 11 to 50 miles:</span>
+                                    <strong>$<%= (f.per_mile_rate_11_50 || 3.50).toFixed(2) %>/mile</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-main);">
+                                    <span>• 51+ miles:</span>
+                                    <strong>$<%= (f.per_mile_rate_51 || 3.00).toFixed(2) %>/mile</strong>
+                                </div>
+                            </div>
+                        </div>
                         <div style="display: flex; gap: 10px; margin-top: 15px;">
                             <a href="/fleet/<%= f.slug %>" class="btn-secondary" style="flex: 1; text-align: center; font-size: 0.85rem; padding: 10px 0;">Specs</a>
                             <a href="/reservation?vehicle=<%= f.slug %>" class="btn-primary" style="flex: 1.5; text-align: center; font-size: 0.85rem; padding: 10px 0;">Book for <%= location.name %></a>

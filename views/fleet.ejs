@@ -29,9 +29,30 @@
                             <span><i class="fa fa-users"></i> <%= f.capacity %></span>
                             <span><i class="fa fa-suitcase"></i> <%= f.bags %></span>
                         </div>
-                        
                         <p style="margin-bottom: 20px;"><%= f.description %></p>
                         
+                        <!-- Pricing Details Box -->
+                        <div style="background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15); border-radius: var(--radius-sm); padding: 12px; margin-bottom: 20px; font-size: 0.85rem;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 6px; font-weight: 700; color: var(--primary-dark);">
+                                <span>Min Booking Price:</span>
+                                <span>$<%= (f.min_price || 300.00).toFixed(2) %></span>
+                            </div>
+                            <div style="border-top: 1px dashed rgba(212, 175, 55, 0.2); margin: 6px 0; padding-top: 6px;">
+                                <div style="font-weight: 600; color: var(--text-muted); margin-bottom: 4px; font-size: 0.78rem; text-transform: uppercase;">Tiered Mileage Rates:</div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-main); margin-bottom: 3px;">
+                                    <span>• 1 to 10 miles:</span>
+                                    <strong>$<%= (f.per_mile_rate_1_10 || 4.00).toFixed(2) %>/mile</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-main); margin-bottom: 3px;">
+                                    <span>• 11 to 50 miles:</span>
+                                    <strong>$<%= (f.per_mile_rate_11_50 || 3.50).toFixed(2) %>/mile</strong>
+                                </div>
+                                <div style="display: flex; justify-content: space-between; color: var(--text-main);">
+                                    <span>• 51+ miles:</span>
+                                    <strong>$<%= (f.per_mile_rate_51 || 3.00).toFixed(2) %>/mile</strong>
+                                </div>
+                            </div>
+                        </div>
                         <h4 style="font-size: 0.9rem; text-transform: uppercase; color: var(--primary-light); margin-bottom: 10px; font-weight: 700;">Included Amenities:</h4>
                         <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px;">
                             <% f.parsedAmenities.forEach(amenity => { %>

@@ -178,9 +178,23 @@
                         </div>
                         <% if (type === 'fleet') { %>
                             <div class="form-group">
-                                <label class="form-label" for="per_mile_rate">Per Mile Price ($)</label>
-                                <input type="number" step="0.01" id="per_mile_rate" name="per_mile_rate" class="form-field" value="<%= item.per_mile_rate %>" placeholder="e.g. 3.50" required>
+                                <label class="form-label" for="min_price">Minimum Booking Price ($)</label>
+                                <input type="number" step="0.01" id="min_price" name="min_price" class="form-field" value="<%= item.min_price || 300.00 %>" placeholder="e.g. 300.00" required>
                             </div>
+                            <div class="form-group">
+                                <label class="form-label" for="per_mile_rate_1_10">Per Mile Price: 1-10 Miles ($)</label>
+                                <input type="number" step="0.01" id="per_mile_rate_1_10" name="per_mile_rate_1_10" class="form-field" value="<%= item.per_mile_rate_1_10 %>" placeholder="e.g. 4.00" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="per_mile_rate_11_50">Per Mile Price: 11-50 Miles ($)</label>
+                                <input type="number" step="0.01" id="per_mile_rate_11_50" name="per_mile_rate_11_50" class="form-field" value="<%= item.per_mile_rate_11_50 %>" placeholder="e.g. 3.50" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="per_mile_rate_51">Per Mile Price: 51+ Miles ($)</label>
+                                <input type="number" step="0.01" id="per_mile_rate_51" name="per_mile_rate_51" class="form-field" value="<%= item.per_mile_rate_51 %>" placeholder="e.g. 3.00" required>
+                            </div>
+                            <!-- Keep hidden field for legacy compat -->
+                            <input type="hidden" name="per_mile_rate" value="<%= item.per_mile_rate_1_10 %>">
                         <% } %>
                     </div>
                 <% } %>

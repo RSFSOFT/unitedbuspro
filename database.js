@@ -559,6 +559,24 @@ function readDb() {
                     else f.per_mile_rate = 4.50;
                     migrated = true;
                 }
+                if (f.min_price === undefined) {
+                    f.min_price = 300.00;
+                    migrated = true;
+                }
+                if (f.per_mile_rate_1_10 === undefined) {
+                    f.per_mile_rate_1_10 = parseFloat(f.per_mile_rate) || 3.50;
+                    migrated = true;
+                }
+                if (f.per_mile_rate_11_50 === undefined) {
+                    const rate = parseFloat(f.per_mile_rate_1_10) || parseFloat(f.per_mile_rate) || 3.50;
+                    f.per_mile_rate_11_50 = Math.max(0, parseFloat((rate * 0.9).toFixed(2)));
+                    migrated = true;
+                }
+                if (f.per_mile_rate_51 === undefined) {
+                    const rate = parseFloat(f.per_mile_rate_1_10) || parseFloat(f.per_mile_rate) || 3.50;
+                    f.per_mile_rate_51 = Math.max(0, parseFloat((rate * 0.8).toFixed(2)));
+                    migrated = true;
+                }
             });
         }
         if (migrated) {

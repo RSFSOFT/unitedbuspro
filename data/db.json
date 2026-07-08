@@ -340,7 +340,11 @@
       "image": "/images/fleet_sprinter.png",
       "description": "Luxury passenger van perfect for airport transfers, business teams, and boutique tours.",
       "starting_rate": "$85/hr",
-      "per_mile_rate": 2.5
+      "per_mile_rate": 2.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 2.5,
+      "per_mile_rate_11_50": 2.25,
+      "per_mile_rate_51": 2
     },
     {
       "id": 2,
@@ -352,7 +356,11 @@
       "image": "/images/fleet_minibus_24.png",
       "description": "Premium Grech minibus offering comfort and reliability for corporate events, shuttle routes, and DC private tours.",
       "starting_rate": "$100/hr",
-      "per_mile_rate": 3.5
+      "per_mile_rate": 3.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 3.5,
+      "per_mile_rate_11_50": 3.15,
+      "per_mile_rate_51": 2.8
     },
     {
       "id": 3,
@@ -364,7 +372,11 @@
       "image": "/images/fleet_minibus_36.png",
       "description": "Premium executive minibus with 36 passenger seating, high-back leather chairs, and rear storage.",
       "starting_rate": "$125/hr",
-      "per_mile_rate": 3.5
+      "per_mile_rate": 3.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 3.5,
+      "per_mile_rate_11_50": 3.15,
+      "per_mile_rate_51": 2.8
     },
     {
       "id": 4,
@@ -376,7 +388,11 @@
       "image": "/images/fleet_minibus_32.png",
       "description": "Spacious executive minibus providing an elevated passenger experience for corporate events and private excursions.",
       "starting_rate": "$120/hr",
-      "per_mile_rate": 3.5
+      "per_mile_rate": 3.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 3.5,
+      "per_mile_rate_11_50": 3.15,
+      "per_mile_rate_51": 2.8
     },
     {
       "id": 5,
@@ -388,7 +404,11 @@
       "image": "/images/fleet_minibus_40.png",
       "description": "High-capacity luxury minibus ideal for larger group logistics, corporate shuttles, and private tours.",
       "starting_rate": "$130/hr",
-      "per_mile_rate": 4.5
+      "per_mile_rate": 4.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 4.5,
+      "per_mile_rate_11_50": 4.05,
+      "per_mile_rate_51": 3.6
     },
     {
       "id": 6,
@@ -400,7 +420,11 @@
       "image": "/images/fleet_minibus_ada.png",
       "description": "Fully ADA-compliant wheelchair-accessible minibus ensuring comfortable and safe transit for all passengers.",
       "starting_rate": "$115/hr",
-      "per_mile_rate": 3.5
+      "per_mile_rate": 3.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 3.5,
+      "per_mile_rate_11_50": 3.15,
+      "per_mile_rate_51": 2.8
     },
     {
       "id": 7,
@@ -412,7 +436,11 @@
       "image": "/images/fleet_coach_50.png",
       "description": "Premium full-sized motorcoach for long-distance group tours, conventions, and large-scale shuttle loops.",
       "starting_rate": "$150/hr",
-      "per_mile_rate": 4.5
+      "per_mile_rate": 4.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 4.5,
+      "per_mile_rate_11_50": 4.05,
+      "per_mile_rate_51": 3.6
     },
     {
       "id": 8,
@@ -424,7 +452,11 @@
       "image": "/images/fleet_suburban.png",
       "description": "Executive black SUV providing premium private rides, airport transfers, and VIP transport.",
       "starting_rate": "$75/hr",
-      "per_mile_rate": 2.5
+      "per_mile_rate": 2.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 2.5,
+      "per_mile_rate_11_50": 2.25,
+      "per_mile_rate_51": 2
     },
     {
       "id": 9,
@@ -436,7 +468,11 @@
       "image": "/images/fleet_towncar.png",
       "description": "Classic executive town car perfect for business travelers, private events, and airport transport.",
       "starting_rate": "$60/hr",
-      "per_mile_rate": 2
+      "per_mile_rate": 2,
+      "min_price": 300,
+      "per_mile_rate_1_10": 2,
+      "per_mile_rate_11_50": 1.8,
+      "per_mile_rate_51": 1.6
     },
     {
       "id": 10,
@@ -448,7 +484,11 @@
       "image": "/images/fleet_limo.png",
       "description": "Elegant stretch limousine for weddings, VIP events, executive transport, and celebratory excursions.",
       "starting_rate": "$130/hr",
-      "per_mile_rate": 2.5
+      "per_mile_rate": 2.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 2.5,
+      "per_mile_rate_11_50": 2.25,
+      "per_mile_rate_51": 2
     },
     {
       "id": 11,
@@ -460,7 +500,11 @@
       "image": "/images/fleet_hummer.png",
       "description": "Stunning stretch Hummer limousine offering a high-impact, luxury party atmosphere for larger groups.",
       "starting_rate": "$160/hr",
-      "per_mile_rate": 2.5
+      "per_mile_rate": 2.5,
+      "min_price": 300,
+      "per_mile_rate_1_10": 2.5,
+      "per_mile_rate_11_50": 2.25,
+      "per_mile_rate_51": 2
     }
   ],
   "blogs": [
