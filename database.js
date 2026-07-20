@@ -525,6 +525,30 @@ function readDb() {
             db.customerUsers = [];
             updated = true;
         }
+        // Clear legacy dummy test data (Dallas/Texas inquiries and mock customer accounts)
+        if (db.inquiries && db.inquiries.length > 0) {
+            const hasLegacy = db.inquiries.some(inq => 
+                inq.pickup_loc && (
+                    inq.pickup_loc.includes('TX') || 
+                    inq.pickup_loc.includes('Texas') || 
+                    inq.pickup_loc.includes('Dallas') || 
+                    inq.pickup_loc.includes('Plano') ||
+                    inq.pickup_loc.includes('MA') ||
+                    inq.pickup_loc.includes('Boston')
+                )
+            );
+            if (hasLegacy) {
+                db.inquiries = [];
+                updated = true;
+            }
+        }
+        if (db.customerUsers && db.customerUsers.length > 0) {
+            const hasLegacyCustomers = db.customerUsers.some(c => c.username && c.username.includes('gmail.com') && db.customerUsers.length > 10);
+            if (hasLegacyCustomers) {
+                db.customerUsers = [];
+                updated = true;
+            }
+        }
         if (!db.settings) {
             db.settings = initialDb.settings;
             updated = true;
