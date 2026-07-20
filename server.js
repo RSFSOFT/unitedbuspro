@@ -571,7 +571,7 @@ app.get('/terms-conditions', (req, res) => {
 // ==========================================
 // AJAX BOOKING API
 // ==========================================
-app.post('/api/book', (req, res) => {
+app.post('/api/book', async (req, res) => {
     const { name, phone, email, service_type, pickup_loc, dropoff_loc, trip_date, passengers, message } = req.body;
 
     if (!name || !phone || !email || !pickup_loc || !dropoff_loc || !trip_date || !passengers) {
@@ -626,13 +626,11 @@ app.post('/api/book', (req, res) => {
         try {
             // 1. Company notification email
             try {
-                transporter.sendMail({
+                await transporter.sendMail({
                     from: settings.smtp_from || settings.smtp_user,
                     to: settings.smtp_to || settings.email,
                     subject: `New Lead: ${name} - ${passengers} Pax`,
                     html: htmlToOwner
-                }, (err, info) => {
-                    if (err) console.error('SMTP Company Notification Error:', err);
                 });
             } catch (errComp) {
                 console.error('SMTP Company dispatch failed:', errComp);
@@ -640,13 +638,11 @@ app.post('/api/book', (req, res) => {
 
             // 2. Customer confirmation email
             try {
-                transporter.sendMail({
+                await transporter.sendMail({
                     from: settings.smtp_from || settings.smtp_user,
                     to: email,
                     subject: `We Have Received Your Quote Request - United Bus Pro`,
                     html: htmlToClient
-                }, (err, info) => {
-                    if (err) console.error('SMTP Customer Confirmation Error:', err);
                 });
             } catch (errCust) {
                 console.error('SMTP Customer dispatch failed:', errCust);
