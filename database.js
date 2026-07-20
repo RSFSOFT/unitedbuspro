@@ -104,22 +104,22 @@ function seedData(db) {
         db.pages = [
             {
                 slug: 'home',
-                title: 'United Bus Pro | Premium Charter Bus & Shuttle Service Washington, DC',
-                meta_description: 'Book premium charter bus rentals, corporate shuttles, minibus hires, and group transportation across Washington, DC, and nationwide. Instant online quotes.',
+                title: 'United Bus Pro | Premium Charter Bus & Shuttle Service | DC, VA, MD',
+                meta_description: 'Book premium charter bus rentals, corporate shuttles, minibus hires, and group transportation across Washington DC, Virginia, and Maryland. Instant online quotes.',
                 header_h1: 'Reliable Group Transportation & Charter Bus Services',
-                body_content: 'Welcome to United Bus Pro, the leading provider of premium charter bus rentals, executive shuttle logistics, and minibus charter services in the Washington, DC metro area and nationwide. For over 12 years, we have delivered secure, reliable, and comfortable group transport for corporate events, conventions, wedding parties, sports leagues, and school trips. With a modern fleet ranging from 14-passenger luxury Sprinter vans to 50-passenger full-sized coach buses, we ensure your group arrives together and on schedule. Our vetted, professional drivers and 24/7 dispatch operations guarantee a seamless experience. Try our instant online quote builder today to see transparent group travel rates.'
+                body_content: 'Welcome to United Bus Pro, the leading provider of premium charter bus rentals, executive shuttle logistics, and minibus charter services in Washington DC, Virginia, and Maryland. For over 12 years, we have delivered secure, reliable, and comfortable group transport for corporate events, conventions, wedding parties, sports leagues, and school trips. With a modern fleet ranging from 14-passenger luxury Sprinter vans to 50-passenger full-sized coach buses, we ensure your group arrives together and on schedule. Our vetted, professional drivers and 24/7 dispatch operations guarantee a seamless experience. Try our instant online quote builder today to see transparent group travel rates.'
             },
             {
                 slug: 'about',
                 title: 'About Us | United Bus Pro | Premium Group Transportation',
-                meta_description: 'Learn about United Bus Pro. Over 12 years of delivering safe, reliable, and luxury group transport services across Washington, DC and nationwide.',
+                meta_description: 'Learn about United Bus Pro. Over 12 years of delivering safe, reliable, and luxury group transport services across Washington DC, Virginia, and Maryland.',
                 header_h1: 'Setting the Standard in Group Travel',
-                body_content: 'United Bus Pro was founded with a clear mission: to provide the highest standard of safety, comfort, and reliability in group ground transportation. Based in Washington, DC, we have grown into a premier fleet provider servicing corporate clients, event planners, schools, and private groups nationwide. Our commitment to safety is absolute. Every coach and minibus in our network undergoes rigorous preventative maintenance, and our background-checked, commercially licensed chauffeurs are trained in defensive driving and customer service. Whether you require a short shuttle for a corporate meeting, wedding guest logistics, or a multi-day cross-country tour, United Bus Pro delivers outstanding logistics management.'
+                body_content: 'United Bus Pro was founded with a clear mission: to provide the highest standard of safety, comfort, and reliability in group ground transportation. Based in Washington, DC, we have grown into a premier fleet provider servicing corporate clients, event planners, schools, and private groups across Washington DC, Virginia, and Maryland. Our commitment to safety is absolute. Every coach and minibus in our network undergoes rigorous preventative maintenance, and our background-checked, commercially licensed chauffeurs are trained in defensive driving and customer service. Whether you require a short shuttle for a corporate meeting, wedding guest logistics, or a private tri-state tour, United Bus Pro delivers outstanding logistics management.'
             },
             {
                 slug: 'contact',
                 title: 'Contact Us | United Bus Pro | 24/7 Booking Desk',
-                meta_description: 'Contact United Bus Pro for custom group travel rates, recurring corporate shuttle plans, or immediate dispatch inquiries.',
+                meta_description: 'Contact United Bus Pro for custom group travel rates, recurring corporate shuttle plans, or immediate dispatch inquiries in DC, VA, and MD.',
                 header_h1: 'Contact Our Group Booking Desk',
                 body_content: 'Planning group logistics can be complex, but booking your bus doesn\'t have to be. The United Bus Pro customer service desk is open 24 hours a day, 7 days a week, 365 days a year to support your itinerary planning, coordinates, and reservations. Speak directly to an event transportation coordinator or submit your details online to receive a custom quote.'
             },
@@ -348,39 +348,25 @@ function seedData(db) {
         ];
     }
 
-    // 6. Seed Cities (original DFW cities + user's cities)
+    // 6. Seed Cities (Only DC, VA, MD)
     if (!db.cities || db.cities.length === 0) {
         const rawCities = [
-            { name: 'Dallas', state: 'Texas', stateCode: 'TX', airport: 'DFW, DAL', destinations: 'Kay Bailey Hutchison Convention Center, Dealey Plaza, American Airlines Center' },
-            { name: 'Fort Worth', state: 'Texas', stateCode: 'TX', airport: 'DFW', destinations: 'Fort Worth Stockyards, Sundance Square, Fort Worth Water Gardens' },
-            { name: 'Arlington', state: 'Texas', stateCode: 'TX', airport: 'DFW', destinations: 'AT&T Stadium, Globe Life Field, Six Flags Over Texas' },
-            { name: 'Plano', state: 'Texas', stateCode: 'TX', airport: 'DFW, DAL', destinations: 'Legacy West, Oak Point Park, The Shops at Legacy' },
-            { name: 'Frisco', state: 'Texas', stateCode: 'TX', airport: 'DFW', destinations: 'The Star in Frisco, Toyota Stadium, Frisco Commons Park' },
-            { name: 'New York City', state: 'New York', stateCode: 'NY', airport: 'JFK, LGA, EWR', destinations: 'Times Square, Central Park, Broadway, Javits Center' },
-            { name: 'Houston', state: 'Texas', stateCode: 'TX', airport: 'IAH, HOU', destinations: 'Space Center Houston, Minute Maid Park, Museum District' },
-            { name: 'Chicago', state: 'Illinois', stateCode: 'IL', airport: 'ORD, MDW', destinations: 'Millennium Park, Navy Pier, McCormick Place' },
-            { name: 'Washington DC', state: 'District of Columbia', stateCode: 'DC', airport: 'DCA, IAD, BWI', destinations: 'National Mall, US Capitol, White House' },
-            { name: 'Los Angeles', state: 'California', stateCode: 'CA', airport: 'LAX, SNA, BUR', destinations: 'Hollywood Walk of Fame, Getty Center, LA Convention Center' },
-            { name: 'Albany', state: 'New York', stateCode: 'NY', airport: 'ALB', destinations: 'New York State Capitol, Times Union Center, Washington Park' },
-            { name: 'Albuquerque', state: 'New Mexico', stateCode: 'NM', airport: 'ABQ', destinations: 'Old Town Plaza, Sandia Peak Tramway, Balloon Fiesta Park' },
-            { name: 'Alexandria', state: 'Virginia', stateCode: 'VA', airport: 'DCA', destinations: 'Old Town Alexandria, Torpedo Factory Art Center' },
-            { name: 'Anaheim', state: 'California', stateCode: 'CA', airport: 'SNA, LAX', destinations: 'Disneyland Resort, Anaheim Convention Center' },
-            { name: 'Ann Arbor', state: 'Michigan', stateCode: 'MI', airport: 'DTW', destinations: 'University of Michigan, Michigan Stadium' },
-            { name: 'Atlanta', state: 'Georgia', stateCode: 'GA', airport: 'ATL', destinations: 'Georgia Aquarium, World of Coca-Cola, Mercedes-Benz Stadium' },
-            { name: 'Augusta', state: 'Georgia', stateCode: 'GA', airport: 'AGS', destinations: 'Augusta National Golf Club, Riverwalk Augusta' },
-            { name: 'Austin', state: 'Texas', stateCode: 'TX', airport: 'AUS', destinations: 'Texas State Capitol, Sixth Street, Circuit of The Americas' },
-            { name: 'Bakersfield', state: 'California', stateCode: 'CA', airport: 'BFL', destinations: 'Buck Owens\' Crystal Palace, Kern County Museum' },
-            { name: 'Baltimore', state: 'Maryland', stateCode: 'MD', airport: 'BWI', destinations: 'Inner Harbor, National Aquarium, Fort McHenry' },
-            { name: 'Baton Rouge', state: 'Louisiana', stateCode: 'LA', airport: 'BTR', destinations: 'Louisiana State Capitol, LSU Tiger Stadium' },
-            { name: 'Berkeley', state: 'California', stateCode: 'CA', airport: 'OAK, SFO', destinations: 'UC Berkeley, Greek Theatre, Tilden Regional Park' },
-            { name: 'Birmingham', state: 'Alabama', stateCode: 'AL', airport: 'BHM', destinations: 'Vulcan Park, Birmingham Civil Rights Institute' },
-            { name: 'Boston', state: 'Massachusetts', stateCode: 'MA', airport: 'BOS', destinations: 'Fenway Park, Freedom Trail, Faneuil Hall' }
+            { name: 'Washington DC', state: 'District of Columbia', stateCode: 'DC', airport: 'DCA, IAD, BWI', destinations: 'National Mall, US Capitol, White House, Smithsonian Museums' },
+            { name: 'Alexandria', state: 'Virginia', stateCode: 'VA', airport: 'DCA', destinations: 'Old Town Alexandria, Torpedo Factory Art Center, Gadsby\'s Tavern' },
+            { name: 'Arlington', state: 'Virginia', stateCode: 'VA', airport: 'DCA, IAD', destinations: 'Arlington National Cemetery, Pentagon City, Air Force Memorial' },
+            { name: 'Fairfax', state: 'Virginia', stateCode: 'VA', airport: 'IAD, DCA', destinations: 'George Mason University, Patriot Center, Fairfax Station' },
+            { name: 'Reston', state: 'Virginia', stateCode: 'VA', airport: 'IAD', destinations: 'Reston Town Center, Lake Anne, Meadowlark Gardens' },
+            { name: 'Richmond', state: 'Virginia', stateCode: 'VA', airport: 'RIC', destinations: 'Virginia State Capitol, Carytown, Virginia Museum of Fine Arts' },
+            { name: 'Baltimore', state: 'Maryland', stateCode: 'MD', airport: 'BWI', destinations: 'Inner Harbor, National Aquarium, Fort McHenry, Fells Point' },
+            { name: 'Annapolis', state: 'Maryland', stateCode: 'MD', airport: 'BWI', destinations: 'US Naval Academy, Maryland State House, Historic District' },
+            { name: 'Bethesda', state: 'Maryland', stateCode: 'MD', airport: 'DCA, BWI', destinations: 'Bethesda Row, NIH Campus, Strathmore Music Center' },
+            { name: 'Silver Spring', state: 'Maryland', stateCode: 'MD', airport: 'BWI, DCA', destinations: 'AFI Silver Theatre, Brookside Gardens, Downtown Silver Spring' },
+            { name: 'Rockville', state: 'Maryland', stateCode: 'MD', airport: 'IAD, BWI', destinations: 'Rockville Town Square, Rock Creek Regional Park' }
         ];
 
         db.cities = rawCities.map((c, i) => {
             const cleanSlug = c.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-            const hasStateSuffix = (c.name === 'Dallas' || c.name === 'Fort Worth' || c.name === 'Arlington' || c.name === 'Plano' || c.name === 'Frisco');
-            const slug = hasStateSuffix ? `charter-bus-${cleanSlug}-tx` : `charter-bus-${cleanSlug}`;
+            const slug = `charter-bus-${cleanSlug}`;
             
             return {
                 id: i + 1,
@@ -399,19 +385,12 @@ function seedData(db) {
         });
     }
 
-    // 7. Seed States
+    // 7. Seed States (Only DC, VA, MD)
     if (!db.states || db.states.length === 0) {
         const rawStates = [
-            { name: 'California', code: 'CA', destinations: 'Disneyland, Golden Gate Bridge, Hollywood, Yosemite National Park' },
-            { name: 'Connecticut', code: 'CT', destinations: 'Yale University, Mystic Seaport, Foxwoods Resort' },
-            { name: 'Florida', code: 'FL', destinations: 'Walt Disney World, South Beach, Universal Studios, Florida Keys' },
-            { name: 'Maryland', code: 'MD', destinations: 'Inner Harbor Baltimore, Annapolis Historic District, Ocean City' },
-            { name: 'Michigan', code: 'MI', destinations: 'Mackinac Island, Henry Ford Museum, Detroit Institute of Arts' },
-            { name: 'New Jersey', code: 'NJ', destinations: 'Atlantic City, Liberty State Park, Cape May, Jersey Shore' },
-            { name: 'New York', code: 'NY', destinations: 'Times Square NYC, Central Park, Statue of Liberty, Niagara Falls' },
-            { name: 'North Carolina', code: 'NC', destinations: 'Outer Banks, Biltmore Estate, Great Smoky Mountains' },
-            { name: 'Pennsylvania', code: 'PA', destinations: 'Liberty Bell, Gettysburg National Park, Hersheypark' },
-            { name: 'Texas', code: 'TX', destinations: 'The Alamo, Space Center Houston, San Antonio River Walk' }
+            { name: 'Washington DC', code: 'DC', destinations: 'National Mall, Smithsonian Museums, US Capitol, White House' },
+            { name: 'Virginia', code: 'VA', destinations: 'Arlington National Cemetery, Mount Vernon, Shenandoah National Park' },
+            { name: 'Maryland', code: 'MD', destinations: 'Inner Harbor Baltimore, Annapolis Historic Dockyard, Chesapeake Bay' }
         ];
 
         db.states = rawStates.map((s, i) => {
@@ -446,7 +425,8 @@ function readDb() {
             seedData(db);
             updated = true;
         }
-        if (!db.pages || db.pages.length === 0) {
+        const hasNationwidePages = db.pages && db.pages.some(p => p.meta_description && p.meta_description.includes('nationwide'));
+        if (!db.pages || db.pages.length === 0 || hasNationwidePages) {
             db.pages = [];
             seedData(db);
             updated = true;
@@ -505,12 +485,13 @@ function readDb() {
             seedData(db);
             updated = true;
         }
-        if (!db.cities || db.cities.length === 0) {
+        const allowedStateCodes = ['DC', 'VA', 'MD'];
+        if (!db.cities || db.cities.length === 0 || db.cities.some(c => !allowedStateCodes.includes(c.stateCode))) {
             db.cities = [];
             seedData(db);
             updated = true;
         }
-        if (!db.states || db.states.length === 0) {
+        if (!db.states || db.states.length === 0 || db.states.some(s => !allowedStateCodes.includes(s.code))) {
             db.states = [];
             seedData(db);
             updated = true;
@@ -530,13 +511,13 @@ function readDb() {
             ];
             updated = true;
         }
-        if (!db.teams || db.teams.length === 0) {
+        if (!db.teams || db.teams.length === 0 || db.teams.some(t => t.region !== 'DC Metro' && t.region !== 'Virginia' && t.region !== 'Maryland')) {
             db.teams = [
                 { id: 1, name: "Washington Dispatch Team", region: "DC Metro", supervisor: "Supervisor Thomas" },
-                { id: 2, name: "Houston Logistics Unit", region: "Texas", supervisor: "Supervisor Melissa" },
-                { id: 3, name: "California Coast Route Team", region: "California", supervisor: "Supervisor Ronald" },
-                { id: 4, name: "Northeast Corridor Dispatch", region: "New York", supervisor: "Supervisor Robert" },
-                { id: 5, name: "Midwest Operations Group", region: "Illinois", supervisor: "Supervisor Sandra" }
+                { id: 2, name: "Northern Virginia Transit Hub", region: "Virginia", supervisor: "Supervisor Melissa" },
+                { id: 3, name: "Maryland Logistics Command", region: "Maryland", supervisor: "Supervisor Ronald" },
+                { id: 4, name: "BWI Terminal Shuttle Dispatch", region: "Maryland", supervisor: "Supervisor Robert" },
+                { id: 5, name: "Dulles IAD Operations Unit", region: "Virginia", supervisor: "Supervisor Sandra" }
             ];
             updated = true;
         }
